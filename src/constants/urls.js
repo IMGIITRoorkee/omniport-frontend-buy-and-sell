@@ -1,0 +1,1 @@
+export const saleItemUrl = "/api/buyandsell/sale_product/"
