@@ -9,8 +9,8 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        getSaleItems: () => {
-            dispatch(getSaleItems());
+        getSaleItems: (param) => {
+            dispatch(getSaleItems(param));
         }
     }
 };

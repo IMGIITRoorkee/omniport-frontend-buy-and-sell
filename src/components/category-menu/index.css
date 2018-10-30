@@ -1,19 +1,19 @@
-.ui.labeled.icon.menu.category-menu .item {
-    flex-direction: row;
+.menu-item {
+    flex-direction: row !important;
 }
-.ui.labeled.icon.menu.category-menu span{
-    margin-left: 10px;
-    font-size: 17px;
+.menu-span{
+    margin-left: 10px !important;
+    font-size: 17px !important;
 }
-.ui.labeled.icon.menu.category-menu{
-    border: none;
-    box-shadow: none;
-    justify-content: center;
+.category-menu{
+    border: none !important;
+    box-shadow: none !important;
+    justify-content: center !important;
 }
-.ui.labeled.icon.menu.category-menu .item:hover{
-    background: none;
-    color: #494949;
+.menu-item:hover{
+    background: none !important;
+    color: #494949 !important;
 } 
-.ui.labeled.icon.menu.category-menu .item.active{
-    background: none;
+.menu-item{
+    background: none !important;
 } 

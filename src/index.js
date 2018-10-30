@@ -3,14 +3,14 @@ import { Route } from 'react-router-dom'
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from './store';
-import SaleItemForm from './components/sale-item-list'
+import Home from './components/app'
 export default class AppRouter extends React.Component {
     render() {
         window.store = store;
-        const { match } = this.props
+        
         return (
             <Provider store={store}>
-                <Route path={`${match.path}/`} component={SaleItemForm} />
+                <Route path={`${this.props.match.path}/`} component={Home} />
                 {/* Default Route */}
             </Provider>
         )

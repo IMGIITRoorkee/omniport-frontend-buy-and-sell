@@ -11,8 +11,10 @@ class ItemCard extends React.Component {
                 <Image
                     as={() => {
                         return (
-                            <div styleName='item-card-img' style={{ background: `url(${this.props.item.pictures.length ? this.props.item.pictures[0] : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'})` }}>
-
+                            <div 
+                                styleName='item-card-img'
+                                style={{ background: `url(${this.props.item.pictures.length ? this.props.item.pictures[0] : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'})` }}
+                            >
                             </div>
                         )
                     }
@@ -47,7 +49,7 @@ let sortOptions = [
         Content: 'Price'
     }
 ]
-export default class ItemList extends React.Component {
+export default class SaleItemList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -57,9 +59,7 @@ export default class ItemList extends React.Component {
         }
     }
     componentDidMount() {
-        if (this.props.saleItems.length == 0) {
-            this.props.getSaleItems();
-        }
+            this.props.getSaleItems('');
     }
     handleOpen = (item) => {
         this.setState({
@@ -70,13 +70,12 @@ export default class ItemList extends React.Component {
     }
     handleClose = () => this.setState({
         active: false,
-
     })
 
     render() {
         return (
             <React.Fragment>
-                <Grid padded={"verically"} styleName='items-grid'>
+                <Grid padded styleName='items-grid'>
                     <Grid.Row>
                         <Grid.Column floated={'left'} width={6}>
                             <Breadcrumb>
@@ -100,7 +99,7 @@ export default class ItemList extends React.Component {
                             </Grid>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row centered>
+                    <Grid.Row >
                         <Grid divided={"vertically"} doubling columns={5}>
                             <Grid.Row stretched>
                                 {this.props.saleItems.map((item, index) => {

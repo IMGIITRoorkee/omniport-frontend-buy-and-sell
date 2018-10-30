@@ -6,6 +6,7 @@
 }
 .items-grid{
     background-color: #F5F5F5 !important;
+    padding-left: 42px !important
 }
 .sort-dropdown{
     border: .5px solid #000000;

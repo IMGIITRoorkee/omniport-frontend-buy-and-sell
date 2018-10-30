@@ -7,7 +7,10 @@ export default class CategoryMenu extends React.Component {
     constructor(props) {
         super(props)
         this.state = { activeItem: '' }
-        this.handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+        this.handleItemClick = (e, { name }) => {
+            this.setState({ activeItem: name })
+            this.props.getSaleItems(name)
+        }
     }
     componentDidMount() {
     }
@@ -17,42 +20,54 @@ export default class CategoryMenu extends React.Component {
             <Grid centered padded={'vertically'} container>
                 <Grid.Row>
                     <Grid.Column width={14}>
-                        <Menu size={'large'} color='blue' className='category-menu' borderless icon={'labeled'}>
-                            <Menu.Item name='all'
-                                active={activeItem === 'all'}
-                                onClick={this.handleItemClick}>
+                        <Menu size={'large'} color='blue' styleName='category-menu' borderless icon={'labeled'}>
+                            <Menu.Item name=''
+                                active={activeItem === ''}
+                                onClick={this.handleItemClick}
+                                styleName='menu-item'
+                            >
                                 <Icon name='' />
-                                <span>All</span>
+                                <span styleName='menu-span'>All</span>
                             </Menu.Item>
                             <Menu.Item name='Electronics'
                                 active={activeItem === 'Electronics'}
-                                onClick={this.handleItemClick}>
+                                onClick={this.handleItemClick}
+                                styleName='menu-item'
+                            >
                                 <Icon name='computer' />
-                                <span>Electronics</span>
+                                <span styleName='menu-span'>Electronics</span>
                             </Menu.Item>
                             <Menu.Item name='Books'
                                 active={activeItem === 'Books'}
-                                onClick={this.handleItemClick}>
+                                onClick={this.handleItemClick}
+                                styleName='menu-item'
+                            >
                                 <Icon name='book' />
-                                <span>Books</span>
+                                <span styleName='menu-span'>Books</span>
                             </Menu.Item>
                             <Menu.Item name='Academics'
                                 active={activeItem === 'Academics'}
-                                onClick={this.handleItemClick}>
+                                onClick={this.handleItemClick}
+                                styleName='menu-item'
+                            >
                                 <Icon name='student' />
-                                <span>Academics</span>
+                                <span styleName='menu-span'>Academics</span>
                             </Menu.Item>
                             <Menu.Item name='Bicycles'
                                 active={activeItem === 'Bicycles'}
-                                onClick={this.handleItemClick}>
+                                onClick={this.handleItemClick}
+                                styleName='menu-item'
+                            >
                                 <Icon name='bicycle' />
-                                <span>Bicycles</span>
+                                <span styleName='menu-span'>Bicycles</span>
                             </Menu.Item>
                             <Menu.Item name='Miscellaneous'
                                 active={activeItem === 'Miscellaneous'}
-                                onClick={this.handleItemClick}>
+                                onClick={this.handleItemClick}
+                                styleName='menu-item'
+                            >
                                 <Icon name='box' />
-                                <span>Miscellaneous</span>
+                                <span styleName='menu-span'>Miscellaneous</span>
                             </Menu.Item>
                         </Menu>
                     </Grid.Column>

@@ -2,6 +2,8 @@ import _ from 'lodash'
 import React from 'react'
 import { render } from 'react-dom'
 import { Search, Grid, Button, Icon, Dropdown } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { appUrl } from '../../constants/urls'
 import './index.css'
 
 class SearchBar extends React.Component {
@@ -41,7 +43,7 @@ class SearchBar extends React.Component {
 }
 
 const trigger = (
-    <Icon size={'big'} name={'user'}/>
+    <Icon size={'big'} name={'user'} />
 )
 
 export default class Navbar extends React.Component {
@@ -57,25 +59,36 @@ export default class Navbar extends React.Component {
                     <Grid.Column width={3}>
                     </Grid.Column>
                     <Grid.Column computer={8} tablet={6}>
-                        <SearchBar minCharacters={3} fluid={true} className={'nav-search-bar'}>
+                        <SearchBar minCharacters={3} fluid={true} className={'bns-nav-search-bar'}>
                         </SearchBar>
                     </Grid.Column>
                     <Grid.Column computer={5} tablet={7}>
                         <Grid columns={3}>
                             <Grid.Row>
                                 <Grid.Column>
-                                    <Button className={'nav-btn'} primary content='Request' />
+                                    <Link to={appUrl + 'request_item/'}>
+                                        <Button
+                                            styleName={'nav-btn'}
+                                            primary
+                                            content='Request'
+                                        />
+                                    </Link>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Button className={'nav-btn'} primary content='Sell' />
+                                    <Link to={appUrl + 'sell_item/'}>
+                                        <Button
+                                            styleName={'nav-btn'}
+                                            primary
+                                            content='Sell'
+                                        />
+                                    </Link>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Dropdown trigger={trigger} icon='' floating className={'nav-usr-icon'} >
-                                    <Dropdown.Menu>
-                                    <Dropdown.Item>
-                                        sfsd
-                                    </Dropdown.Item>
-                                    </Dropdown.Menu>
+                                    <Dropdown trigger={trigger} icon='' floating className={'bns-nav-usr-icon'} >
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item>
+                                            </Dropdown.Item>
+                                        </Dropdown.Menu>
                                     </Dropdown>
                                 </Grid.Column>
                             </Grid.Row>

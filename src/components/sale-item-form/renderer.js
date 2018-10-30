@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getCookie } from 'formula_one/src/utils'
 import React from 'react'
 import { render } from 'react-dom'
 import { Grid, Icon, Radio, Button, Dropdown, Form, Header } from 'semantic-ui-react'
@@ -12,18 +13,18 @@ export default class SaleItemForm extends React.Component {
         this.state = {
             end_date: '',
             name: '',
-            category: '5',
+            category: 'Academics',
             details: '',
             cost: '',
             warranty_detail: '',
             is_phone_visible: false,
-            payment_modes: [3],
+            payment_modes: ['Cash'],
         };
     }
-    handleChangePhone = (event, {name}) => {
+    handleChangePhone = (event, { name }) => {
         if (this.state.hasOwnProperty(name)) {
             this.setState({ [name]: true });
-        } 
+        }
     }
     handleChange = (event, { name, value }) => {
         if (this.state.hasOwnProperty(name)) {
@@ -40,6 +41,22 @@ export default class SaleItemForm extends React.Component {
         formData.append('warranty_detail', this.state.warranty_detail);
         formData.append('is_phone_visible', this.state.is_phone_visible);
         formData.append('payment_modes', this.state.payment_modes)
+        let headers = {
+            'Content-Type': 'multipart/form-data',
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+        axios({
+            method: 'post',
+            url: '/api/buyandsell/sale_product/',
+            headers: headers,
+            data: formData
+        }).then((response) => {
+            console.log(response)
+            
+        }).catch((error) => {
+            console.log(error.response);
+        });
+
     }
     componentDidMount() {
     }
