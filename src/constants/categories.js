@@ -1,3 +1,5 @@
-export const Elecronics = 'Elecronics';
-export const Miscellaneous = 'Miscellaneous';
-export const Academics = 'Academics';
+export const categories = {
+    Elecronics : 'Elecronics',
+    Miscellaneous: 'Miscellaneous',
+    Academics: 'Academics'
+}

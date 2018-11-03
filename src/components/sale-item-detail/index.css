@@ -1,0 +1,9 @@
+.dimmer-grid{
+}
+.item-img{
+    height: 100% !important;
+    width: 100% !important;
+    background-size: cover !important;
+    background-position: 50% 50% !important;
+    background-repeat: no-repeat !important;
+}

@@ -10,9 +10,13 @@ export const getSaleItems = (param) => {
             params: {
             },
         }).then((response) => {
+            let itemsNewList = response.data.results;
+            itemsNewList.sort((a, b) => {
+                return new Date(b.datetimeCreated) - new Date(a.datetimeCreated)
+            })
             dispatch({
                 type: GET_SALE_ITEMS,
-                payload: response.data.results
+                payload: itemsNewList
             })
         }).catch(error => {
             ;

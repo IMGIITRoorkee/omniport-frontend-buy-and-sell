@@ -1,0 +1,19 @@
+.sub-cat{
+    margin-left: 15px !important
+}
+.image-upload-label{
+    font-size: 2rem !important;
+    line-height: 2rem !important;   
+    
+}
+.image-upload-input{
+    display: none !important;   
+}
+.upload-icon{
+    background-color: #C4C4C4 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 20px !important;
+}

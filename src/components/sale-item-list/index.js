@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { getSaleItems } from '../../actions';
+import { getSaleItems , sortItems } from '../../actions';
 import ItemList from './renderer';
 
 function mapStateToProps(state) {
@@ -11,7 +11,11 @@ const mapDispatchToProps = dispatch => {
     return {
         getSaleItems: (param) => {
             dispatch(getSaleItems(param));
+        },
+        sortItems: (items) => {
+            dispatch(sortItems(items))
         }
+
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ItemList);

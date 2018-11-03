@@ -4,6 +4,7 @@ import CategoryMenu from './renderer'
 
 function mapStateToProps(state) {
     return {
+        categories: state.categories
     }
 }
 const mapDispatchToProps = dispatch => {

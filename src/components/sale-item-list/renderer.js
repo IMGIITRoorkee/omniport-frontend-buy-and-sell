@@ -11,7 +11,7 @@ class ItemCard extends React.Component {
                 <Image
                     as={() => {
                         return (
-                            <div 
+                            <div
                                 styleName='item-card-img'
                                 style={{ background: `url(${this.props.item.pictures.length ? this.props.item.pictures[0] : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'})` }}
                             >
@@ -41,12 +41,17 @@ let sortOptions = [
     {
         text: 'Latest',
         value: 'latest',
-        Content: 'Latest'
+        content: 'Latest'
     },
     {
-        text: 'Price',
-        value: 'price',
-        Content: 'Price'
+        text: 'Price--Low to High',
+        value: 'price--low to high',
+        content: 'Price--Low to High'
+    },
+    {
+        text: 'Price--High to Low',
+        value: 'price--high to low',
+        content: 'Price--High to Low'
     }
 ]
 export default class SaleItemList extends React.Component {
@@ -59,18 +64,42 @@ export default class SaleItemList extends React.Component {
         }
     }
     componentDidMount() {
-            this.props.getSaleItems('');
+        this.props.getSaleItems('');
     }
     handleOpen = (item) => {
         this.setState({
             active: true,
             item: item,
             person: item.person["person"],
-        }, console.log(this.state.item))
+        })
     }
     handleClose = () => this.setState({
         active: false,
     })
+    handleSortChange = (e, { value }) => {
+        let itemsNewList = this.props.saleItems.slice()
+        switch (value) {
+            case 'price--low to high':
+                itemsNewList.sort((a, b) => {
+                    return a.cost - b.cost
+                })
+                this.props.sortItems(itemsNewList)
+                break;
+            case 'price--high to low':
+                itemsNewList.sort((a, b) => {
+                    return b.cost - a.cost
+                })
+                this.props.sortItems(itemsNewList)
+                break;
+            case 'latest':
+                itemsNewList.sort((a, b) => {
+                    return new Date(b.datetimeCreated) - new Date(a.datetimeCreated)
+                })
+                this.props.sortItems(itemsNewList)
+                break;
+
+        }
+    }
 
     render() {
         return (
@@ -93,7 +122,7 @@ export default class SaleItemList extends React.Component {
                                 </Grid.Column  >
                                 <Grid.Column >
                                     {' '}
-                                    <Dropdown styleName="sort-dropdown" onChange={this.handleChange} inline options={sortOptions} defaultValue={sortOptions[0].value} >
+                                    <Dropdown styleName="sort-dropdown" onChange={this.handleSortChange} inline options={sortOptions} defaultValue={sortOptions[0].value} >
                                     </Dropdown>
                                 </Grid.Column>
                             </Grid>
@@ -104,7 +133,7 @@ export default class SaleItemList extends React.Component {
                             <Grid.Row stretched>
                                 {this.props.saleItems.map((item, index) => {
                                     return (
-                                        <Grid.Column >
+                                        <Grid.Column key={index}  >
                                             <ItemCard item={item} onlick={this.handleOpen} />
                                         </Grid.Column>
                                     )

@@ -11,6 +11,10 @@ export default class App extends React.Component {
         super(props)
     }
 
+    componentDidMount() {
+        this.props.getCategories();
+    }
+
     render() {
         const { match } = this.props
         return (
