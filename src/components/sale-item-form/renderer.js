@@ -36,6 +36,7 @@ export default class SaleItemForm extends React.Component {
             end_date: '',
             name: '',
             category: '',
+            categoryName:'',
             details: '',
             cost: '',
             warranty_detail: '',
@@ -103,9 +104,10 @@ export default class SaleItemForm extends React.Component {
         });
 
     }
-    handleCategoryChange = (e, { value }) => {
+    handleCategoryChange = (e, { value, name }) => {
         this.setState({
-            category: value
+            category: value,
+            categoryName: name,
         })
     }
     componentDidMount() {
@@ -123,10 +125,10 @@ export default class SaleItemForm extends React.Component {
         let dropdown = categories ? categories.map((category, index) => {
             return (
                 <React.Fragment key={index}>
-                    <Dropdown.Item onClick={this.handleCategoryChange} value={category.name} key={index}>{category.name}</Dropdown.Item>
+                    <Dropdown.Item onClick={this.handleCategoryChange} value={category.slug} name={category.name} key={index}>{category.name}</Dropdown.Item>
                     {category.subCategories.map((subCategory, i) => {
                         return (
-                            <Dropdown.Item styleName='sub-cat' value={subCategory.name} onClick={this.handleCategoryChange} key={i}>{subCategory.name}</Dropdown.Item>
+                            <Dropdown.Item styleName='sub-cat' value={subCategory.slug} name={subCategory.name} onClick={this.handleCategoryChange} key={i}>{subCategory.name}</Dropdown.Item>
                         )
                     })}
                 </React.Fragment>
@@ -159,7 +161,7 @@ export default class SaleItemForm extends React.Component {
                                 <Dropdown
                                     scrolling
                                     fluid
-                                    text={this.state.category}
+                                    text={this.state.categoryName}
                                     placeholder={this.state.category ? null : 'Select a category'}
                                 >
                                     <Dropdown.Menu>

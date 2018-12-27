@@ -1,32 +1,18 @@
-.item-card-img{
-    width: 100%;
-    height: 170px;
-    background-size: cover !important;
-    background-position: 50% 50% !important;
-}
-.items-grid{
+.items-grid {
     background-color: #F5F5F5 !important;
     padding-left: 42px !important
 }
-.sort-dropdown{
-    border: .5px solid #000000;
-    display: inline-block;
-    padding: 5px 5px 5px 10px;
-    border-radius: 15px;
-}
-.item-img{
+
+.sort-dropdown {}
+
+.item-img {
     height: 100% !important;
     width: 100% !important;
     background-size: cover !important;
     background-position: 50% 50% !important;
     background-repeat: no-repeat !important;
 }
-.dimmer-grid{
-    width: 90vw;
-    height: 75vh;
-    overflow: scroll;
+
+.dimmer-grid {
     background: #ffffff !important;
-    padding-top: 1vw !important;
-    color: #1b1c1d !important;
-    padding-bottom: 1vw !important; 
 }

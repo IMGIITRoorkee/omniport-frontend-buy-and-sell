@@ -1,10 +1,12 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Switch, Route } from 'react-router-dom'
+import { Grid, Icon, Dropdown } from 'semantic-ui-react'
 import './index.css'
 import SearchBar from '../navigation-bar'
-import ItemsList from '../items-list'
+import Products from '../products'
 import SaleItemForm from '../sale-item-form'
+import SaleItemDetail from '../sale-item-detail'
 
 export default class App extends React.Component {
     constructor(props) {
@@ -13,18 +15,24 @@ export default class App extends React.Component {
 
     componentDidMount() {
         this.props.getCategories();
+        this.props.getUser();
     }
 
     render() {
         const { match } = this.props
         return (
-            <React.Fragment>
-                <Route path={`${match.path}`} component={SearchBar} />
-                <Switch>
-                    <Route path={`${match.path}sell_item`} component={SaleItemForm} />
-                    <Route path={`${match.path}`} component={ItemsList} />
-                </Switch>
-            </React.Fragment>
+            <Grid container>
+                <Grid.Row>
+                    <Route path={`${match.path}`} component={SearchBar} />
+                </Grid.Row>
+                <Grid.Row>
+                    <Switch>
+                        <Route path={`${match.path}sell_item`} component={SaleItemForm} />
+                        <Route path={`${match.path}buy/:id`} component={SaleItemDetail} />
+                        <Route path={`${match.path}`} component={Products} />
+                    </Switch>
+                </Grid.Row>
+            </Grid>
         )
     }
 }

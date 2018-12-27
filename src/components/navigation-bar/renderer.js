@@ -54,7 +54,7 @@ export default class Navbar extends React.Component {
     }
     render() {
         return (
-            <Grid columns={3} stackable={true} padded={'vertically'}>
+            <Grid stackable={true} padded={'vertically'}>
                 <Grid.Row>
                     <Grid.Column width={3}>
                     </Grid.Column>

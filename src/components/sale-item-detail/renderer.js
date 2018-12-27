@@ -1,95 +1,143 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Header, Grid, Divider, Image } from 'semantic-ui-react'
+import { Header, Grid, Button, Divider, Icon, Table, Transition } from 'semantic-ui-react'
+import { formatDate, defaultImageUrl } from '../../constants'
+import { getTheme } from 'formula_one'
 import './index.css'
 
 export default class SaleItemDetail extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            indicator: 0,
+        }
     }
     componentDidMount() {
-
-        const id = this.props.match.params.id
-        this.props.getSaleItemDetail(`${id}/`)
-        console.log(this.props.saleItemDetail)
-
+        if (!this.props.saleItemDetail.name) {
+            const id = this.props.match.params.id
+            this.props.getSaleItemDetail(`${id}/`)
+        }
+    }
+    handleIndicator = (index) => {
+        this.setState({
+            indicator: index
+        })
     }
     render() {
-        return (this.props.saleItemDetail.name ?
-            <Grid relaxed="very" styleName="dimmer-grid" >
-                <Grid.Row>
-                    <Grid.Column computer={8} tablet={8} mobile={16}>
-                        <Image
-                            as={() => {
-                                return (
-                                    <div styleName='item-img' style={{ background: `url(${this.props.saleItemDetail.pictures.length ? this.props.saleItemDetail.pictures[0] : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'})` }}>
-                                    </div>
-                                )
-                            }
-                            }
-                            fluid />
-                    </Grid.Column>
-                    <Grid.Column computer={8} tablet={8} mobile={16}>
-                        <Grid textAlign="left">
-                            <Grid.Row>
-                                <Grid.Column width={16}>
-                                    <Header as="h2">{this.props.saleItemDetail.name}</Header>
-                                    <Divider fitted />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column width={16}>
-                                    {this.props.saleItemDetail.details}
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid padded textAlign="left" columns="equal">
-                                    <Grid.Row columns={2}>
-                                        <Grid.Column>
-                                            Price
-                                                </Grid.Column>
-                                        <Grid.Column>
-                                            {this.props.saleItemDetail.cost}
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row >
-                                        <Grid.Column>
-                                            Expires On
-                                                </Grid.Column>
-                                        <Grid.Column>
-                                            {new Date(this.props.saleItemDetail.endDate).toDateString()}
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row >
-                                        <Grid.Column>
-                                            Owner
-                                                </Grid.Column>
-                                        <Grid.Column>
-                                            {/* {this.state.person.fullName} */}
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row >
-                                        <Grid.Column>
-
-                                        </Grid.Column>
-                                        <Grid.Column>
-
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row >
-                                        <Grid.Column>
-
-                                        </Grid.Column>
-                                        <Grid.Column>
-
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </Grid.Row>
-                        </Grid>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        :null)
+        const { saleItemDetail } = this.props
+        return (saleItemDetail.name ?
+            <Grid.Column width={16}>
+                <Grid divided="vertically" padded={"vertically"} relaxed="very" >
+                    <Grid.Row centered>
+                        <Grid.Column styleName="img-container" computer={8} tablet={8} mobile={14}>
+                            <Grid styleName="img-grid">
+                                <Grid.Row styleName="img-div">
+                                    {saleItemDetail.pictures.length > 0 ?
+                                        saleItemDetail.pictures.map((image, index) => {
+                                            return (
+                                                <Transition key={index} transitionOnMount visible={this.state.indicator == index ? true : false} animation='scale' duration={500}>
+                                                    <div styleName='item-img' style={{ background: `url(${image})` }}>
+                                                    </div>
+                                                </Transition>
+                                            )
+                                        })
+                                        :
+                                        <Transition transitionOnMount visible={true} animation='scale' duration={500}>
+                                            <div styleName='item-img' style={{ background: `url(${defaultImageUrl})` }}>
+                                            </div>
+                                        </Transition>
+                                    }
+                                </Grid.Row>
+                                < Grid.Row centered>
+                                    {saleItemDetail.pictures.length > 1 ?
+                                        saleItemDetail.pictures.map((image, index) => {
+                                            return (
+                                                <div key={index} onClick={() => this.handleIndicator(index)} styleName={`carousel-indicator ${this.state.indicator == index ? 'active-indicator' : ''}`}>
+                                                </div>
+                                            )
+                                        })
+                                        : null
+                                    }
+                                </Grid.Row>
+                            </Grid>
+                        </Grid.Column>
+                        <Grid.Column computer={8} tablet={8} mobile={14}>
+                            <Grid textAlign="left">
+                                <Grid.Row>
+                                    <Grid.Column width={16}>
+                                        <Header as="h2" styleName='title'>{saleItemDetail.name}</Header>
+                                        <Divider fitted />
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row>
+                                    <Grid.Column width={16}>
+                                        {saleItemDetail.details}
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row>
+                                    <Table styleName="item-data">
+                                        <Table.Body>
+                                            <Table.Row>
+                                                <Table.Cell styleName='data-col'>
+                                                    Price
+                                                </Table.Cell>
+                                                <Table.Cell styleName='data-col'>
+                                                    <Icon name="rupee sign" size={'small'} />
+                                                    {saleItemDetail.cost}
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell styleName='data-col'>
+                                                    Expires On
+                                                </Table.Cell>
+                                                <Table.Cell styleName='data-col'>
+                                                    {formatDate(saleItemDetail.endDate)}
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell styleName='data-col'>
+                                                    Owner
+                                                </Table.Cell>
+                                                <Table.Cell styleName='data-col'>
+                                                    {saleItemDetail.person.person.fullName}
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            {saleItemDetail.isPhoneVisible ?
+                                                <Table.Row>
+                                                    <Table.Cell styleName='data-col'>Phone number</Table.Cell>
+                                                    <Table.Cell styleName='data-col'>
+                                                        {saleItemDetail.person.person.contactInformation.primaryPhoneNumber}
+                                                    </Table.Cell>
+                                                </Table.Row>
+                                                : null
+                                            }
+                                            <Table.Row>
+                                                <Table.Cell styleName='data-col'>
+                                                    Payment modes accepted
+                                                </Table.Cell>
+                                                <Table.Cell styleName='data-col'>
+                                                    {saleItemDetail.paymentModes.join(', ')}
+                                                </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell styleName='data-col'>
+                                                    Warranty (no. of months left)
+                                                </Table.Cell>
+                                                <Table.Cell styleName='data-col'>
+                                                    {saleItemDetail.warrantyDetail}
+                                                </Table.Cell>
+                                            </Table.Row>
+                                        </Table.Body>
+                                    </Table>
+                                </Grid.Row>
+                                <Grid.Row styleName='enquire-flex'>
+                                    <Button content='Enquire' color={getTheme()} />
+                                </Grid.Row>
+                            </Grid>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Grid.Column >
+            : null)
     }
 }

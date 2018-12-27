@@ -1,9 +1,54 @@
-.dimmer-grid{
+.img-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
 }
-.item-img{
-    height: 100% !important;
+
+.img-div {
+    position: relative !important;
+    width: 100%;
+    padding-bottom: 58% !important;
+    padding-top: 0 !important;
+}
+
+.img-grid {
     width: 100% !important;
+}
+
+.item-img {
+    width: 100% !important;
+    height: 100%;
     background-size: cover !important;
     background-position: 50% 50% !important;
     background-repeat: no-repeat !important;
+    position: absolute;
+}
+
+.item-data {
+    border: none !important;
+}
+
+.carousel-indicator {
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 50%;
+    background: #C4C4C4;
+    margin-right: 6px;
+    cursor: pointer;
+}
+
+.active-indicator {
+    background: #646363 !important;
+}
+
+.data-col {
+    border: none !important;
+}
+
+.enquire-flex {
+    justify-content: flex-end !important;
+}
+
+.title {
+    text-transform: capitalize !important;
 }

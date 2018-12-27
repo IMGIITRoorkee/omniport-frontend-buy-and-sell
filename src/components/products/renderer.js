@@ -6,7 +6,7 @@ import CategoryMenu from '../category-menu'
 import ItemMenu from '../item-menu'
 import SaleItemList from '../sale-item-list'
 import SaleItemDetail from '../sale-item-detail'
-export default class ItemsList extends React.Component {
+export default class Items extends React.Component {
     constructor(props) {
         super(props)
     }
@@ -19,7 +19,6 @@ export default class ItemsList extends React.Component {
                 <Route path={`${match.path}`} component={CategoryMenu} />
                 <Switch>
                     <Route exact path={`${match.path}`} component={SaleItemList} />
-                    <Route path={`${match.path}buy/:id`} component={SaleItemDetail} />
                     <Route path={`${match.path}buy`} component={SaleItemList} />
                     
                 </Switch>

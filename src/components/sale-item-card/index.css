@@ -1,0 +1,10 @@
+.item-card-img {
+    width: 100%;
+    padding-bottom: 68%;
+    background-size: cover !important;
+    background-position: 50% 50% !important;
+}
+
+.title {
+    text-transform: capitalize;
+}
