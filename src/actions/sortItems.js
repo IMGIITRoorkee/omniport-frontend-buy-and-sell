@@ -1,8 +1,14 @@
-import { SORT_ITEMS } from '../constants/action-types';
+import { SORT_REQUEST_ITEMS, SORT_SALE_ITEMS } from '../constants/action-types';
 
-export const sortItems = (items) => {
+export const sortSaleItems = (items) => {
     return {
-        type: SORT_ITEMS,
+        type: SORT_SALE_ITEMS,
         payload: items
-      }
+    }
+}
+export const sortRequestItems = (items) => {
+    return {
+        type: SORT_REQUEST_ITEMS,
+        payload: items
+    }
 }

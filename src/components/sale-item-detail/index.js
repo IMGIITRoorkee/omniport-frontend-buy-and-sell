@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import SaleItemDetail from './renderer'
+import Component from './renderer'
 import { getSaleItemDetail } from '../../actions';
 
 function mapStateToProps(state) {
@@ -14,4 +14,4 @@ const mapDispatchToProps = dispatch => {
         }
     }
 };
-export default connect(mapStateToProps, mapDispatchToProps)(SaleItemDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(Component);

@@ -9,28 +9,26 @@ import './index.css'
 export default class ItemMenu extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { activeItem: 'sale' }
-        this.handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
     }
     componentDidMount() {
+
     }
     render() {
-        const { activeItem } = this.state
+        const { itemType } = this.props
         return (
             <Grid.Column width={16}>
                 <Menu size={'huge'} widths={4} color={getTheme()} pointing secondary>
                     <Menu.Item
                         as={Link} name='sale'
-                        active={activeItem === 'sale'}
-                        onClick={this.handleItemClick}
+                        active={itemType === 'sale'}
                         to={appUrl + 'buy/'}
                     >
                         Items for sale
                     </Menu.Item>
                     <Menu.Item
                         as={Link} name='request'
-                        active={activeItem === 'request'}
-                        onClick={this.handleItemClick}
+                        active={itemType === 'request'}
                         to={appUrl + 'request/'}
                     >
                         Requested items

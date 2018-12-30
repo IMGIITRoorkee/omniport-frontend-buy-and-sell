@@ -2,7 +2,6 @@ import React from 'react'
 import { render } from 'react-dom'
 import {
     Grid,
-    Dimmer,
     Breadcrumb,
     Dropdown,
     Header,
@@ -10,47 +9,28 @@ import {
 } from 'semantic-ui-react'
 import ItemCard from '../sale-item-card/'
 import ItemDetail from '../sale-item-detail/renderer'
+import { sortOptions } from '../../constants'
 import './index.css'
 
-let sortOptions = [
-    {
-        text: 'Latest',
-        value: 'latest',
-        content: 'Latest'
-    },
-    {
-        text: 'Price--Low to High',
-        value: 'price--low to high',
-        content: 'Price--Low to High'
-    },
-    {
-        text: 'Price--High to Low',
-        value: 'price--high to low',
-        content: 'Price--High to Low'
-    }
-]
 export default class SaleItemList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            active: false,
             item: {},
-            person: {},
         }
     }
     componentDidMount() {
-        this.props.getSaleItems('');
+        this.props.getSaleItems(this.props.subCategory);
+        this.props.setItemType('sale')
+    }
+    componentWillUnmount() {
+        this.props.setItemType('')
     }
     handleOpen = (item) => {
         this.setState({
-            active: true,
             item: item,
-            person: item.person["person"],
         })
     }
-    handleClose = () => this.setState({
-        active: false,
-    })
     handleSortChange = (e, { value }) => {
         let itemsNewList = this.props.saleItems.slice()
         switch (value) {
@@ -95,7 +75,7 @@ export default class SaleItemList extends React.Component {
                                         <Header as='h4'>
                                             <Header.Content>
                                                 Sort By{' '}
-                                                <Dropdown styleName="sort-dropdown" onChange={this.handleSortChange} inline options={sortOptions} defaultValue={sortOptions[0].value} >
+                                                <Dropdown styleName="sort-dropdown" direction='left' onChange={this.handleSortChange} inline options={sortOptions} defaultValue={sortOptions[0].value} >
                                                 </Dropdown>
                                             </Header.Content>
                                         </Header>
@@ -108,7 +88,7 @@ export default class SaleItemList extends React.Component {
                                 <Grid.Row stretched>
                                     {this.props.saleItems.map((item, index) => {
                                         return (
-                                            <Modal trigger={
+                                            <Modal key={index} trigger={
                                                 <Grid.Column key={index}  >
                                                     <ItemCard item={item} onlick={this.handleOpen} />
                                                 </Grid.Column>

@@ -1,4 +1,4 @@
-import { GET_PAYMENT} from '../constants/action-types';
+import { GET_PAYMENT } from '../constants/action-types';
 const PaymentModes = (state = [], action) => {
   switch (action.type) {
     case GET_PAYMENT:

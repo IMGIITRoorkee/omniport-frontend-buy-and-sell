@@ -1,0 +1,11 @@
+.items-grid {
+    background-color: #F5F5F5 !important;
+    padding-left: 42px !important
+}
+.item-img {
+    height: 100% !important;
+    width: 100% !important;
+    background-size: cover !important;
+    background-position: 50% 50% !important;
+    background-repeat: no-repeat !important;
+}

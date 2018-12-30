@@ -43,6 +43,7 @@
 
 .data-col {
     border: none !important;
+    cursor: default;
 }
 
 .enquire-flex {
@@ -52,6 +53,7 @@
 .title {
     text-transform: capitalize !important;
 }
+
 .popup-flex {
     display: flex;
     flex-direction: row;

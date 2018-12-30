@@ -1,13 +1,9 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Grid, Menu, Icon, Dropdown } from 'semantic-ui-react'
+import { getTheme } from 'formula_one'
+import { categories } from '../../constants'
 import './index.css'
-const options = [
-    { key: 'edit', icon: 'edit', text: 'Edit Post', value: 'edit' },
-    { key: 'delete', icon: 'delete', text: 'Remove Post', value: 'delete' },
-    { key: 'hide', icon: 'hide', text: 'Hide Post', value: 'hide' },
-]
-
 
 class DropdownMenu extends React.Component {
     constructor(props) {
@@ -15,9 +11,9 @@ class DropdownMenu extends React.Component {
     }
 
     render() {
-        let { subcategories } = this.props
+        let { subcategories, name, activeCategory, slug } = this.props
         let dropdown = subcategories ? subcategories.map((subCategory, index) => {
-            return <Dropdown.Item onClick={this.props.onClick} name={subCategory.slug} key={index}>{subCategory.name}</Dropdown.Item>
+            return <Dropdown.Item onClick={this.props.onClick} name={name} slug={subCategory.slug} key={index}>{subCategory.name}</Dropdown.Item>
         }) : null
         const trigger = (
             <span>
@@ -25,8 +21,9 @@ class DropdownMenu extends React.Component {
             </span>
         )
         return (
-            <Dropdown closeOnChange simple closeOnBlur trigger={trigger} styleName='menu-item' icon={null} item >
+            <Dropdown trigger={trigger} className={activeCategory == name ? 'active' : ''} styleName='menu-item' icon={null} item >
                 <Dropdown.Menu>
+                    <Dropdown.Item onClick={this.props.onClick} name={name} slug={slug} icon={this.props.icon} content={`  ${this.props.name}`} />
                     {dropdown}
                 </Dropdown.Menu>
             </Dropdown>
@@ -36,29 +33,34 @@ class DropdownMenu extends React.Component {
 export default class CategoryMenu extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { activeItem: '' }
-
     }
-    handleItemClick = (e, { name }) => {
-        this.setState({ activeItem: name })
-        this.props.getSaleItems(`${name}/`)
+    handleItemClick = (e, { slug, name }) => {
+        this.props.setCategory(name)
+        this.props.setSubCategory(slug)
+        if (this.props.itemType == 'sale') {
+            this.props.getSaleItems(`${slug}`)
+        }
+        else if (this.props.itemType == 'request') {
+            this.props.getRequestItems(`${slug}`)
+        }
     }
     componentDidMount() {
     }
     subCategories = (category) => {
         for (let i = 0; i < this.props.categories.length; i++) {
-            if (this.props.categories[i].name === category) {
+            if (this.props.categories[i].slug === category) {
                 return this.props.categories[i].subCategories
             }
         }
     }
     render() {
-        const { activeItem } = this.state
+        const { activeCategory } = this.props
         return (
             <Grid.Column width={16}>
-                <Menu size={'large'} color='blue' styleName='category-menu' borderless icon={'labeled'}>
+                <Menu size={'large'} color={getTheme()} styleName='category-menu' borderless icon={'labeled'}>
                     <Menu.Item name=''
-                        active={activeItem === ''}
+                        slug=''
+                        active={activeCategory === ''}
                         onClick={this.handleItemClick}
                         styleName='menu-item'
                     >
@@ -67,27 +69,34 @@ export default class CategoryMenu extends React.Component {
                     </Menu.Item>
                     <DropdownMenu
                         icon='computer'
-                        name='Electronics'
-                        active={activeItem === 'Electronics'}
+                        name={'Electronics'}
+                        slug={categories.Electronics}
+                        active={activeCategory === 'Electronics'}
                         onClick={this.handleItemClick}
-                        subcategories={this.subCategories('Electronics')}
+                        subcategories={this.subCategories(categories.Electronics)}
+                        activeCategory={activeCategory}
                     />
                     <DropdownMenu
                         icon='book'
                         name='Books'
-                        active={activeItem === 'Books'}
+                        slug={categories.Books}
+                        active={activeCategory === 'Books'}
                         onClick={this.handleItemClick}
-                        subcategories={this.subCategories('Books')}
+                        subcategories={this.subCategories(categories.Books)}
+                        activeCategory={activeCategory}
                     />
                     <DropdownMenu
                         icon='student'
-                        name='Academics'
-                        active={activeItem === 'Academics'}
+                        name='Academic'
+                        slug={categories.Academic}
+                        active={activeCategory === 'Academic'}
                         onClick={this.handleItemClick}
-                        subcategories={this.subCategories('Academics')}
+                        subcategories={this.subCategories(categories.Academic)}
+                        activeCategory={activeCategory}
                     />
                     <Menu.Item name='Bicycles'
-                        active={activeItem === 'Bicycles'}
+                        slug={categories.Bicycles}
+                        active={activeCategory === 'Bicycles'}
                         onClick={this.handleItemClick}
                         styleName='menu-item'
                     >
@@ -95,7 +104,8 @@ export default class CategoryMenu extends React.Component {
                         <span styleName='menu-span'>Bicycles</span>
                     </Menu.Item>
                     <Menu.Item name='Miscellaneous'
-                        active={activeItem === 'Miscellaneous'}
+                        slug={categories.Miscellaneous}
+                        active={activeCategory === 'Miscellaneous'}
                         onClick={this.handleItemClick}
                         styleName='menu-item'
                     >

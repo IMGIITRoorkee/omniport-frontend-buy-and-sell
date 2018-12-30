@@ -1,0 +1,10 @@
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-size: 100% !important;
+}
+
+.app-container {
+    flex-grow: 1;
+}

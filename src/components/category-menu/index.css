@@ -1,19 +1,23 @@
 .menu-item {
     flex-direction: row !important;
 }
-.menu-span{
+
+.menu-span {
     margin-left: 10px !important;
     font-size: 17px !important;
 }
-.category-menu{
+
+.category-menu {
     border: none !important;
     box-shadow: none !important;
     justify-content: center !important;
 }
-.menu-item:hover{
+
+.menu-item:hover {
     background: none !important;
     color: #494949 !important;
-} 
-.menu-item{
+}
+
+.menu-item {
     background: none !important;
-} 
+}

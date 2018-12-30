@@ -1,16 +1,16 @@
 import { connect } from 'react-redux'
 import Component from './renderer'
-import { setItemType } from '../../actions'
+import { getRequestItemDetail } from '../../actions';
 
 function mapStateToProps(state) {
     return {
-        itemType: state.itemType
+        requestItemDetail: state.requestItemDetail
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        setItemType: (param) => {
-            dispatch(setItemType(param))
+        getRequestItemDetail: (param) => {
+            dispatch(getRequestItemDetail(param));
         }
     }
 };

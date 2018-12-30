@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Header, Grid, Button, Divider, Icon, Table, Transition } from 'semantic-ui-react'
-import { formatDate, defaultImageUrl } from '../../constants'
+import { Header, Grid, Button, Divider, Icon, Table, Transition, Popup } from 'semantic-ui-react'
+import { formatDate, defaultImageUrl, stringifyNumber } from '../../constants'
 import { getTheme } from 'formula_one'
 import './index.css'
 
@@ -99,7 +99,34 @@ export default class SaleItemDetail extends React.Component {
                                                     Owner
                                                 </Table.Cell>
                                                 <Table.Cell styleName='data-col'>
-                                                    {saleItemDetail.person.person.fullName}
+                                                    <Popup
+                                                        trigger={<span>{saleItemDetail.person.person.fullName}</span>}
+                                                    >
+                                                        <Popup.Header>
+                                                            {saleItemDetail.person.person.fullName}
+                                                        </Popup.Header>
+                                                        <Popup.Content>
+                                                            <div styleName='popup-flex'>
+                                                                <img styleName='avtar' src={saleItemDetail.person.person.displayPicture} />
+                                                                <div>
+                                                                    {saleItemDetail.person.branch ?
+                                                                        <>
+                                                                            <div>
+                                                                                {stringifyNumber(saleItemDetail.person.currentYear)}
+                                                                                {` year, ${saleItemDetail.person.branch.name}`}
+                                                                            </div>
+                                                                        </>
+                                                                        :
+                                                                        <>
+                                                                            <div>
+                                                                                {`faculty, ${saleItemDetail.person.department.name}`}
+                                                                            </div>
+                                                                        </>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </Popup.Content>
+                                                    </Popup>
                                                 </Table.Cell>
                                             </Table.Row>
                                             {saleItemDetail.isPhoneVisible ?
