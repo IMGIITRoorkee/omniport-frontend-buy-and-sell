@@ -100,7 +100,7 @@ export default class CategoryMenu extends React.Component {
                         onClick={this.handleItemClick}
                         styleName='menu-item'
                     >
-                        <Icon name='bicycle' />
+                        <Icon styleName='ico' name='bicycle' />
                         <span styleName='menu-span'>Bicycles</span>
                     </Menu.Item>
                     <Menu.Item name='Miscellaneous'

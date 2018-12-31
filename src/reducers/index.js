@@ -8,6 +8,8 @@ import requestItemDetail from './request-item-detail'
 import getUser from './get-user'
 import setItemType from './set-item-type';
 import { setCategory, setSubCategory } from './set-category';
+import requestForm from './request-form'
+import saleForm from './sale-form'
 
 const rootReducer = combineReducers({
     saleItems: SaleItems,
@@ -20,5 +22,7 @@ const rootReducer = combineReducers({
     itemType: setItemType,
     activeCategory: setCategory,
     activeSubCategory: setSubCategory,
+    requestForm: requestForm,
+    saleForm: saleForm
 })
 export default rootReducer;

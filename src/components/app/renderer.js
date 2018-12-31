@@ -8,6 +8,7 @@ import Products from '../products'
 import SaleItemForm from '../sale-item-form'
 import SaleItemDetail from '../sale-item-detail'
 import RequestItemDetail from '../request-item-detail'
+import RequestItemForm from '../request-item-form'
 
 const creators = [
     {
@@ -39,6 +40,7 @@ export default class App extends React.Component {
                         <Grid.Row>
                             <Switch>
                                 <Route path={`${match.path}sell_item`} component={SaleItemForm} />
+                                <Route path={`${match.path}request_item`} component={RequestItemForm} />
                                 <Route path={`${match.path}buy/:id`} component={SaleItemDetail} />
                                 <Route path={`${match.path}request/:id`} component={RequestItemDetail} />
                                 <Route path={`${match.path}`} component={Products} />

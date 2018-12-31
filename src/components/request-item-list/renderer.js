@@ -2,7 +2,6 @@ import React from 'react'
 import { render } from 'react-dom'
 import {
     Grid,
-    Breadcrumb,
     Modal,
     Table
 } from 'semantic-ui-react'
@@ -18,8 +17,7 @@ export default class RequestItemList extends React.Component {
         }
     }
     componentDidMount() {
-        console.log(this.props.subCategory)
-        this.props.getRequestItems(this.props.subCategory)
+        this.props.getRequestItems(this.props.activeSubCategory)
         this.props.setItemType('request')
     }
     componentWillUnmount() {
@@ -32,18 +30,14 @@ export default class RequestItemList extends React.Component {
     }
 
     render() {
-        const { requestItems } = this.props
+        const { requestItems, breadcrumb } = this.props
         return (
             <React.Fragment>
                 <Grid.Column width={16} styleName='items-grid'>
                     <Grid padded={"vertically"}>
                         <Grid.Row>
                             <Grid.Column width={8} floated={'left'}>
-                                <Breadcrumb>
-                                    <Breadcrumb.Section link>Items requested</Breadcrumb.Section>
-                                    <Breadcrumb.Divider icon='right angle' />
-                                    <Breadcrumb.Section active>All</Breadcrumb.Section>
-                                </Breadcrumb>
+                                {breadcrumb()}
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row >

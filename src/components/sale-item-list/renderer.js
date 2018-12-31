@@ -2,7 +2,6 @@ import React from 'react'
 import { render } from 'react-dom'
 import {
     Grid,
-    Breadcrumb,
     Dropdown,
     Header,
     Modal
@@ -57,17 +56,14 @@ export default class SaleItemList extends React.Component {
     }
 
     render() {
+        const { breadcrumb } = this.props
         return (
             <React.Fragment>
                 <Grid.Column width={16} styleName='items-grid'>
                     <Grid padded={"vertically"}>
                         <Grid.Row>
                             <Grid.Column width={8} floated={'left'}>
-                                <Breadcrumb>
-                                    <Breadcrumb.Section link>Items for sale</Breadcrumb.Section>
-                                    <Breadcrumb.Divider icon='right angle' />
-                                    <Breadcrumb.Section active>All</Breadcrumb.Section>
-                                </Breadcrumb>
+                                {breadcrumb()}
                             </Grid.Column>
                             <Grid.Column width={8} floated={'right'}>
                                 <Grid>
@@ -107,7 +103,7 @@ export default class SaleItemList extends React.Component {
                         </Grid.Row>
                     </Grid>
                 </Grid.Column>
-            </React.Fragment>
+            </React.Fragment >
         )
     }
 }

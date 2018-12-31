@@ -5,7 +5,7 @@ import Component from './renderer';
 function mapStateToProps(state) {
     return {
         requestItems: state.requestItems,
-        subCategory: state.activeSubCategory
+        activeSubCategory: state.activeSubCategory,
     }
 }
 const mapDispatchToProps = dispatch => {
