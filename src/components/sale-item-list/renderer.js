@@ -16,11 +16,30 @@ export default class SaleItemList extends React.Component {
         super(props)
         this.state = {
             item: {},
+            page: 1,
+            loading: false
         }
     }
     componentDidMount() {
-        this.props.getSaleItems(this.props.subCategory);
+        this.props.getSaleItems(this.props.subCategory, 1, true);
         this.props.setItemType('sale')
+        window.addEventListener("scroll", () => {
+            const { saleProductCount } = this.props
+            const { page } = this.state
+            if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight && saleProductCount > (page * 10)) {
+                this.setState({
+                    loading: true,
+                    page: this.state.page + 1
+                }, () => {
+                    this.props.getSaleItems(this.props.activeSubCategory, this.state.page)
+                    setTimeout(() => {
+                        this.setState({
+                            loading: false
+                        });
+                    }, 300);
+                })
+            }
+        })
     }
     componentWillUnmount() {
         this.props.setItemType('')
@@ -57,6 +76,7 @@ export default class SaleItemList extends React.Component {
 
     render() {
         const { breadcrumb } = this.props
+        const { loading } = this.state
         return (
             <React.Fragment>
                 <Grid.Column width={16} styleName='items-grid'>
@@ -68,7 +88,7 @@ export default class SaleItemList extends React.Component {
                             <Grid.Column width={8} floated={'right'}>
                                 <Grid>
                                     <Grid.Column width={16} textAlign={'right'} verticalAlign={"middle"} >
-                                        <Header as='h4'>
+                                        <Header as='h5'>
                                             <Header.Content>
                                                 Sort By{' '}
                                                 <Dropdown styleName="sort-dropdown" direction='left' onChange={this.handleSortChange} inline options={sortOptions} defaultValue={sortOptions[0].value} >
@@ -80,7 +100,7 @@ export default class SaleItemList extends React.Component {
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row >
-                            <Grid divided={"vertically"} doubling columns={4}>
+                            <Grid divided={"vertically"} doubling columns={5}>
                                 <Grid.Row stretched>
                                     {this.props.saleItems.map((item, index) => {
                                         return (
@@ -98,6 +118,14 @@ export default class SaleItemList extends React.Component {
                                             </Modal>
                                         )
                                     })}
+                                </Grid.Row>
+                                <Grid.Row styleName={'loader'}>
+                                    <Grid.Column width={16} padded={"vertically"}>
+                                        {loading ?
+                                            <Loader active />
+                                            : null
+                                        }
+                                    </Grid.Column>
                                 </Grid.Row>
                             </Grid>
                         </Grid.Row>

@@ -9,6 +9,7 @@ import SaleItemForm from '../sale-item-form'
 import SaleItemDetail from '../sale-item-detail'
 import RequestItemDetail from '../request-item-detail'
 import RequestItemForm from '../request-item-form'
+import SearchBar from '../navbar-components'
 
 const creators = [
     {
@@ -32,7 +33,7 @@ export default class App extends React.Component {
             <div styleName="app-wrapper">
                 <AppHeader
                     appName='buy_and_sell'
-                    middle={false}
+                    middle={<SearchBar minCharacters={3} fluid={true} className={'bns-nav-search-bar'} />}
                     userDropdown
                 />
                 <div styleName='app-container'>

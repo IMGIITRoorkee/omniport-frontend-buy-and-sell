@@ -38,10 +38,10 @@ export default class CategoryMenu extends React.Component {
         this.props.setCategory(name)
         this.props.setSubCategory(slug)
         if (this.props.itemType == 'sale') {
-            this.props.getSaleItems(`${slug}`)
+            this.props.getSaleItems(`${slug}`, 1, true)
         }
         else if (this.props.itemType == 'request') {
-            this.props.getRequestItems(`${slug}`)
+            this.props.getRequestItems(`${slug}`, 1, true)
         }
     }
     componentDidMount() {
@@ -100,7 +100,7 @@ export default class CategoryMenu extends React.Component {
                         onClick={this.handleItemClick}
                         styleName='menu-item'
                     >
-                        <Icon styleName='ico' name='bicycle' />
+                        <Icon name='bicycle' />
                         <span styleName='menu-span'>Bicycles</span>
                     </Menu.Item>
                     <Menu.Item name='Miscellaneous'

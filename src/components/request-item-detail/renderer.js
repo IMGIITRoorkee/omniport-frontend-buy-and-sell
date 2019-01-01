@@ -36,7 +36,7 @@ export default class RequestItemDetail extends React.Component {
                                                 <Table.Cell styleName='data-col'>
                                                     Maximum price
                                                 </Table.Cell>
-                                                <Table.Cell textAlign={'right'} styleName='data-col'>
+                                                <Table.Cell styleName='data-col'>
                                                     <Icon name="rupee sign" size={'small'} />
                                                     {requestItemDetail.cost}
                                                 </Table.Cell>
@@ -45,7 +45,7 @@ export default class RequestItemDetail extends React.Component {
                                                 <Table.Cell styleName='data-col'>
                                                     Expires On
                                                 </Table.Cell>
-                                                <Table.Cell textAlign={'right'} styleName='data-col'>
+                                                <Table.Cell styleName='data-col'>
                                                     {formatDate(requestItemDetail.endDate)}
                                                 </Table.Cell>
                                             </Table.Row>
@@ -53,7 +53,7 @@ export default class RequestItemDetail extends React.Component {
                                                 <Table.Cell styleName='data-col'>
                                                     Requested by
                                                 </Table.Cell>
-                                                <Table.Cell textAlign={'right'} styleName='data-col'>
+                                                <Table.Cell styleName='data-col'>
                                                     <Popup
                                                         trigger={<span>{requestItemDetail.person.person.fullName}</span>}
                                                     >
@@ -87,7 +87,7 @@ export default class RequestItemDetail extends React.Component {
                                             {requestItemDetail.isPhoneVisible ?
                                                 <Table.Row>
                                                     <Table.Cell styleName='data-col'>Phone number</Table.Cell>
-                                                    <Table.Cell textAlign={'right'} styleName='data-col'>
+                                                    <Table.Cell styleName='data-col'>
                                                         {requestItemDetail.person.person.contactInformation.primaryPhoneNumber}
                                                     </Table.Cell>
                                                 </Table.Row>

@@ -3,7 +3,8 @@ import { render } from 'react-dom'
 import {
     Grid,
     Modal,
-    Table
+    Table,
+    Loader
 } from 'semantic-ui-react'
 import ItemDetail from '../request-item-detail/renderer'
 import { formatDate } from '../../constants'
@@ -14,12 +15,32 @@ export default class RequestItemList extends React.Component {
         super(props)
         this.state = {
             item: {},
+            page: 1,
+            loading: false
         }
     }
     componentDidMount() {
-        this.props.getRequestItems(this.props.activeSubCategory)
+        this.props.getRequestItems(this.props.activeSubCategory, 1, true)
         this.props.setItemType('request')
+        window.addEventListener("scroll", () => {
+            const { requestProductCount } = this.props
+            const { page } = this.state
+            if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight && requestProductCount > (page * 10)) {
+                this.setState({
+                    loading: true,
+                    page: this.state.page + 1
+                }, () => {
+                    this.props.getRequestItems(this.props.activeSubCategory, this.state.page)
+                    setTimeout(() => {
+                        this.setState({
+                            loading: false
+                        });
+                    }, 300);
+                })
+            }
+        })
     }
+
     componentWillUnmount() {
         this.props.setItemType('')
     }
@@ -31,6 +52,7 @@ export default class RequestItemList extends React.Component {
 
     render() {
         const { requestItems, breadcrumb } = this.props
+        const { loading } = this.state
         return (
             <React.Fragment>
                 <Grid.Column width={16} styleName='items-grid'>
@@ -71,6 +93,14 @@ export default class RequestItemList extends React.Component {
                                         })}
                                     </Table.Body>
                                 </Table>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row styleName={'loader'}>
+                            <Grid.Column width={16} padded={"vertically"}>
+                                {loading ?
+                                    <Loader active />
+                                    : null
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

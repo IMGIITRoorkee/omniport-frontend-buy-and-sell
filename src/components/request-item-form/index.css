@@ -1,3 +1,28 @@
-.sub-cat{
-    margin-left: 15px !important
+.grid-cont {
+    padding-top: 1em !important;
+}
+
+.sub-cat {
+    margin-left: 1em !important;
+    text-transform: capitalize !important;
+}
+
+.field-form {
+    margin-bottom: 1.5em !important;
+}
+
+.category-field {
+    border: 1px solid rgba(34, 36, 38, .15) !important;
+    box-shadow: 0 0 0 0 rgba(34, 36, 38, .35) inset !important;
+    border-radius: .28571429rem !important;
+    padding: .67857143em 1em !important;
+}
+
+.category-item {
+    font-weight: 700 !important;
+    text-transform: capitalize !important;
+}
+
+.heading-row {
+    padding-bottom: 0 !important;
 }

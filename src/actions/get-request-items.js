@@ -1,22 +1,32 @@
 import axios from 'axios';
 import { requestItemUrl } from '../constants/urls';
-import { GET_REQUEST_ITEMS } from '../constants/action-types';
+import { GET_REQUEST_ITEMS, UPDATE_REQUEST_ITEMS, REQUEST_PRODUCT_COUNT } from '../constants/action-types';
 
-export const getRequestItems = (param) => {
+export const getRequestItems = (param, page = 1, replace = false) => {
     return dispatch => {
         axios({
             method: 'get',
             url: requestItemUrl + param,
             params: {
+                page: page
             },
         }).then((response) => {
             let itemsNewList = response.data.results;
-            itemsNewList.sort((a, b) => {
-                return new Date(b.datetimeCreated) - new Date(a.datetimeCreated)
-            })
+            if (replace) {
+                dispatch({
+                    type: GET_REQUEST_ITEMS,
+                    payload: itemsNewList
+                })
+            }
+            else {
+                dispatch({
+                    type: UPDATE_REQUEST_ITEMS,
+                    payload: itemsNewList
+                })
+            }
             dispatch({
-                type: GET_REQUEST_ITEMS,
-                payload: itemsNewList
+                type: REQUEST_PRODUCT_COUNT,
+                payload: response.data.count
             })
         }).catch(error => {
             ;

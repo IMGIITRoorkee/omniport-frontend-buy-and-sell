@@ -36,13 +36,13 @@ export default class SaleItemForm extends React.Component {
             end_date: '',
             name: '',
             category: '',
-            categoryName:'',
+            categoryName: '',
             details: '',
             cost: '',
             warranty_detail: '',
             is_phone_visible: false,
             payment_modes: [],
-            pictures:['','','']
+            pictures: ['', '', '']
         };
     }
     handleChangePhone = (event, { name }) => {
@@ -57,12 +57,12 @@ export default class SaleItemForm extends React.Component {
         console.log(this.state)
     }
     handleSelectPicture = (e) => {
-        
+
         if (e.target.files && e.target.files.length > 0) {
             const reader = new FileReader();
             const newPictures = this.state.pictures.slice()
             let count = e.target.getAttribute('count')
-            reader.addEventListener("load", () =>{
+            reader.addEventListener("load", () => {
                 newPictures[count] = reader.result
                 this.setState({ pictures: newPictures })
             });
@@ -135,129 +135,131 @@ export default class SaleItemForm extends React.Component {
             )
         }) : null
         return (
-            <Grid padded stackable>
-                <Grid.Row>
-                    <Grid.Column>
-                        <Header as={'h3'}>Sell an Item</Header>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row >
-                    <Grid.Column width={8}>
-                        <Form encType='multiple/form-data'>
-                            <Form.Field>
-                                <label>Item name</label>
-                                <Form.Input
-                                    autoComplete='off'
-                                    type='input'
-                                    name='name'
-                                    onChange={this.handleChange}
-                                    value={this.state.name}
-                                    required
-                                    placeholder='item name'
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Category</label>
-                                <Dropdown
-                                    scrolling
-                                    fluid
-                                    text={this.state.categoryName}
-                                    placeholder={this.state.category ? null : 'Select a category'}
-                                >
-                                    <Dropdown.Menu>
-                                        {dropdown}
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Accepted modes of payment</label>
-                                <Dropdown
-                                    placeholder='Payment modes'
-                                    fluid
-                                    multiple
-                                    selection
-                                    onChange={this.handlePaymentChange}
-                                    options={payment_modes} />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Expires On</label>
-                                <DateInput
-                                    closable
-                                    popupPosition="right center"
-                                    name="end_date"
-                                    minDate={new Date()}
-                                    placeholder="expires on"
-                                    value={this.state.end_date}
-                                    iconPosition="left"
-                                    required
-                                    dateFormat="YYYY-MM-DD"
-                                    onChange={this.handleChange} />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Description</label>
-                                <Form.Input
-                                    autoComplete='off'
-                                    type='input'
-                                    name='details'
-                                    onChange={this.handleChange}
-                                    value={this.state.details}
-                                    required
-                                    placeholder='description of the product'
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Price</label>
-                                <Form.Input
-                                    autoComplete='off'
-                                    type='input'
-                                    name='cost'
-                                    onChange={this.handleChange}
-                                    value={this.state.cost}
-                                    required
-                                    placeholder='price'
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>State of warranty</label>
-                                <Form.Input
-                                    autoComplete='off'
-                                    type='input'
-                                    name='warranty_detail'
-                                    value={this.state.warranty_detail}
-                                    onChange={this.handleChange}
-                                    placeholder='State of warranty'
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <Radio toggle
-                                    label='Add phone number'
-                                    name='is_phone_visible'
-                                    onChange={this.handleChangePhone} />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Upload Images</label>
-                                <UploadButton onChange={this.handleSelectPicture} count={'0'} styles={style} />
-                                <UploadButton onChange={this.handleSelectPicture} count={'1'} styles={style} />
-                                <UploadButton onChange={this.handleSelectPicture}count={'2'} styles={style} />
-                            </Form.Field>
+            <Grid.Column width={16}>
+                <Grid padded stackable>
+                    <Grid.Row centered>
+                        <Grid.Column width={8}>
+                            <Header as={'h3'}>Sell an Item</Header>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row  centered>
+                        <Grid.Column width={8}>
+                            <Form encType='multiple/form-data'>
+                                <Form.Field>
+                                    <label>Item name</label>
+                                    <Form.Input
+                                        autoComplete='off'
+                                        type='input'
+                                        name='name'
+                                        onChange={this.handleChange}
+                                        value={this.state.name}
+                                        required
+                                        placeholder='item name'
+                                    />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>Category</label>
+                                    <Dropdown
+                                        scrolling
+                                        fluid
+                                        text={this.state.categoryName}
+                                        placeholder={this.state.category ? null : 'Select a category'}
+                                    >
+                                        <Dropdown.Menu>
+                                            {dropdown}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>Accepted modes of payment</label>
+                                    <Dropdown
+                                        placeholder='Payment modes'
+                                        fluid
+                                        multiple
+                                        selection
+                                        onChange={this.handlePaymentChange}
+                                        options={payment_modes} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>Expires On</label>
+                                    <DateInput
+                                        closable
+                                        popupPosition="right center"
+                                        name="end_date"
+                                        minDate={new Date()}
+                                        placeholder="expires on"
+                                        value={this.state.end_date}
+                                        iconPosition="left"
+                                        required
+                                        dateFormat="YYYY-MM-DD"
+                                        onChange={this.handleChange} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>Description</label>
+                                    <Form.Input
+                                        autoComplete='off'
+                                        type='input'
+                                        name='details'
+                                        onChange={this.handleChange}
+                                        value={this.state.details}
+                                        required
+                                        placeholder='description of the product'
+                                    />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>Price</label>
+                                    <Form.Input
+                                        autoComplete='off'
+                                        type='input'
+                                        name='cost'
+                                        onChange={this.handleChange}
+                                        value={this.state.cost}
+                                        required
+                                        placeholder='price'
+                                    />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>State of warranty</label>
+                                    <Form.Input
+                                        autoComplete='off'
+                                        type='input'
+                                        name='warranty_detail'
+                                        value={this.state.warranty_detail}
+                                        onChange={this.handleChange}
+                                        placeholder='for eg. 3 months left'
+                                    />
+                                </Form.Field>
+                                <Form.Field>
+                                    <Radio toggle
+                                        label='Add phone number'
+                                        name='is_phone_visible'
+                                        onChange={this.handleChangePhone} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>Upload Images</label>
+                                    <UploadButton onChange={this.handleSelectPicture} count={'0'} styles={style} />
+                                    <UploadButton onChange={this.handleSelectPicture} count={'1'} styles={style} />
+                                    <UploadButton onChange={this.handleSelectPicture} count={'2'} styles={style} />
+                                </Form.Field>
 
-                            <Form.Field>
-                                <Button
-                                    type='submit'
-                                    onClick={this.handleSubmit}
-                                    position='right'
-                                    color={"blue"}
-                                    icon
-                                    labelPosition='left'
-                                >
-                                    <Icon name='send' />
-                                    Submit
+                                <Form.Field>
+                                    <Button
+                                        type='submit'
+                                        onClick={this.handleSubmit}
+                                        position='right'
+                                        color={"blue"}
+                                        icon
+                                        labelPosition='left'
+                                    >
+                                        <Icon name='send' />
+                                        Submit
                             </Button>
-                            </Form.Field>
-                        </Form>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                                </Form.Field>
+                            </Form>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Grid.Column>
         )
     }
 }

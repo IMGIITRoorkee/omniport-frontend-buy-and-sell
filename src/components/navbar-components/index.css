@@ -1,0 +1,8 @@
+:global .bns-nav-search-bar>.input {
+    width: 100% !important;
+    border-radius: 0 !important;
+}
+
+:global .bns-nav-search-bar>.input>.prompt {
+    border-radius: 4px;
+}

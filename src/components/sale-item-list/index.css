@@ -16,3 +16,7 @@
 .dimmer-grid {
     background: #ffffff !important;
 }
+
+.loader {
+    padding-bottom: 2em !important;
+}

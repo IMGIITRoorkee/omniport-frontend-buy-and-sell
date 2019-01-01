@@ -35,32 +35,32 @@ export default class Items extends React.Component {
         }
         if (activeCategory == '') {
             items.push(
-                <>
+                <React.Fragment key={'root'}>
                     <Breadcrumb.Divider icon='right angle' />
                     <Breadcrumb.Section active>All</Breadcrumb.Section>
-                </>
+                </React.Fragment>
             )
         }
         else {
             categories.map(category => {
                 if (category.slug == activeSubCategory) {
                     items.push(
-                        <>
+                        <React.Fragment key={category.slug}>
                             <Breadcrumb.Divider icon='right angle' />
                             <Breadcrumb.Section active>{category.name}</Breadcrumb.Section>
-                        </>
+                        </React.Fragment>
                     )
                 }
                 else {
                     category.subCategories.map(subCategory => {
                         if (subCategory.slug == activeSubCategory) {
                             items.push(
-                                <>
+                                <React.Fragment key={subCategory.slug}>
                                     <Breadcrumb.Divider icon='right angle' />
                                     <Breadcrumb.Section onClick={this.handleItemClick} slug={category.slug} name={category.name} link>{category.name}</Breadcrumb.Section>
                                     <Breadcrumb.Divider icon='right angle' />
                                     <Breadcrumb.Section active>{subCategory.name}</Breadcrumb.Section>
-                                </>
+                                </React.Fragment>
                             )
                         }
                     })
@@ -68,7 +68,7 @@ export default class Items extends React.Component {
             })
         }
         return (
-            <Breadcrumb>
+            <Breadcrumb styleName='breadcrumb-container'>
                 <Breadcrumb.Section name='' slug='' onClick={this.handleItemClick} link>{item}</Breadcrumb.Section>
                 {items}
             </Breadcrumb>

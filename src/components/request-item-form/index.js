@@ -12,7 +12,7 @@ const mapDispatchToProps = dispatch => {
     return {
         addRequestItem: (param) => {
             dispatch(addRequestItem(param));
-        }
+        },
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

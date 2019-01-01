@@ -5,13 +5,14 @@ import Component from './renderer';
 function mapStateToProps(state) {
     return {
         saleItems: state.saleItems,
-        subCategory: state.activeSubCategory
+        subCategory: state.activeSubCategory,
+        saleProductCount: state.saleProductCount
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        getSaleItems: (param) => {
-            dispatch(getSaleItems(param));
+        getSaleItems: (param, page, replace) => {
+            dispatch(getSaleItems(param, page, replace));
         },
         sortItems: (items) => {
             dispatch(sortSaleItems(items))

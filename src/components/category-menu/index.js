@@ -12,11 +12,11 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        getSaleItems: (param) => {
-            dispatch(getSaleItems(param));
+        getSaleItems: (param, page, replace) => {
+            dispatch(getSaleItems(param, page, replace));
         },
-        getRequestItems: (param) => {
-            dispatch(getRequestItems(param));
+        getRequestItems: (param, page, replace) => {
+            dispatch(getRequestItems(param, page, replace));
         },
         setCategory: (param) => {
             dispatch(setCategory(param));
