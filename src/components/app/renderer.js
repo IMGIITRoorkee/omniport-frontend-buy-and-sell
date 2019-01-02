@@ -10,7 +10,7 @@ import SaleItemDetail from '../sale-item-detail'
 import RequestItemDetail from '../request-item-detail'
 import RequestItemForm from '../request-item-form'
 import SearchBar from '../navbar-components'
-
+import UserAccount from '../user-account'
 const creators = [
     {
         name: 'Vivek Chand',
@@ -31,17 +31,20 @@ export default class App extends React.Component {
         const { match } = this.props
         return (
             <div styleName="app-wrapper">
-                <AppHeader
-                    appName='buy_and_sell'
-                    middle={<SearchBar minCharacters={3} fluid={true} className={'bns-nav-search-bar'} />}
-                    userDropdown
-                />
+                <Switch>
+                    <Route path={`${match.path}`} render={(props) => <AppHeader
+                        appName='buy_and_sell'
+                        middle={<SearchBar {...props} />}
+                        userDropdown
+                    />} />
+                </Switch>
                 <div styleName='app-container'>
                     <Grid container >
                         <Grid.Row>
                             <Switch>
                                 <Route path={`${match.path}sell_item`} component={SaleItemForm} />
                                 <Route path={`${match.path}request_item`} component={RequestItemForm} />
+                                <Route path={`${match.path}my_account`} component={UserAccount} />
                                 <Route path={`${match.path}buy/:id`} component={SaleItemDetail} />
                                 <Route path={`${match.path}request/:id`} component={RequestItemDetail} />
                                 <Route path={`${match.path}`} component={Products} />

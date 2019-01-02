@@ -104,18 +104,20 @@ export default class SaleItemList extends React.Component {
                                 <Grid.Row stretched>
                                     {this.props.saleItems.map((item, index) => {
                                         return (
-                                            <Modal key={index} trigger={
-                                                <Grid.Column key={index}  >
+                                            <Grid.Column key={index}  >
+                                                <Modal key={index} trigger={
+
                                                     <ItemCard item={item} onlick={this.handleOpen} />
-                                                </Grid.Column>
-                                            }
-                                                closeIcon>
-                                                <Modal.Content>
-                                                    <Grid container styleName="dimmer-grid" >
-                                                        <ItemDetail saleItemDetail={this.state.item} />
-                                                    </Grid>
-                                                </Modal.Content>
-                                            </Modal>
+
+                                                }
+                                                    closeIcon>
+                                                    <Modal.Content>
+                                                        <Grid container styleName="dimmer-grid" >
+                                                            <ItemDetail saleItemDetail={this.state.item} />
+                                                        </Grid>
+                                                    </Modal.Content>
+                                                </Modal>
+                                            </Grid.Column>
                                         )
                                     })}
                                 </Grid.Row>

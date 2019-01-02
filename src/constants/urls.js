@@ -8,3 +8,4 @@ export const loginUrl = '/session_auth/login/'
 export const defaultImageUrl = 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
 export const requestItemUrl = "/api/buyandsell/request/"
 export const requestProductUrl = "/api/buyandsell/request_product/"
+export const searchUrl = "/api/buyandsell/search/"

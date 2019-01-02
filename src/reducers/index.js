@@ -11,6 +11,8 @@ import { setCategory, setSubCategory } from './set-category';
 import requestForm from './request-form'
 import saleForm from './sale-form'
 import { saleProductCount, requestProductCount } from './count'
+import searchProducts from './search-products'
+import userProducts from './user-products'
 
 const rootReducer = combineReducers({
     saleItems: SaleItems,
@@ -26,6 +28,8 @@ const rootReducer = combineReducers({
     requestForm: requestForm,
     saleForm: saleForm,
     requestProductCount: requestProductCount,
-    saleProductCount: saleProductCount
+    saleProductCount: saleProductCount,
+    searchProducts: searchProducts,
+    userProducts: userProducts,
 })
 export default rootReducer;

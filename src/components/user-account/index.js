@@ -1,17 +1,19 @@
 import { connect } from 'react-redux'
-import { deleteItem } from '../../actions';
-
+import { getUserRequestItems, getUserSaleItems } from '../../actions';
 import Component from './renderer';
 
 function mapStateToProps(state) {
     return {
-        user: state.user
+        userProducts: state.userProducts
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        deleteItem: (id, type) => {
-            dispatch(deleteItem(id, type))
+        getRequestItems: () => {
+            dispatch(getUserRequestItems());
+        },
+        getSaleItems: () => {
+            dispatch(getUserSaleItems());
         },
     }
 };

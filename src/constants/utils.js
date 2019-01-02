@@ -1,5 +1,5 @@
-export function getExcerpt(str) {
-    let response = str.split('').slice(0, 48).join('');
+export function getExcerpt(str, letters) {
+    let response = str.split('').slice(0, letters).join('');
     if (str.length > response.length)
         response += '...'
     return response

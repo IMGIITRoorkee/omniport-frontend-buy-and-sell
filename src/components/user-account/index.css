@@ -1,0 +1,21 @@
+.item-img {
+    height: 100% !important;
+    width: 100% !important;
+    background-size: cover !important;
+    background-position: 50% 50% !important;
+    background-repeat: no-repeat !important;
+}
+
+.dimmer-grid {
+    background: #ffffff !important;
+}
+
+.user-grid {
+    background: #F5F5F5 !important;
+    padding-top: 2em !important;
+}
+
+.mobile-slider {
+    padding-top: .3em !important;
+    margin-left: .3em !important;
+}

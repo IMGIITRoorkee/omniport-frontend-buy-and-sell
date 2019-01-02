@@ -9,6 +9,8 @@ import CategoryMenu from '../category-menu'
 import ItemMenu from '../item-menu'
 import SaleItemList from '../sale-item-list'
 import RequestItemList from '../request-item-list'
+import { getThemeObject } from 'formula_one'
+
 export default class Items extends React.Component {
     constructor(props) {
         super(props)
@@ -57,7 +59,7 @@ export default class Items extends React.Component {
                             items.push(
                                 <React.Fragment key={subCategory.slug}>
                                     <Breadcrumb.Divider icon='right angle' />
-                                    <Breadcrumb.Section onClick={this.handleItemClick} slug={category.slug} name={category.name} link>{category.name}</Breadcrumb.Section>
+                                    <Breadcrumb.Section style={{color : getThemeObject().hexCode}} onClick={this.handleItemClick} slug={category.slug} name={category.name} link>{category.name}</Breadcrumb.Section>
                                     <Breadcrumb.Divider icon='right angle' />
                                     <Breadcrumb.Section active>{subCategory.name}</Breadcrumb.Section>
                                 </React.Fragment>
@@ -69,7 +71,7 @@ export default class Items extends React.Component {
         }
         return (
             <Breadcrumb styleName='breadcrumb-container'>
-                <Breadcrumb.Section name='' slug='' onClick={this.handleItemClick} link>{item}</Breadcrumb.Section>
+                <Breadcrumb.Section style={{color : getThemeObject().hexCode}} name='' slug='' onClick={this.handleItemClick} link>{item}</Breadcrumb.Section>
                 {items}
             </Breadcrumb>
         )

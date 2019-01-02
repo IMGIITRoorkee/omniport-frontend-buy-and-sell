@@ -13,9 +13,17 @@ export default class SaleItemDetail extends React.Component {
         }
     }
     componentDidMount() {
-        if (!this.props.saleItemDetail.name) {
+        if (!this.props.saleItemDetail.name && this.props.match !== undefined) {
             const id = this.props.match.params.id
             this.props.getSaleItemDetail(`${id}/`)
+        }
+    }
+    componentDidUpdate(prevProps) {
+        if (this.props.match !== undefined) {
+            if (this.props.match.params.id !== prevProps.match.params.id) {
+                const id = this.props.match.params.id
+                this.props.getSaleItemDetail(`${id}/`)
+            }
         }
     }
     handleIndicator = (index) => {
@@ -129,7 +137,7 @@ export default class SaleItemDetail extends React.Component {
                                                     </Popup>
                                                 </Table.Cell>
                                             </Table.Row>
-                                            {saleItemDetail.isPhoneVisible ?
+                                            {saleItemDetail.isPhoneVisible && saleItemDetail.person.person.contactInformation.primaryPhoneNumber ?
                                                 <Table.Row>
                                                     <Table.Cell styleName='data-col'>Phone number</Table.Cell>
                                                     <Table.Cell styleName='data-col'>
@@ -146,14 +154,17 @@ export default class SaleItemDetail extends React.Component {
                                                     {saleItemDetail.paymentModes.join(', ')}
                                                 </Table.Cell>
                                             </Table.Row>
-                                            <Table.Row>
-                                                <Table.Cell styleName='data-col'>
-                                                    Warranty (no. of months left)
+                                            {saleItemDetail.warrantyDetail ?
+                                                <Table.Row>
+                                                    <Table.Cell styleName='data-col'>
+                                                        Warranty (no. of months left)
                                                 </Table.Cell>
-                                                <Table.Cell styleName='data-col'>
-                                                    {saleItemDetail.warrantyDetail}
-                                                </Table.Cell>
-                                            </Table.Row>
+                                                    <Table.Cell styleName='data-col'>
+                                                        {saleItemDetail.warrantyDetail}
+                                                    </Table.Cell>
+                                                </Table.Row>
+                                                : null
+                                            }
                                         </Table.Body>
                                     </Table>
                                 </Grid.Row>

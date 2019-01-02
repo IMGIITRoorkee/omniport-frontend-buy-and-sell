@@ -14,13 +14,13 @@ export const getSaleItems = (param, page = 1, replace = false) => {
             let itemsNewList = response.data.results;
             if (replace) {
                 dispatch({
-                    type: UPDATE_SALE_ITEMS,
+                    type: GET_SALE_ITEMS,
                     payload: itemsNewList
                 })
             }
             else {
                 dispatch({
-                    type: GET_SALE_ITEMS,
+                    type: UPDATE_SALE_ITEMS,
                     payload: itemsNewList
                 })
             }

@@ -15,6 +15,14 @@ export default class RequestItemDetail extends React.Component {
             this.props.getRequestItemDetail(`${id}/`)
         }
     }
+    componentDidUpdate(prevProps) {
+        if (this.props.match) {
+            if (this.props.match.params.id !== prevProps.match.params.id) {
+                const id = this.props.match.params.id
+                this.props.getRequestItemDetail(`${id}/`)
+            }
+        }
+    }
     render() {
         const { requestItemDetail, modal } = this.props
         return (requestItemDetail.name ?
@@ -84,7 +92,7 @@ export default class RequestItemDetail extends React.Component {
                                                     </Popup>
                                                 </Table.Cell>
                                             </Table.Row>
-                                            {requestItemDetail.isPhoneVisible ?
+                                            {requestItemDetail.isPhoneVisible && requestItemDetail.person.person.contactInformation.primaryPhoneNumber ?
                                                 <Table.Row>
                                                     <Table.Cell styleName='data-col'>Phone number</Table.Cell>
                                                     <Table.Cell styleName='data-col'>

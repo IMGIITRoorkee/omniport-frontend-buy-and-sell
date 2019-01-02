@@ -1,4 +1,4 @@
-import { GET_SALE_ITEMS, UPDATE_SALE_ITEMS, SORT_SALE_ITEMS } from '../constants/action-types';
+import { GET_SALE_ITEMS, DELETE_SALE_ITEM, UPDATE_SALE_ITEMS, SORT_SALE_ITEMS } from '../constants/action-types';
 const SaleItems = (state = [], action) => {
   switch (action.type) {
     case GET_SALE_ITEMS:
@@ -7,6 +7,8 @@ const SaleItems = (state = [], action) => {
       return [...state, ...action.payload];
     case SORT_SALE_ITEMS:
       return action.payload;
+    case DELETE_SALE_ITEM:
+      return state.filter(x => { return x.id !== action.payload })
     default:
       return state
   }
