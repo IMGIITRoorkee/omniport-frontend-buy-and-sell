@@ -2,7 +2,7 @@ import axios from 'axios'
 import { getCookie } from 'formula_one/src/utils'
 import React from 'react'
 import { render } from 'react-dom'
-import { Grid, Icon, Radio, Button, Dropdown, Form, Header } from 'semantic-ui-react'
+import { Grid, Icon, Radio, Button, Dropdown, Form, Header, Image } from 'semantic-ui-react'
 import { DateInput } from 'semantic-ui-calendar-react';
 import './index.css'
 
@@ -18,7 +18,7 @@ class UploadButton extends React.Component {
                 name={`picture${this.props.count}`}
                 id={`uploadPhoto${this.props.count}`}
             />
-            <label styleName={this.props.styles.label} for={`uploadPhoto${this.props.count}`}><Icon styleName={this.props.styles.icon} name='add'></Icon></label>
+            <label styleName={this.props.styles.label} htmlFor={`uploadPhoto${this.props.count}`}><Icon styleName={this.props.styles.icon} name='add'></Icon></label>
         </>
         )
     }
@@ -33,18 +33,23 @@ export default class SaleItemForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            end_date: '',
+            endDate: '',
             name: '',
-            category: '',
-            categoryName: '',
+            category: {
+                name: '',
+                slug: ''
+            },
             details: '',
             cost: '',
-            warranty_detail: '',
-            is_phone_visible: false,
-            payment_modes: [],
-            pictures: ['', '', '']
+            warrantyDetail: '',
+            isPhoneVisible: false,
+            paymentModes: [],
+            pictures: ['', '', ''],
+            categoryError: false,
         };
     }
+    toggle = () => this.setState({ isPhoneVisible: !this.state.isPhoneVisible })
+
     handleChangePhone = (event, { name }) => {
         if (this.state.hasOwnProperty(name)) {
             this.setState({ [name]: !this.state[name] });
@@ -54,86 +59,93 @@ export default class SaleItemForm extends React.Component {
         if (this.state.hasOwnProperty(name)) {
             this.setState({ [name]: value });
         }
-        console.log(this.state)
     }
     handleSelectPicture = (e) => {
 
         if (e.target.files && e.target.files.length > 0) {
-            const reader = new FileReader();
             const newPictures = this.state.pictures.slice()
             let count = e.target.getAttribute('count')
-            reader.addEventListener("load", () => {
-                newPictures[count] = reader.result
-                this.setState({ pictures: newPictures })
-            });
-            reader.readAsDataURL(e.target.files[0]);
+            newPictures[count] = URL.createObjectURL(e.target.files[0])
+            this.setState({ pictures: newPictures })
         }
     };
     handlePaymentChange = (event, { value }) => {
-        this.setState({ payment_modes: value });
+        this.setState({ paymentModes: value });
     }
     handleSubmit = () => {
+        const { name, pictures, category, paymentModes, endDate, details, cost, warrantyDetail, isPhoneVisible } = this.state
         let formData = new FormData()
-        formData.append('end_date', this.state.end_date);
-        formData.append('name', this.state.name);
-        formData.append('category', this.state.category);
-        formData.append('details', this.state.details);
-        formData.append('cost', this.state.cost);
-        formData.append('warranty_detail', this.state.warranty_detail);
-        formData.append('is_phone_visible', this.state.is_phone_visible);
-        this.state.payment_modes.map((mode) => {
+        formData.append('end_date', endDate);
+        formData.append('name', name);
+        formData.append('category', category.slug);
+        formData.append('details', details);
+        formData.append('cost', cost);
+        formData.append('warranty_detail', warrantyDetail);
+        formData.append('is_phone_visible', isPhoneVisible);
+        paymentModes.map((mode) => {
             formData.append('payment_modes[]', mode)
         })
-
+        this.props.addSaleItem(formData, pictures)
         // this.state.picture ? formData.append('picture', this.state.picture) : void 0
         // console.log(this.state.picture)
         let headers = {
             'Content-Type': 'multipart/form-data',
             'X-CSRFToken': getCookie('csrftoken')
         }
-        axios({
-            method: 'post',
-            url: '/api/buyandsell/sale_product/',
-            headers: headers,
-            data: formData
-        }).then((response) => {
-            console.log(response)
 
-        }).catch((error) => {
-            console.log(error.response.data);
-        });
 
     }
-    handleCategoryChange = (e, { value, name }) => {
+    handleCategoryChange = (e, { value, name, slug }) => {
+        let result = false;
+        const { costError, nameError } = this.state
+        if (costError || nameError) {
+            result = true
+        }
         this.setState({
-            category: value,
-            categoryName: name,
+            category: {
+                slug: slug,
+                name: name
+            },
+            categoryError: false,
+            formError: result
         })
     }
     componentDidMount() {
         this.props.getPayment()
     }
+    dropdown = () => {
+        const { categories } = this.props
+        const item = []
+        categories.map((category, index) => {
+            item.push(
+                <React.Fragment key={index}>
+                    <Dropdown.Item styleName='category-item' onClick={this.handleCategoryChange} value={category.name} slug={category.slug} name={category.name} key={index}>{category.name}</Dropdown.Item>
+                    {category.subCategories.map((subCategory, i) => {
+                        return (
+                            <Dropdown.Item styleName='sub-cat' value={subCategory.name} name={subCategory.name} slug={subCategory.slug} onClick={this.handleCategoryChange} key={i}>{subCategory.name}</Dropdown.Item>
+                        )
+                    })}
+                </React.Fragment>
+            )
+        })
+        return (item)
+    }
+    hadleImgClose = (e, key) => {
+        let newPictures = this.state.pictures;
+        newPictures[key] = ''
+        this.setState({
+            pictures: newPictures
+        })
+    }
     render() {
-        const { categories } = this.props;
-        const payment_modes = this.props.paymentModes.map((mode, index) => {
+        const { categoryError, pictures, cost, endDate, category, warrantyDetail, details, name } = this.state
+        const paymentModes = this.props.paymentModes.map((mode, index) => {
             return {
                 key: mode.name,
                 value: mode.name,
                 text: mode.name
             }
         })
-        let dropdown = categories ? categories.map((category, index) => {
-            return (
-                <React.Fragment key={index}>
-                    <Dropdown.Item onClick={this.handleCategoryChange} value={category.slug} name={category.name} key={index}>{category.name}</Dropdown.Item>
-                    {category.subCategories.map((subCategory, i) => {
-                        return (
-                            <Dropdown.Item styleName='sub-cat' value={subCategory.slug} name={subCategory.name} onClick={this.handleCategoryChange} key={i}>{subCategory.name}</Dropdown.Item>
-                        )
-                    })}
-                </React.Fragment>
-            )
-        }) : null
         return (
             <Grid.Column width={16}>
                 <Grid padded stackable>
@@ -142,33 +154,41 @@ export default class SaleItemForm extends React.Component {
                             <Header as={'h3'}>Sell an Item</Header>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row  centered>
+                    <Grid.Row centered>
                         <Grid.Column width={8}>
                             <Form encType='multiple/form-data'>
                                 <Form.Field>
                                     <label>Item name</label>
                                     <Form.Input
                                         autoComplete='off'
-                                        type='input'
                                         name='name'
                                         onChange={this.handleChange}
-                                        value={this.state.name}
+                                        value={name}
                                         required
                                         placeholder='item name'
                                     />
                                 </Form.Field>
-                                <Form.Field>
+                                <Form.Field styleName='field-form' required>
                                     <label>Category</label>
                                     <Dropdown
                                         scrolling
                                         fluid
-                                        text={this.state.categoryName}
-                                        placeholder={this.state.category ? null : 'Select a category'}
+                                        value={category.name}
+                                        text={category.name}
+                                        placeholder={'Select a category'}
+                                        styleName='category-field'
                                     >
                                         <Dropdown.Menu>
-                                            {dropdown}
+                                            {this.dropdown()}
                                         </Dropdown.Menu>
                                     </Dropdown>
+                                    {categoryError ?
+                                        <Message
+                                            error
+                                            content={`Category field can't be empty.`}
+                                        />
+                                        : null
+                                    }
                                 </Form.Field>
                                 <Form.Field>
                                     <label>Accepted modes of payment</label>
@@ -178,17 +198,17 @@ export default class SaleItemForm extends React.Component {
                                         multiple
                                         selection
                                         onChange={this.handlePaymentChange}
-                                        options={payment_modes} />
+                                        options={paymentModes} />
                                 </Form.Field>
-                                <Form.Field>
+                                <Form.Field styleName='field-form' required>
                                     <label>Expires On</label>
                                     <DateInput
                                         closable
                                         popupPosition="right center"
-                                        name="end_date"
+                                        name="endDate"
                                         minDate={new Date()}
                                         placeholder="expires on"
-                                        value={this.state.end_date}
+                                        value={endDate}
                                         iconPosition="left"
                                         required
                                         dateFormat="YYYY-MM-DD"
@@ -198,33 +218,30 @@ export default class SaleItemForm extends React.Component {
                                     <label>Description</label>
                                     <Form.Input
                                         autoComplete='off'
-                                        type='input'
                                         name='details'
                                         onChange={this.handleChange}
-                                        value={this.state.details}
+                                        value={details}
                                         required
-                                        placeholder='description of the product'
+                                        placeholder='Description of the product'
                                     />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>Price</label>
                                     <Form.Input
                                         autoComplete='off'
-                                        type='input'
                                         name='cost'
                                         onChange={this.handleChange}
-                                        value={this.state.cost}
+                                        value={cost}
                                         required
-                                        placeholder='price'
+                                        placeholder='Price'
                                     />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>State of warranty</label>
                                     <Form.Input
                                         autoComplete='off'
-                                        type='input'
-                                        name='warranty_detail'
-                                        value={this.state.warranty_detail}
+                                        name='warrantyDetail'
+                                        value={warrantyDetail}
                                         onChange={this.handleChange}
                                         placeholder='for eg. 3 months left'
                                     />
@@ -232,14 +249,45 @@ export default class SaleItemForm extends React.Component {
                                 <Form.Field>
                                     <Radio toggle
                                         label='Add phone number'
-                                        name='is_phone_visible'
-                                        onChange={this.handleChangePhone} />
+                                        name='isPhoneVisible'
+                                        onChange={this.toggle} />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>Upload Images</label>
-                                    <UploadButton onChange={this.handleSelectPicture} count={'0'} styles={style} />
-                                    <UploadButton onChange={this.handleSelectPicture} count={'1'} styles={style} />
-                                    <UploadButton onChange={this.handleSelectPicture} count={'2'} styles={style} />
+                                    <div styleName='img-add-div'>
+                                        {!pictures[0] ?
+                                            <UploadButton onChange={this.handleSelectPicture} count={'0'} styles={style} />
+                                            :
+                                            <div styleName='img-div'>
+                                                <Image styleName='upload-img' src={pictures[0]} rounded />
+                                                <Icon onClick={(e) => this.hadleImgClose(e, 0)} key={0} circular inverted link name='close' styleName='close-btn' />
+                                            </div>
+                                        }
+                                        {pictures[0] && !pictures[1] ?
+                                            <UploadButton onChange={this.handleSelectPicture} count={'1'} styles={style} />
+                                            : <>
+                                                {pictures[1] ?
+                                                    <div styleName='img-div'>
+                                                        <Image styleName='upload-img' src={pictures[1]} rounded />
+                                                        <Icon onClick={(e) => this.hadleImgClose(e, 1)} key={1} circular inverted link name='close' styleName='close-btn' />
+                                                    </div>
+                                                    : null
+                                                }
+                                            </>
+                                        }
+                                        {pictures[0] && pictures[1] && !pictures[2] ?
+                                            <UploadButton onChange={this.handleSelectPicture} count={'2'} styles={style} />
+                                            : <>
+                                                {pictures[2] ?
+                                                    <div styleName='img-div'>
+                                                        <Image styleName='upload-img' src={pictures[2]} rounded />
+                                                        <Icon onClick={(e) => this.hadleImgClose(e, 2)} key={2} circular inverted link name='close' styleName='close-btn' />
+                                                    </div>
+                                                    : null
+                                                }
+                                            </>
+                                        }
+                                    </div>
                                 </Form.Field>
 
                                 <Form.Field>

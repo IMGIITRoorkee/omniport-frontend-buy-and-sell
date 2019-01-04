@@ -20,3 +20,8 @@
 .loader {
     padding-bottom: 2em !important;
 }
+
+.card-div {
+    height: 100% !important;
+    margin-bottom: 1.3em !important;
+}

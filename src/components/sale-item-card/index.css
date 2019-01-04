@@ -17,20 +17,6 @@
     align-items: center;
 }
 
-.edit-icon {
-    font-weight: 500 !important;
-}
-
-.card-icon {
-    cursor: pointer !important;
-}
-
-.archive {
-    color: #ffffff !important;
-}
-
-.yesNo {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+.card-div {
+    height: 100% !important;
 }

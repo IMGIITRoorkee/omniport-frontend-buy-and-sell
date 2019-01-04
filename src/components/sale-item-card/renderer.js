@@ -4,80 +4,12 @@ import {
     Image,
     Card,
     Icon,
-    Popup,
-    Segment,
-    Divider,
-    Modal,
-    Header,
-    Button,
-    Dimmer
 } from 'semantic-ui-react'
 import { formatDate, getExcerpt } from '../../constants/'
+import CustomPopup from '../custom-popup'
 import { getTheme } from 'formula_one'
 import './index.css'
 
-export class CustomPopup extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            active: false,
-            popup: false
-        }
-    }
-    edit = (e, ) => {
-        e.stopPropagation();
-    }
-    delete = (e, id) => {
-        e.stopPropagation();
-        this.props.deleteItem(id, 'sale')
-        this.setState({
-            active: false,
-        })
-    }
-    handleDimmer = (value) => {
-        this.setState({
-            active: value,
-            popup: false
-        })
-    }
-    handlePopup = (value) => {
-        this.setState({
-            popup: value
-        })
-    }
-    preventPropogation = (e, ) => {
-        e.stopPropagation();
-    }
-
-    render() {
-        const { item } = this.props
-        const { active, popup } = this.state
-        return (
-            <>
-                <Popup onOpen={() => this.handlePopup(true)} onClose={() => this.handlePopup(false)} open={popup} on='hover' onClick={this.preventPropogation} position={'right center'} trigger={<Icon floated='right' styleName='edit-icon' name='ellipsis vertical'></Icon>} hoverable>
-                    <Icon styleName='card-icon' id={item.id} onClick={this.edit} name='edit'></Icon>
-                    <Icon styleName='card-icon' onClick={() => this.handleDimmer(true)} name='delete'></Icon>
-                </Popup>
-                <Dimmer page active={active} onClickOutside={() => this.handleDimmer(false)}>
-                    <Header styleName='archive' icon='archive' content='Archive this item' />
-                    <p>
-                        Do you really want to archive {item.name} ?
-            </p>
-                    <div styleName='yesNo'>
-                        <Button onClick={() => this.handleDimmer(false)} basic color='red' inverted>
-                            <Icon name='remove' />
-                            No
-                </Button>
-                        <Button onClick={(e) => this.delete(e, item.id)} color='green' inverted>
-                            <Icon name='checkmark' />
-                            Yes
-                </Button>
-                    </div>
-                </Dimmer>
-            </>
-        )
-    }
-}
 export default class SaleItemCard extends React.Component {
     isOwner = (itemUser) => {
         const { user } = this.props
@@ -88,9 +20,9 @@ export default class SaleItemCard extends React.Component {
     }
 
     render() {
-        const { item } = this.props
+        const { item, deleteItem } = this.props
         return (
-            <Card color={getTheme()} onClick={() => this.props.onlick(item)}>
+            <Card styleName='card-div' color={getTheme()} onClick={()=>{}}>
                 <Image
                     as={() => {
                         return (
@@ -112,7 +44,7 @@ export default class SaleItemCard extends React.Component {
                             {this.isOwner(item.person) ?
                                 <>
                                     <div>
-                                        <CustomPopup deleteItem={this.props.deleteItem} item={item} />
+                                        <CustomPopup type='sale' deleteItem={deleteItem} item={item} />
                                     </div>
                                 </>
                                 : null

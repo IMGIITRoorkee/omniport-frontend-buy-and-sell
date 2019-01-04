@@ -13,6 +13,7 @@ import saleForm from './sale-form'
 import { saleProductCount, requestProductCount } from './count'
 import searchProducts from './search-products'
 import userProducts from './user-products'
+import pageNo from './page-no'
 
 const rootReducer = combineReducers({
     saleItems: SaleItems,
@@ -31,5 +32,6 @@ const rootReducer = combineReducers({
     saleProductCount: saleProductCount,
     searchProducts: searchProducts,
     userProducts: userProducts,
+    pageNo: pageNo
 })
 export default rootReducer;

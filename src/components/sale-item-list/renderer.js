@@ -4,7 +4,8 @@ import {
     Grid,
     Dropdown,
     Header,
-    Modal
+    Modal,
+    Loader
 } from 'semantic-ui-react'
 import ItemCard from '../sale-item-card/'
 import ItemDetail from '../sale-item-detail/renderer'
@@ -15,23 +16,20 @@ export default class SaleItemList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            item: {},
-            page: 1,
             loading: false
         }
     }
     componentDidMount() {
-        this.props.getSaleItems(this.props.subCategory, 1, true);
+        this.props.getSaleItems(this.props.activeSubCategory, 1, true);
         this.props.setItemType('sale')
         window.addEventListener("scroll", () => {
-            const { saleProductCount } = this.props
-            const { page } = this.state
+            const { saleProductCount, page } = this.props
             if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight && saleProductCount > (page * 10)) {
                 this.setState({
                     loading: true,
-                    page: this.state.page + 1
                 }, () => {
-                    this.props.getSaleItems(this.props.activeSubCategory, this.state.page)
+                    this.props.getSaleItems(this.props.activeSubCategory, 1 + page)
+                    this.props.setPageNo('sale', page + 1)
                     setTimeout(() => {
                         this.setState({
                             loading: false
@@ -41,13 +39,9 @@ export default class SaleItemList extends React.Component {
             }
         })
     }
+
     componentWillUnmount() {
         this.props.setItemType('')
-    }
-    handleOpen = (item) => {
-        this.setState({
-            item: item,
-        })
     }
     handleSortChange = (e, { value }) => {
         let itemsNewList = this.props.saleItems.slice()
@@ -104,16 +98,16 @@ export default class SaleItemList extends React.Component {
                                 <Grid.Row stretched>
                                     {this.props.saleItems.map((item, index) => {
                                         return (
-                                            <Grid.Column key={index}  >
+                                            <Grid.Column stretched key={index}  >
                                                 <Modal key={index} trigger={
-
-                                                    <ItemCard item={item} onlick={this.handleOpen} />
-
+                                                    <div styleName='card-div'>
+                                                        <ItemCard item={item} />
+                                                    </div>
                                                 }
                                                     closeIcon>
                                                     <Modal.Content>
                                                         <Grid container styleName="dimmer-grid" >
-                                                            <ItemDetail saleItemDetail={this.state.item} />
+                                                            <ItemDetail saleItemDetail={item} />
                                                         </Grid>
                                                     </Modal.Content>
                                                 </Modal>

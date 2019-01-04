@@ -1,12 +1,13 @@
 import { connect } from 'react-redux'
-import { getSaleItems, sortSaleItems, setItemType } from '../../actions';
+import { getSaleItems, sortSaleItems, setItemType, setPageNo, addSaleItem } from '../../actions';
 import Component from './renderer';
 
 function mapStateToProps(state) {
     return {
         saleItems: state.saleItems,
-        subCategory: state.activeSubCategory,
-        saleProductCount: state.saleProductCount
+        activeSubCategory: state.activeSubCategory,
+        saleProductCount: state.saleProductCount,
+        page: state.pageNo.sale
     }
 }
 const mapDispatchToProps = dispatch => {
@@ -19,7 +20,11 @@ const mapDispatchToProps = dispatch => {
         },
         setItemType: (param) => {
             dispatch(setItemType(param))
+        },
+        setPageNo: (type, no) => {
+            dispatch(setPageNo(type, no))
         }
+
 
     }
 };

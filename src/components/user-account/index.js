@@ -1,10 +1,11 @@
 import { connect } from 'react-redux'
-import { getUserRequestItems, getUserSaleItems } from '../../actions';
+import { getUserRequestItems, getUserSaleItems, changePhoneStatus } from '../../actions';
 import Component from './renderer';
 
 function mapStateToProps(state) {
     return {
-        userProducts: state.userProducts
+        userProducts: state.userProducts,
+        categories: state.categories
     }
 }
 const mapDispatchToProps = dispatch => {
@@ -14,6 +15,9 @@ const mapDispatchToProps = dispatch => {
         },
         getSaleItems: () => {
             dispatch(getUserSaleItems());
+        },
+        changePhoneStatus: (data) => {
+            dispatch(changePhoneStatus(data));
         },
     }
 };

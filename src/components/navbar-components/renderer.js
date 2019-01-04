@@ -22,7 +22,6 @@ export default class SearchBar extends React.Component {
     }
 
     handleSearchChange = (e, { value }) => {
-        const { searchProducts } = this.props
         this.setState({ isLoading: true, value })
         this.props.getSearchProducts(value.trim())
         setTimeout(() => {
@@ -53,7 +52,7 @@ export default class SearchBar extends React.Component {
                 results.sale.results.push({
                     "key": index,
                     "title": product.name,
-                    "description": `${getExcerpt(product.details, 20)}`,
+                    "description": `${getExcerpt(product.details, 48)}`,
                     "image": `${product.pictures.length > 0 ? product.pictures[0] : ''}`,
                     "price": `₹${product.cost}`,
                     "id": product.id,

@@ -11,7 +11,7 @@ export const deleteItem = (id, type) => {
     }
     return dispatch => {
         if (type == 'request') {
-            axios.post(
+            axios.delete(
                 requestProductUrl + id,
                 { headers: headers }
             ).then(res => {

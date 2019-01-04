@@ -1,12 +1,14 @@
 import { connect } from 'react-redux'
-import { getRequestItems, sortRequestItems, setItemType } from '../../actions';
+import { getRequestItems, sortRequestItems, deleteItem, setItemType, setPageNo } from '../../actions';
 import Component from './renderer';
 
 function mapStateToProps(state) {
     return {
         requestItems: state.requestItems,
         activeSubCategory: state.activeSubCategory,
-        requestProductCount: state.requestProductCount
+        requestProductCount: state.requestProductCount,
+        page: state.pageNo.request,
+        user: state.user
     }
 }
 const mapDispatchToProps = dispatch => {
@@ -19,8 +21,13 @@ const mapDispatchToProps = dispatch => {
         },
         setItemType: (param) => {
             dispatch(setItemType(param))
-        }
-
+        },
+        setPageNo: (type, no) => {
+            dispatch(setPageNo(type, no))
+        },
+        deleteItem: (id, type) => {
+            dispatch(deleteItem(id, type))
+        },
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

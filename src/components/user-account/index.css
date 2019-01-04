@@ -19,3 +19,10 @@
     padding-top: .3em !important;
     margin-left: .3em !important;
 }
+
+.category-list {
+    margin-top: 1em !important;
+}
+.sub-cat{
+    text-transform: capitalize;
+}

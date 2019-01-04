@@ -1,0 +1,22 @@
+.edit-icon {
+    font-weight: 500 !important;
+    cursor: pointer !important;
+}
+
+.card-icon {
+    cursor: pointer !important;
+}
+
+.archive {
+    color: #ffffff !important;
+}
+
+.yesNo {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.edit-grid {
+    background: #ffffff !important;
+}

@@ -34,6 +34,7 @@ export default class App extends React.Component {
                 <Switch>
                     <Route path={`${match.path}`} render={(props) => <AppHeader
                         appName='buy_and_sell'
+                        mode={'app'}
                         middle={<SearchBar {...props} />}
                         userDropdown
                     />} />

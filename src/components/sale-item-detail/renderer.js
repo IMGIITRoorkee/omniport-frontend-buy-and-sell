@@ -146,14 +146,16 @@ export default class SaleItemDetail extends React.Component {
                                                 </Table.Row>
                                                 : null
                                             }
-                                            <Table.Row>
-                                                <Table.Cell styleName='data-col'>
-                                                    Payment modes accepted
+                                            {saleItemDetail.paymentModes.length > 0 ?
+                                                <Table.Row>
+                                                    <Table.Cell styleName='data-col'>
+                                                        Payment modes accepted
                                                 </Table.Cell>
-                                                <Table.Cell styleName='data-col'>
-                                                    {saleItemDetail.paymentModes.join(', ')}
-                                                </Table.Cell>
-                                            </Table.Row>
+                                                    <Table.Cell styleName='data-col'>
+                                                        {saleItemDetail.paymentModes.join(', ')}
+                                                    </Table.Cell>
+                                                </Table.Row>
+                                                : null}
                                             {saleItemDetail.warrantyDetail ?
                                                 <Table.Row>
                                                     <Table.Cell styleName='data-col'>

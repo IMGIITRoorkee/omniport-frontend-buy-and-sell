@@ -2,35 +2,31 @@ import React from 'react'
 import { render } from 'react-dom'
 import {
     Grid,
-    Modal,
     Table,
     Loader
 } from 'semantic-ui-react'
-import ItemDetail from '../request-item-detail/renderer'
-import { formatDate } from '../../constants'
+import CustomModal from '../request-modal'
 import { getTheme } from 'formula_one'
 import './index.css'
 export default class RequestItemList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            item: {},
-            page: 1,
             loading: false
         }
     }
     componentDidMount() {
         this.props.getRequestItems(this.props.activeSubCategory, 1, true)
         this.props.setItemType('request')
+        this.props.setPageNo('request', 1)
         window.addEventListener("scroll", () => {
-            const { requestProductCount } = this.props
-            const { page } = this.state
+            const { requestProductCount, page } = this.props
             if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight && requestProductCount > (page * 10)) {
                 this.setState({
                     loading: true,
-                    page: this.state.page + 1
                 }, () => {
-                    this.props.getRequestItems(this.props.activeSubCategory, this.state.page)
+                    this.props.getRequestItems(this.props.activeSubCategory, page + 1)
+                    this.props.setPageNo('request', page + 1)
                     setTimeout(() => {
                         this.setState({
                             loading: false
@@ -44,14 +40,10 @@ export default class RequestItemList extends React.Component {
     componentWillUnmount() {
         this.props.setItemType('')
     }
-    handleOpen = (item) => {
-        this.setState({
-            item: item,
-        })
-    }
+
 
     render() {
-        const { requestItems, breadcrumb } = this.props
+        const { requestItems, user, breadcrumb, deleteItem } = this.props
         const { loading } = this.state
         return (
             <React.Fragment>
@@ -67,28 +59,16 @@ export default class RequestItemList extends React.Component {
                                 <Table unstackable color={getTheme()} selectable>
                                     <Table.Header>
                                         <Table.Row>
-                                            <Table.HeaderCell>Item</Table.HeaderCell>
-                                            <Table.HeaderCell>Maximum price</Table.HeaderCell>
-                                            <Table.HeaderCell>Expiry date</Table.HeaderCell>
+                                            <Table.HeaderCell width={6}>Item</Table.HeaderCell>
+                                            <Table.HeaderCell width={6}>Maximum price</Table.HeaderCell>
+                                            <Table.HeaderCell width={3} >Expiry date</Table.HeaderCell>
+                                            <Table.HeaderCell width={1}></Table.HeaderCell>
                                         </Table.Row>
                                     </Table.Header>
                                     <Table.Body>
                                         {requestItems.map((item, index) => {
                                             return (
-                                                <Modal key={index} trigger={
-                                                    <Table.Row onClick={() => this.handleOpen(item)} >
-                                                        <Table.Cell>{item.name}</Table.Cell>
-                                                        <Table.Cell>{item.cost}</Table.Cell>
-                                                        <Table.Cell>{formatDate(item.endDate)}</Table.Cell>
-                                                    </Table.Row>
-                                                }
-                                                    closeIcon>
-                                                    <Modal.Content>
-                                                        <Grid container >
-                                                            <ItemDetail modal={true} requestItemDetail={this.state.item} />
-                                                        </Grid>
-                                                    </Modal.Content>
-                                                </Modal>
+                                                <CustomModal index={index} item={item} key={index} />
                                             )
                                         })}
                                     </Table.Body>

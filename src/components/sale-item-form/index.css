@@ -1,19 +1,63 @@
-.sub-cat{
-    margin-left: 15px !important
+.sub-cat {
+    margin-left: 1em !important;
+    text-transform: capitalize !important;
 }
-.image-upload-label{
+
+.field-form {
+    margin-bottom: 1.5em !important;
+}
+
+.category-field {
+    border: 1px solid rgba(34, 36, 38, .15) !important;
+    box-shadow: 0 0 0 0 rgba(34, 36, 38, .35) inset !important;
+    border-radius: .28571429rem !important;
+    padding: .67857143em 1em !important;
+}
+
+.category-item {
+    font-weight: 700 !important;
+    text-transform: capitalize !important;
+}
+
+.image-upload-label {
     font-size: 2rem !important;
-    line-height: 2rem !important;   
-    
+    line-height: 2rem !important;
 }
-.image-upload-input{
-    display: none !important;   
+
+.image-upload-input {
+    display: none !important;
 }
-.upload-icon{
+
+.upload-icon {
     background-color: #C4C4C4 !important;
     display: flex !important;
     flex-direction: row !important;
     justify-content: center !important;
     align-items: center !important;
     padding: 20px !important;
+}
+
+.img-add-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.img-div {
+    position: relative;
+    margin-right: 1em;
+}
+
+.close-btn {
+    position: absolute;
+    top: -18%;
+    right: -30%;
+    background: #ffffff;
+    font-size: .7em !important;
+}
+
+.upload-img {
+    object-fit: cover !important;
+    width: 2.5em !important;
+    height: 2.5em !important;
 }

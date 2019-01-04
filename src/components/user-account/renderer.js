@@ -1,33 +1,87 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Header, Grid, Modal, Radio, Divider, Table } from 'semantic-ui-react'
+import { Header, Grid, Modal, Radio, Divider, Table, List } from 'semantic-ui-react'
 import { getTheme } from 'formula_one'
-import RequestItemDetail from '../request-item-detail/renderer'
-import { formatDate } from '../../constants'
 import SaleItemCard from '../sale-item-card/'
 import SaleItemDetail from '../sale-item-detail/renderer'
+import CustomModal from '../request-modal'
 import './index.css'
 
 export default class UserAccount extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            item: {}
+            isPhoneVisible: true
         }
     }
     componentDidMount() {
         this.props.getSaleItems()
         this.props.getRequestItems()
     }
-    handleOpen = (item) => {
-        this.setState({
-            item: item,
+
+    toggle = () => this.setState({ isPhoneVisible: !this.state.isPhoneVisible }, () => {
+        let formData = new FormData()
+        formData.append('phone_status', this.state.isPhoneVisible)
+        this.props.changePhoneStatus(formData)
+    })
+
+    componentDidUpdate(prevProps) {
+        let status = false
+        const { userProducts } = this.props
+        userProducts.request.map((item, ) => {
+            if (item.isPhoneVisible) {
+                status = true
+            }
         })
+        userProducts.sale.map((item, ) => {
+            if (item.isPhoneVisible) {
+                status = true
+            }
+        })
+        if (status && !this.state.isPhoneVisible) {
+            this.setState({
+                isPhoneVisible: status
+            })
+        }
+    }
+    renderCategories = () => {
+        const { categories } = this.props
+        let categoryList = []
+        categories.map((category, index) => {
+            let subCategoryList = []
+            category.subCategories.map((subCategory, index) => {
+                subCategoryList.push(
+                    <List.Item>
+                        <List.Icon name='' />
+                        <List.Content styleName='sub-cat'>
+                            {subCategory.name}
+                        </List.Content>
+                    </List.Item>
+                )
+            })
+            categoryList.push(
+                <List.Item>
+                    <List.Content>
+                        <List.Header>{category.name}</List.Header>
+                        {subCategoryList.length > 0 ?
+                            <List.List>
+                                {subCategoryList}
+                            </List.List>
+                            : null}
+                    </List.Content>
+                </List.Item>
+            )
+        })
+        return (
+            <List size='medium' styleName='category-list'>
+                {categoryList}
+            </List>
+        )
     }
     render() {
         const { userProducts } = this.props
         return (
-            <React.Fragment>
+            <React.Fragment >
                 <Grid.Column width={16} styleName='user-grid'>
                     <Grid>
                         <Grid.Row>
@@ -37,12 +91,22 @@ export default class UserAccount extends React.Component {
                                         <Grid.Column width={16}>
                                             <Header as='h3'>
                                                 My mobile no.
-                                                <Radio slider styleName='mobile-slider' />
+                                                <Radio onChange={this.toggle} defaultChecked={this.state.isPhoneVisible} slider styleName='mobile-slider' />
                                             </Header>
                                         </Grid.Column>
                                         <Grid.Column width={16}>
                                             (decide whether people can see your phone number)
                                             <Divider />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row>
+                                        <Grid.Column width={16}>
+                                            <Header as='h3'>
+                                                Categories
+                                            </Header>
+                                        </Grid.Column>
+                                        <Grid.Column width={16}>
+                                            {this.renderCategories()}
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
@@ -68,18 +132,20 @@ export default class UserAccount extends React.Component {
                                             <Grid.Row stretched>
                                                 {userProducts.sale.map((item, index) => {
                                                     return (
-                                                        <Modal key={index} trigger={
-                                                            <Grid.Column key={index}  >
-                                                                <SaleItemCard item={item} onlick={this.handleOpen} />
-                                                            </Grid.Column>
-                                                        }
-                                                            closeIcon>
-                                                            <Modal.Content>
-                                                                <Grid container styleName="dimmer-grid" >
-                                                                    <SaleItemDetail saleItemDetail={this.state.item} />
-                                                                </Grid>
-                                                            </Modal.Content>
-                                                        </Modal>
+                                                        <Grid.Column key={index}  >
+                                                            <Modal key={index} trigger={
+                                                                <div>
+                                                                    <SaleItemCard item={item} />
+                                                                </div>
+                                                            }
+                                                                closeIcon>
+                                                                <Modal.Content>
+                                                                    <Grid container styleName="dimmer-grid" >
+                                                                        <SaleItemDetail saleItemDetail={item} />
+                                                                    </Grid>
+                                                                </Modal.Content>
+                                                            </Modal>
+                                                        </Grid.Column>
                                                     )
                                                 })}
                                             </Grid.Row>
@@ -100,28 +166,16 @@ export default class UserAccount extends React.Component {
                                 <Table unstackable color={getTheme()} selectable>
                                     <Table.Header>
                                         <Table.Row>
-                                            <Table.HeaderCell>Item</Table.HeaderCell>
-                                            <Table.HeaderCell>Maximum price</Table.HeaderCell>
-                                            <Table.HeaderCell>Expiry date</Table.HeaderCell>
+                                            <Table.HeaderCell width={6}>Item</Table.HeaderCell>
+                                            <Table.HeaderCell width={6}>Maximum price</Table.HeaderCell>
+                                            <Table.HeaderCell width={3} >Expiry date</Table.HeaderCell>
+                                            <Table.HeaderCell width={1}></Table.HeaderCell>
                                         </Table.Row>
                                     </Table.Header>
                                     <Table.Body>
                                         {userProducts.request.map((item, index) => {
                                             return (
-                                                <Modal key={index} trigger={
-                                                    <Table.Row onClick={() => this.handleOpen(item)} >
-                                                        <Table.Cell>{item.name}</Table.Cell>
-                                                        <Table.Cell>{item.cost}</Table.Cell>
-                                                        <Table.Cell>{formatDate(item.endDate)}</Table.Cell>
-                                                    </Table.Row>
-                                                }
-                                                    closeIcon>
-                                                    <Modal.Content>
-                                                        <Grid container >
-                                                            <RequestItemDetail modal={true} requestItemDetail={this.state.item} />
-                                                        </Grid>
-                                                    </Modal.Content>
-                                                </Modal>
+                                                <CustomModal index={index} item={item} key={index} />
                                             )
                                         })}
                                     </Table.Body>
@@ -130,7 +184,7 @@ export default class UserAccount extends React.Component {
                         </Grid.Row>
                     </Grid>
                 </Grid.Column>
-            </React.Fragment>
+            </React.Fragment >
         )
     }
 }

@@ -9,3 +9,4 @@ export const defaultImageUrl = 'https://react.semantic-ui.com/images/avatar/larg
 export const requestItemUrl = "/api/buyandsell/request/"
 export const requestProductUrl = "/api/buyandsell/request_product/"
 export const searchUrl = "/api/buyandsell/search/"
+export const pictureUrl = "/api/buyandsell/picture/"
