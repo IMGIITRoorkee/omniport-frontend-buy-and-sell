@@ -54,7 +54,7 @@ export default class SaleItemCard extends React.Component {
                     <Card.Meta>
                         <span className='date'><Icon name="rupee sign" size={'small'} />{item.cost}</span>
                     </Card.Meta>
-                    <Card.Description>{getExcerpt(item.details, 47)}</Card.Description>
+                    <Card.Description>{getExcerpt(item.details, 45)}</Card.Description>
                 </Card.Content>
                 <Card.Content extra>
                     <span>

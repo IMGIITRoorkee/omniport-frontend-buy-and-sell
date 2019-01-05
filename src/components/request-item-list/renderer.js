@@ -38,7 +38,6 @@ export default class RequestItemList extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.setItemType('')
     }
 
 

@@ -41,7 +41,6 @@ export default class SaleItemList extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.setItemType('')
     }
     handleSortChange = (e, { value }) => {
         let itemsNewList = this.props.saleItems.slice()
@@ -96,6 +95,7 @@ export default class SaleItemList extends React.Component {
                         <Grid.Row >
                             <Grid divided={"vertically"} doubling columns={5}>
                                 <Grid.Row stretched>
+                                
                                     {this.props.saleItems.map((item, index) => {
                                         return (
                                             <Grid.Column stretched key={index}  >

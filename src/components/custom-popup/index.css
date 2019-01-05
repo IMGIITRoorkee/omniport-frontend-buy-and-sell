@@ -1,6 +1,10 @@
 .edit-icon {
-    font-weight: 500 !important;
     cursor: pointer !important;
+    color: #c4c4c4 !important;
+}
+
+.edit-icon:hover {
+    color: rgba(0, 0, 0, 0.85) !important;
 }
 
 .card-icon {
@@ -19,4 +23,8 @@
 
 .edit-grid {
     background: #ffffff !important;
+}
+
+.modal-cont {
+    padding-top: .5em !important;
 }

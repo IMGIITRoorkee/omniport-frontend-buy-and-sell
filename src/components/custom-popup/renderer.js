@@ -5,9 +5,9 @@ import {
     Popup,
     Header,
     Button,
-    Dimmer,
-    Form, 
+    Modal
 } from 'semantic-ui-react'
+import { getTheme } from 'formula_one'
 import SaleItemForm from '../sale-item-form'
 import RequestItemForm from '../request-item-form'
 import './index.css'
@@ -51,6 +51,10 @@ export default class CustomPopup extends React.Component {
     stopPropagation = (e) => {
         e.stopPropagation()
     }
+    acceptSubmit = (childSubmit, childFormError) => {
+        this.childSubmit = childSubmit
+        this.childFormError = childFormError
+    }
     render() {
         const { item, type } = this.props
         const { active, popup, dimmerType } = this.state
@@ -60,36 +64,46 @@ export default class CustomPopup extends React.Component {
                     <Icon styleName='card-icon' id={item.id} onClick={(e) => this.handleDimmer(e, true, 'edit')} name='edit'></Icon>
                     <Icon styleName='card-icon' onClick={(e) => this.handleDimmer(e, true, 'delete')} name='delete'></Icon>
                 </Popup>
-                <Dimmer page active={active} onClickOutside={(e) => this.handleDimmer(e, false, '')} onClick={(e) => this.stopPropagation(e)}>
+                <Modal size='tiny' basic={dimmerType == 'delete'} open={active} onClose={(e) => this.handleDimmer(e, false, '')} onClick={(e) => this.stopPropagation(e)}>
                     {dimmerType == 'delete' ?
                         <>
                             <Header styleName='archive' icon='archive' content='Delete this item' />
-                            <p>
-                                Do you really want to delete {item.name} ?
+                            <Modal.Content>
+                                <p>
+                                    Do you really want to delete {item.name} ?
                         </p>
-                            <div styleName='yesNo'>
-                                <Button onClick={(e) => this.handleDimmer(e, false, '')} basic color='red' inverted>
-                                    <Icon name='remove' />
-                                    No
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <div styleName='yesNo'>
+                                    <Button onClick={(e) => this.handleDimmer(e, false, '')} basic color='red' inverted>
+                                        <Icon name='remove' />
+                                        No
                             </Button>
-                                <Button onClick={(e) => this.delete(e, item.id, type)} color='green' inverted>
-                                    <Icon name='checkmark' />
-                                    Yes
+                                    <Button onClick={(e) => this.delete(e, item.id, type)} color='green' inverted>
+                                        <Icon name='checkmark' />
+                                        Yes
                             </Button>
-                            </div>
+                                </div>
+                            </Modal.Actions>
                         </>
                         :
                         <>
-                            <Form styleName='edit-grid'>
+                            <Modal.Header>
+                                {`Update ${item.name}`}
+                            </Modal.Header>
+                            <Modal.Content scrolling styleName='modal-cont' >
                                 {type == 'sale' ?
-                                    <SaleItemForm />
-                                    : <RequestItemForm />
-                                }
-                            </Form>
-                        </>
+                                    <SaleItemForm item={item} shareSubmit={this.acceptSubmit.bind(this)} handleDimmer={(e) => this.handleDimmer(e, false, '')} />
+                                    : <RequestItemForm item={item} shareSubmit={this.acceptSubmit.bind(this)} handleDimmer={(e) => this.handleDimmer(e, false, '')} />
 
+                                }
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button icon='send' color={getTheme()} content='Update' onClick={(e) => this.childSubmit(e)} />
+                            </Modal.Actions>
+                        </>
                     }
-                </Dimmer>
+                </Modal>
             </>
         )
     }

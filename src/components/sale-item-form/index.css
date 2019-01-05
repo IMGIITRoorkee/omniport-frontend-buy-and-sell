@@ -28,13 +28,14 @@
     display: none !important;
 }
 
-.upload-icon {
-    background-color: #C4C4C4 !important;
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    align-items: center !important;
-    padding: 20px !important;
+.upload-btn {
+    font-size: .8em !important;
+    color: #C4C4C4 !important;
+}
+
+.upload-btn:hover {
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.87) !important;
 }
 
 .img-add-div {
@@ -60,4 +61,12 @@
     object-fit: cover !important;
     width: 2.5em !important;
     height: 2.5em !important;
+}
+
+.grid-cont {
+    padding-top: 1em !important;
+}
+
+.heading-row {
+    padding-bottom: 0 !important;
 }

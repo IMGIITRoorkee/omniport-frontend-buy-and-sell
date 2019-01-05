@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Component from './renderer';
-import { addRequestItem } from '../../actions';
+import { addRequestItem, updateRequestItem } from '../../actions';
 
 function mapStateToProps(state) {
     return {
@@ -13,6 +13,9 @@ const mapDispatchToProps = dispatch => {
         addRequestItem: (param) => {
             dispatch(addRequestItem(param));
         },
+        updateRequestItem: (data, id) => {
+            dispatch(updateRequestItem(data, id))
+        }
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

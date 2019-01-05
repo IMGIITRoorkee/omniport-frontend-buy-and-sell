@@ -2,8 +2,9 @@ import axios from 'axios'
 import { getCookie } from 'formula_one/src/utils'
 import React from 'react'
 import { render } from 'react-dom'
-import { Grid, Icon, Radio, Button, Dropdown, Form, Header, Image } from 'semantic-ui-react'
+import { Grid, Icon, Message, Radio, Button, Dropdown, Form, Header, Image } from 'semantic-ui-react'
 import { DateInput } from 'semantic-ui-calendar-react';
+import { getTheme } from 'formula_one'
 import './index.css'
 
 class UploadButton extends React.Component {
@@ -18,7 +19,7 @@ class UploadButton extends React.Component {
                 name={`picture${this.props.count}`}
                 id={`uploadPhoto${this.props.count}`}
             />
-            <label styleName={this.props.styles.label} htmlFor={`uploadPhoto${this.props.count}`}><Icon styleName={this.props.styles.icon} name='add'></Icon></label>
+            <label styleName={this.props.styles.label} htmlFor={`uploadPhoto${this.props.count}`}><Icon styleName={this.props.styles.icon} styleName='upload-btn' name='upload'></Icon></label>
         </>
         )
     }
@@ -32,21 +33,60 @@ let style = {
 export default class SaleItemForm extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            endDate: '',
-            name: '',
-            category: {
+        const { item } = this.props
+        if (!item) {
+            this.state = {
+                endDate: '',
                 name: '',
-                slug: ''
-            },
-            details: '',
-            cost: '',
-            warrantyDetail: '',
-            isPhoneVisible: false,
-            paymentModes: [],
-            pictures: ['', '', ''],
-            categoryError: false,
-        };
+                category: {
+                    name: '',
+                    slug: ''
+                },
+                details: '',
+                cost: '',
+                warrantyDetail: '',
+                isPhoneVisible: false,
+                paymentModes: [],
+                pictures: ['', '', ''],
+                picturesUrl: ['', '', ''],
+                nameError: false,
+                costError: false,
+                categoryError: false,
+                formError: false,
+            }
+        }
+        else {
+            let categoryName = ''
+            this.props.categories.map((category) => {
+                if (item.category == category.slug) {
+                    categoryName = category.name
+                    return
+                }
+                category.subCategories.map((subCategory) => {
+                    if (item.category == subCategory.slug) {
+                        categoryName = subCategory.name
+                        return
+                    }
+                })
+            })
+            this.state = {
+                endDate: item.endDate,
+                name: item.name,
+                category: {
+                    name: categoryName,
+                    slug: item.category
+                },
+                cost: item.cost,
+                details: item.details,
+                warrantyDetail: item.warrantyDetail,
+                isPhoneVisible: item.isPhoneVisible,
+                paymentModes: item.paymentModes,
+                nameError: false,
+                costError: false,
+                categoryError: false,
+                formError: false,
+            }
+        }
     }
     toggle = () => this.setState({ isPhoneVisible: !this.state.isPhoneVisible })
 
@@ -58,22 +98,69 @@ export default class SaleItemForm extends React.Component {
     handleChange = (event, { name, value }) => {
         if (this.state.hasOwnProperty(name)) {
             this.setState({ [name]: value });
+            if (name == 'cost') {
+                this.setState({
+                    costError: isNaN(value),
+                    formError: isNaN(value)
+                })
+            }
+            else if (name == 'name') {
+                if (!isNaN(value) && value.length > 0) {
+                    this.setState({
+                        nameError: true,
+                        formError: true
+                    })
+                }
+                else {
+                    this.setState({
+                        nameError: false,
+                        formError: false
+                    })
+                }
+            }
         }
     }
     handleSelectPicture = (e) => {
 
         if (e.target.files && e.target.files.length > 0) {
             const newPictures = this.state.pictures.slice()
+            const newPicturesUrl = this.state.picturesUrl.slice()
             let count = e.target.getAttribute('count')
-            newPictures[count] = URL.createObjectURL(e.target.files[0])
-            this.setState({ pictures: newPictures })
+            newPictures[count] = e.target.files[0]
+            newPicturesUrl[count] = URL.createObjectURL(e.target.files[0])
+            this.setState({ 
+                pictures: newPictures,
+                picturesUrl: newPicturesUrl
+             })
         }
     };
     handlePaymentChange = (event, { value }) => {
         this.setState({ paymentModes: value });
     }
-    handleSubmit = () => {
+    handleSubmit = (e) => {
         const { name, pictures, category, paymentModes, endDate, details, cost, warrantyDetail, isPhoneVisible } = this.state
+        const { item } = this.props
+        if (category.slug === '') {
+            this.setState({
+                categoryError: true,
+                formError: true
+            })
+            return
+        }
+        if (isNaN(cost) || cost.length < 1) {
+            this.setState({
+                costError: true,
+                formError: true
+            })
+            return
+        }
+        if (name.length < 3 || !isNaN(name)) {
+            this.setState({
+                nameError: true,
+                formError: true
+            })
+            return
+        }
         let formData = new FormData()
         formData.append('end_date', endDate);
         formData.append('name', name);
@@ -83,16 +170,18 @@ export default class SaleItemForm extends React.Component {
         formData.append('warranty_detail', warrantyDetail);
         formData.append('is_phone_visible', isPhoneVisible);
         paymentModes.map((mode) => {
-            formData.append('payment_modes[]', mode)
+            formData.append('payment_modes', mode)
         })
-        this.props.addSaleItem(formData, pictures)
-        // this.state.picture ? formData.append('picture', this.state.picture) : void 0
-        // console.log(this.state.picture)
-        let headers = {
-            'Content-Type': 'multipart/form-data',
-            'X-CSRFToken': getCookie('csrftoken')
+        if (item) {
+            this.props.updateSaleItem(formData, item.id)
+            this.props.handleDimmer(e)
         }
-
+        else {
+            this.props.addSaleItem(formData, pictures)
+            setTimeout(() => {
+                this.props.history.replace('/buy_and_sell/')
+            }, 500);
+        }
 
     }
     handleCategoryChange = (e, { value, name, slug }) => {
@@ -112,6 +201,10 @@ export default class SaleItemForm extends React.Component {
     }
     componentDidMount() {
         this.props.getPayment()
+        const { item, shareSubmit } = this.props
+        if (item) {
+            shareSubmit(this.handleSubmit.bind(this))
+        }
     }
     dropdown = () => {
         const { categories } = this.props
@@ -132,13 +225,17 @@ export default class SaleItemForm extends React.Component {
     }
     hadleImgClose = (e, key) => {
         let newPictures = this.state.pictures;
+        let newPicturesUrl = this.state.picturesUrl;
         newPictures[key] = ''
+        newPicturesUrl[key]= ''
         this.setState({
-            pictures: newPictures
+            pictures: newPictures,
+            picturesUrl:newPicturesUrl
         })
     }
     render() {
-        const { categoryError, pictures, cost, endDate, category, warrantyDetail, details, name } = this.state
+        const { user, item } = this.props
+        const { categoryError, picturesUrl, nameError, pictures, cost, formError, endDate, category, warrantyDetail, details, name, costError } = this.state
         const paymentModes = this.props.paymentModes.map((mode, index) => {
             return {
                 key: mode.name,
@@ -148,16 +245,18 @@ export default class SaleItemForm extends React.Component {
         })
         return (
             <Grid.Column width={16}>
-                <Grid padded stackable>
+                <Grid padded stackable styleName={!item ? 'grid-cont' : ''}>
+                    {!item ?
+                        <Grid.Row  styleName='heading-row' centered>
+                            <Grid.Column width={8}>
+                                <Header dividing as={'h3'}>Sell an Item</Header>
+                            </Grid.Column>
+                        </Grid.Row>
+                        : null}
                     <Grid.Row centered>
-                        <Grid.Column width={8}>
-                            <Header as={'h3'}>Sell an Item</Header>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row centered>
-                        <Grid.Column width={8}>
-                            <Form encType='multiple/form-data'>
-                                <Form.Field>
+                        <Grid.Column width={`${!item ? 8 : 14}`}>
+                            <Form error={formError} encType='multiple/form-data'>
+                                <Form.Field styleName='field-form' required>
                                     <label>Item name</label>
                                     <Form.Input
                                         autoComplete='off'
@@ -168,6 +267,13 @@ export default class SaleItemForm extends React.Component {
                                         placeholder='item name'
                                     />
                                 </Form.Field>
+                                {nameError ?
+                                    <Message
+                                        error
+                                        content={`Field is empty or invalid name`}
+                                    />
+                                    : null
+                                }
                                 <Form.Field styleName='field-form' required>
                                     <label>Category</label>
                                     <Dropdown
@@ -190,12 +296,13 @@ export default class SaleItemForm extends React.Component {
                                         : null
                                     }
                                 </Form.Field>
-                                <Form.Field>
+                                <Form.Field styleName='field-form'>
                                     <label>Accepted modes of payment</label>
                                     <Dropdown
                                         placeholder='Payment modes'
                                         fluid
                                         multiple
+                                        value={this.state.paymentModes}
                                         selection
                                         onChange={this.handlePaymentChange}
                                         options={paymentModes} />
@@ -214,18 +321,17 @@ export default class SaleItemForm extends React.Component {
                                         dateFormat="YYYY-MM-DD"
                                         onChange={this.handleChange} />
                                 </Form.Field>
-                                <Form.Field>
+                                <Form.Field styleName='field-form'>
                                     <label>Description</label>
                                     <Form.Input
                                         autoComplete='off'
                                         name='details'
                                         onChange={this.handleChange}
                                         value={details}
-                                        required
                                         placeholder='Description of the product'
                                     />
                                 </Form.Field>
-                                <Form.Field>
+                                <Form.Field required styleName='field-form'>
                                     <label>Price</label>
                                     <Form.Input
                                         autoComplete='off'
@@ -236,7 +342,14 @@ export default class SaleItemForm extends React.Component {
                                         placeholder='Price'
                                     />
                                 </Form.Field>
-                                <Form.Field>
+                                {costError ?
+                                    <Message
+                                        error
+                                        content='Maxium price can only be numeric value.'
+                                    />
+                                    : null
+                                }
+                                <Form.Field styleName='field-form'>
                                     <label>State of warranty</label>
                                     <Form.Input
                                         autoComplete='off'
@@ -246,63 +359,76 @@ export default class SaleItemForm extends React.Component {
                                         placeholder='for eg. 3 months left'
                                     />
                                 </Form.Field>
-                                <Form.Field>
+                                <Form.Field styleName='field-form'>
+                                    <label>Email-id</label>
+                                    <Form.Input
+                                        readOnly
+                                        value={user.person ? user.person.contactInformation.emailAddress : ''}
+                                    />
+                                </Form.Field>
+                                <Form.Field styleName='field-form'>
                                     <Radio toggle
                                         label='Add phone number'
                                         name='isPhoneVisible'
-                                        onChange={this.toggle} />
+                                        onChange={this.toggle}
+                                        defaultChecked={item ? item.isPhoneVisible : false} />
                                 </Form.Field>
-                                <Form.Field>
-                                    <label>Upload Images</label>
-                                    <div styleName='img-add-div'>
-                                        {!pictures[0] ?
-                                            <UploadButton onChange={this.handleSelectPicture} count={'0'} styles={style} />
-                                            :
-                                            <div styleName='img-div'>
-                                                <Image styleName='upload-img' src={pictures[0]} rounded />
-                                                <Icon onClick={(e) => this.hadleImgClose(e, 0)} key={0} circular inverted link name='close' styleName='close-btn' />
-                                            </div>
-                                        }
-                                        {pictures[0] && !pictures[1] ?
-                                            <UploadButton onChange={this.handleSelectPicture} count={'1'} styles={style} />
-                                            : <>
-                                                {pictures[1] ?
-                                                    <div styleName='img-div'>
-                                                        <Image styleName='upload-img' src={pictures[1]} rounded />
-                                                        <Icon onClick={(e) => this.hadleImgClose(e, 1)} key={1} circular inverted link name='close' styleName='close-btn' />
-                                                    </div>
-                                                    : null
-                                                }
-                                            </>
-                                        }
-                                        {pictures[0] && pictures[1] && !pictures[2] ?
-                                            <UploadButton onChange={this.handleSelectPicture} count={'2'} styles={style} />
-                                            : <>
-                                                {pictures[2] ?
-                                                    <div styleName='img-div'>
-                                                        <Image styleName='upload-img' src={pictures[2]} rounded />
-                                                        <Icon onClick={(e) => this.hadleImgClose(e, 2)} key={2} circular inverted link name='close' styleName='close-btn' />
-                                                    </div>
-                                                    : null
-                                                }
-                                            </>
-                                        }
-                                    </div>
-                                </Form.Field>
-
-                                <Form.Field>
-                                    <Button
-                                        type='submit'
-                                        onClick={this.handleSubmit}
-                                        position='right'
-                                        color={"blue"}
-                                        icon
-                                        labelPosition='left'
-                                    >
-                                        <Icon name='send' />
-                                        Submit
-                            </Button>
-                                </Form.Field>
+                                {!item ?
+                                    <Form.Field  styleName='field-form'>
+                                        <label>Upload Images</label>
+                                        <div styleName='img-add-div'>
+                                            {!pictures[0] ?
+                                                <UploadButton onChange={this.handleSelectPicture} count={'0'} styles={style} />
+                                                :
+                                                <div styleName='img-div'>
+                                                    <Image styleName='upload-img' src={picturesUrl[0]} rounded />
+                                                    <Icon onClick={(e) => this.hadleImgClose(e, 0)} key={0} circular inverted link name='close' styleName='close-btn' />
+                                                </div>
+                                            }
+                                            {pictures[0] && !pictures[1] ?
+                                                <UploadButton onChange={this.handleSelectPicture} count={'1'} styles={style} />
+                                                : <>
+                                                    {pictures[1] ?
+                                                        <div styleName='img-div'>
+                                                            <Image styleName='upload-img' src={picturesUrl[1]} rounded />
+                                                            <Icon onClick={(e) => this.hadleImgClose(e, 1)} key={1} circular inverted link name='close' styleName='close-btn' />
+                                                        </div>
+                                                        : null
+                                                    }
+                                                </>
+                                            }
+                                            {pictures[0] && pictures[1] && !pictures[2] ?
+                                                <UploadButton onChange={this.handleSelectPicture} count={'2'} styles={style} />
+                                                : <>
+                                                    {pictures[2] ?
+                                                        <div styleName='img-div'>
+                                                            <Image styleName='upload-img' src={picturesUrl[2]} rounded />
+                                                            <Icon onClick={(e) => this.hadleImgClose(e, 2)} key={2} circular inverted link name='close' styleName='close-btn' />
+                                                        </div>
+                                                        : null
+                                                    }
+                                                </>
+                                            }
+                                        </div>
+                                    </Form.Field>
+                                    : null}
+                                {!item ?
+                                    <Form.Field>
+                                        <Button
+                                            type='submit'
+                                            onClick={this.handleSubmit}
+                                            disabled={formError}
+                                            position='right'
+                                            floated='right'
+                                            color={getTheme()}
+                                            icon
+                                            labelPosition='left'
+                                        >
+                                            <Icon name='send' />
+                                            Submit
+                                    </Button>
+                                    </Form.Field>
+                                    : null}
                             </Form>
                         </Grid.Column>
                     </Grid.Row>

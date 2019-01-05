@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { getRequestItems, getSaleItems, setCategory, setSubCategory } from '../../actions'
+import { getRequestItems, getSaleItems, setCategory, setPageNo, setSubCategory } from '../../actions'
 import Component from './renderer'
 
 function mapStateToProps(state) {
@@ -24,6 +24,9 @@ const mapDispatchToProps = dispatch => {
         setSubCategory: (param) => {
             dispatch(setSubCategory(param));
         },
+        setPageNo: (type, no) => {
+            dispatch(setPageNo(type, no))
+        }
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

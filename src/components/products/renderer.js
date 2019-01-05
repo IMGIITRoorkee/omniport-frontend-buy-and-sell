@@ -19,10 +19,12 @@ export default class Items extends React.Component {
         this.props.setCategory(name)
         this.props.setSubCategory(slug)
         if (this.props.itemType == 'sale') {
-            this.props.getSaleItems(`${slug}`)
+            this.props.getSaleItems(`${slug}`, 1 , true)
+            this.props.setPageNo('sale', 1)
         }
         else if (this.props.itemType == 'request') {
-            this.props.getRequestItems(`${slug}`)
+            this.props.getRequestItems(`${slug}`, 1 , true)
+            this.props.setPageNo('request', 1)
         }
     }
     breadcrumbContent = () => {

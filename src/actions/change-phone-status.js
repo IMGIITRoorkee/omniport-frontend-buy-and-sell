@@ -15,9 +15,7 @@ export const changePhoneStatus = (data) => {
             headers: headers,
             data: data
         }).then((response) => {
-            console.log(response)
         }).catch((error) => {
-            console.log(error.response.data);
         });
     }
 }

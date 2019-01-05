@@ -6,5 +6,6 @@ export function getExcerpt(str, letters) {
 }
 export function formatDate(date) {
     let datef = new Date(date).toDateString()
-    return datef.split(' ').slice(1).join(' ')
+    datef = datef.split(' ')
+    return `${datef[1]} ${datef[2]}, ${datef[3]}`
 }

@@ -10,20 +10,53 @@ import './index.css'
 export default class RequestItemForm extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            endDate: '',
-            name: '',
-            category: {
+        const { item } = this.props
+        if (!item) {
+            this.state = {
+                endDate: '',
                 name: '',
-                slug: ''
-            },
-            cost: '',
-            isPhoneVisible: false,
-            nameError: false,
-            costError: false,
-            categoryError: false,
-            formError: false,
-        };
+                category: {
+                    name: '',
+                    slug: ''
+                },
+                cost: '',
+                isPhoneVisible: false,
+                nameError: false,
+                costError: false,
+                categoryError: false,
+                formError: false,
+            }
+        }
+        else {
+            let categoryName = ''
+            this.props.categories.map((category) => {
+                if (item.category == category.slug) {
+                    categoryName = category.name
+                    return
+                }
+                category.subCategories.map((subCategory) => {
+                    if (item.category == subCategory.slug) {
+                        categoryName = subCategory.name
+                        return
+                    }
+                })
+            })
+            this.state = {
+                endDate: item.endDate,
+                name: item.name,
+                category: {
+                    name: categoryName,
+                    slug: item.category
+                },
+                cost: item.cost,
+                isPhoneVisible: item.isPhoneVisible,
+                nameError: false,
+                costError: false,
+                categoryError: false,
+                formError: false,
+                id: item.id
+            }
+        }
     }
 
     toggle = () => this.setState({ isPhoneVisible: !this.state.isPhoneVisible })
@@ -37,10 +70,25 @@ export default class RequestItemForm extends React.Component {
                     formError: isNaN(value)
                 })
             }
+            else if (name == 'name') {
+                if (!isNaN(value) && value.length > 0) {
+                    this.setState({
+                        nameError: true,
+                        formError: true
+                    })
+                }
+                else {
+                    this.setState({
+                        nameError: false,
+                        formError: false
+                    })
+                }
+            }
         }
     }
-    handleSubmit = () => {
+    handleSubmit = (e) => {
         const { endDate, name, category, cost, isPhoneVisible } = this.state
+        const { item } = this.props
         if (category.slug === '') {
             this.setState({
                 categoryError: true,
@@ -48,25 +96,43 @@ export default class RequestItemForm extends React.Component {
             })
             return
         }
-        // if (name === '') {
-        //     this.setState({
-        //         nameError: true,
-        //         formError: true
-        //     })
-        //     return
-        // }
+        if (isNaN(cost) || cost.length < 1) {
+            this.setState({
+                costError: true,
+                formError: true
+            })
+            return
+        }
+        if (name.length < 3 || !isNaN(name)) {
+            this.setState({
+                nameError: true,
+                formError: true
+            })
+            return
+        }
         let formData = new FormData()
         formData.append('end_date', endDate);
         formData.append('name', name);
         formData.append('category', category.slug);
         formData.append('cost', cost);
         formData.append('is_phone_visible', isPhoneVisible);
-        this.props.addRequestItem(formData)
-        setTimeout(() => {
-            this.props.history.replace('/buy_and_sell/request/')
-        }, 500);
+        if (item) {
+            this.props.updateRequestItem(formData, item.id)
+            this.props.handleDimmer(e)
+        }
+        else {
+            this.props.addRequestItem(formData)
+            setTimeout(() => {
+                this.props.history.replace('/buy_and_sell/request/')
+            }, 500);
+        }
+
     }
     componentDidMount() {
+        const { item, shareSubmit } = this.props
+        if (item) {
+            shareSubmit(this.handleSubmit.bind(this))
+        }
     }
     handleCategoryChange = (e, { value, name, slug }) => {
         let result = false;
@@ -101,18 +167,20 @@ export default class RequestItemForm extends React.Component {
         return (item)
     }
     render() {
-        const { user } = this.props
+        const { user, item } = this.props
         const { formError, costError, nameError, categoryError } = this.state
         return (
             <Grid.Column width={16}>
-                <Grid padded stackable styleName='grid-cont'>
-                    <Grid.Row styleName='heading-row' centered>
-                        <Grid.Column width={8}>
-                            <Header as={'h3'}>Request an item</Header>
-                        </Grid.Column>
-                    </Grid.Row>
+                <Grid padded stackable styleName={!item ? 'grid-cont' : ''}>
+                    {!item ?
+                        <Grid.Row styleName='heading-row' centered>
+                            <Grid.Column width={8}>
+                                <Header as={'h3'} dividing>Request an item</Header>
+                            </Grid.Column>
+                        </Grid.Row>
+                        : null}
                     <Grid.Row centered >
-                        <Grid.Column width={8}>
+                        <Grid.Column width={`${!item ? 8 : 14}`}>
                             <Form error={formError} encType='multiple/form-data'>
                                 <Form.Field styleName='field-form' required>
                                     <label>Item name</label>
@@ -127,7 +195,7 @@ export default class RequestItemForm extends React.Component {
                                     {nameError ?
                                         <Message
                                             error
-                                            content={`This is not a valid name.`}
+                                            content={`Field is empty or invalid name`}
                                         />
                                         : null
                                     }
@@ -197,24 +265,25 @@ export default class RequestItemForm extends React.Component {
                                 <Form.Field styleName='field-form'>
                                     <Radio
                                         label='Add phone number'
-                                        name='is_phone_visible'
+                                        name='isPhoneVisible'
                                         onChange={this.toggle} toggle />
                                 </Form.Field>
-
-                                <Form.Field styleName='field-form'>
-                                    <Button
-                                        type='submit'
-                                        disabled={formError}
-                                        onClick={this.handleSubmit}
-                                        position='right'
-                                        color={getTheme()}
-                                        icon
-                                        labelPosition='left'
-                                    >
-                                        <Icon name='send' />
-                                        Submit
-                            </Button>
-                                </Form.Field>
+                                {!item ?
+                                    <Form.Field styleName='field-form'>
+                                        <Button
+                                            type='submit'
+                                            disabled={formError}
+                                            onClick={(e) => this.handleSubmit(e)}
+                                            color={getTheme()}
+                                            floated='right'
+                                            icon
+                                            labelPosition='left'
+                                        >
+                                            <Icon name='send' />
+                                            {!item ? 'Submit' : 'Update'}
+                                        </Button>
+                                    </Form.Field>
+                                    : null}
                             </Form>
                         </Grid.Column>
                     </Grid.Row>

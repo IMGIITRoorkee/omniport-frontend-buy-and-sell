@@ -5,7 +5,8 @@ import Component from './renderer';
 function mapStateToProps(state) {
     return {
         userProducts: state.userProducts,
-        categories: state.categories
+        categories: state.categories,
+        user: state.user
     }
 }
 const mapDispatchToProps = dispatch => {

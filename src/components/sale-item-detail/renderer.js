@@ -34,7 +34,7 @@ export default class SaleItemDetail extends React.Component {
     render() {
         const { saleItemDetail } = this.props
         return (saleItemDetail.name ?
-            <Grid.Column width={16}>
+            <Grid.Column styleName='detail-div' width={16}>
                 <Grid divided="vertically" padded={"vertically"} relaxed="very" >
                     <Grid.Row centered>
                         <Grid.Column styleName="img-container" computer={8} tablet={8} mobile={14}>

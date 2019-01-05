@@ -52,6 +52,7 @@
 .title {
     text-transform: capitalize !important;
 }
+
 .popup-flex {
     display: flex;
     flex-direction: row;
@@ -66,4 +67,8 @@
     object-fit: cover;
     border-radius: 50%;
     margin-right: 10px;
+}
+
+.detail-div {
+    margin-top: 1em !important;
 }

@@ -14,7 +14,7 @@ import { saleProductCount, requestProductCount } from './count'
 import searchProducts from './search-products'
 import userProducts from './user-products'
 import pageNo from './page-no'
-
+import appMessages from './app-messages'
 const rootReducer = combineReducers({
     saleItems: SaleItems,
     requestItems: RequestItems,
@@ -32,6 +32,7 @@ const rootReducer = combineReducers({
     saleProductCount: saleProductCount,
     searchProducts: searchProducts,
     userProducts: userProducts,
-    pageNo: pageNo
+    pageNo: pageNo,
+    appMessages: appMessages
 })
 export default rootReducer;

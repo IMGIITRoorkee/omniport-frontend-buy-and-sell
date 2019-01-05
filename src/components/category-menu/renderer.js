@@ -102,7 +102,13 @@ export default class CategoryMenu extends React.Component {
                         onClick={this.handleItemClick}
                         styleName='menu-item'
                     >
-                        <Icon name='bicycle' />
+                        <span ref={(el) => {
+                            if (el) {
+                                el.style.setProperty('font-size', '1.2em', 'important');
+                            }
+                        }}>
+                            <Icon name='bicycle' />
+                        </span>
                         <span styleName='menu-span'>Bicycles</span>
                     </Menu.Item>
                     <Menu.Item name='Miscellaneous'
@@ -111,7 +117,13 @@ export default class CategoryMenu extends React.Component {
                         onClick={this.handleItemClick}
                         styleName='menu-item'
                     >
-                        <Icon name='box' />
+                        <span ref={(el) => {
+                            if (el) {
+                                el.style.setProperty('font-size', '1em', 'important');
+                            }
+                        }}>
+                            <Icon name='box' />
+                        </span>
                         <span styleName='menu-span'>Miscellaneous</span>
                     </Menu.Item>
                 </Menu>
