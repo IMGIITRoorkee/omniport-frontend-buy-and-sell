@@ -16,6 +16,10 @@ const creators = [
         name: 'Vivek Chand',
         role: 'Developer'
     },
+    {
+        name: 'Manya Singh',
+        role: 'Designer'
+    }
 ]
 export default class App extends React.Component {
     constructor(props) {

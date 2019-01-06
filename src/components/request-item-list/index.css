@@ -1,6 +1,8 @@
 .items-grid {
     background-color: #F5F5F5 !important;
-    padding-left: 42px !important
+    padding-left: 42px !important;
+    padding-right: 42px !important;
+    margin-top: .5em !important;
 }
 
 .item-img {

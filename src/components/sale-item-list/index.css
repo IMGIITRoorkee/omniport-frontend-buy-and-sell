@@ -1,6 +1,9 @@
 .items-grid {
     background-color: #F5F5F5 !important;
-    padding-left: 42px !important
+    padding-left: 42px !important;
+    margin-top: 1.5em !important;
+    box-sizing: border-box !important;
+    padding-right: 1em !important;
 }
 
 .sort-dropdown {}
@@ -24,4 +27,9 @@
 .card-div {
     height: 100% !important;
     margin-bottom: 1.3em !important;
+}
+
+.sort {
+    float: right !important;
+    text-align: left;
 }

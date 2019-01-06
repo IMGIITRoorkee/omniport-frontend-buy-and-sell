@@ -1,16 +1,22 @@
 .menu-item {
     flex-direction: row !important;
     background: none !important;
+    height: 100% !important;
 }
 
 .menu-span {
     margin-left: .3em !important;
 }
 
+.all-item {
+    min-width: 0 !important;
+}
+
 .category-menu {
     border: none !important;
     box-shadow: none !important;
     justify-content: center !important;
+    flex-wrap: wrap !important;
 }
 
 .menu-item:hover {
@@ -20,4 +26,10 @@
 
 .cat-icon {
     font-size: 1em !important;
+}
+
+.menu-dropdown {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }

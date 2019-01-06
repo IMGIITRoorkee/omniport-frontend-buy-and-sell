@@ -1,8 +1,7 @@
 import axios from 'axios'
-import { getCookie } from 'formula_one/src/utils'
 import React from 'react'
 import { render } from 'react-dom'
-import { Grid, Icon, Message, Radio, Button, Dropdown, Form, Header, Image } from 'semantic-ui-react'
+import { Grid, Icon, Message, Radio, Button, Dropdown, Form, Header, Image, Responsive } from 'semantic-ui-react'
 import { DateInput } from 'semantic-ui-calendar-react';
 import { getTheme } from 'formula_one'
 import './index.css'
@@ -128,10 +127,10 @@ export default class SaleItemForm extends React.Component {
             let count = e.target.getAttribute('count')
             newPictures[count] = e.target.files[0]
             newPicturesUrl[count] = URL.createObjectURL(e.target.files[0])
-            this.setState({ 
+            this.setState({
                 pictures: newPictures,
                 picturesUrl: newPicturesUrl
-             })
+            })
         }
     };
     handlePaymentChange = (event, { value }) => {
@@ -227,10 +226,10 @@ export default class SaleItemForm extends React.Component {
         let newPictures = this.state.pictures;
         let newPicturesUrl = this.state.picturesUrl;
         newPictures[key] = ''
-        newPicturesUrl[key]= ''
+        newPicturesUrl[key] = ''
         this.setState({
             pictures: newPictures,
-            picturesUrl:newPicturesUrl
+            picturesUrl: newPicturesUrl
         })
     }
     render() {
@@ -247,9 +246,9 @@ export default class SaleItemForm extends React.Component {
             <Grid.Column width={16}>
                 <Grid padded stackable styleName={!item ? 'grid-cont' : ''}>
                     {!item ?
-                        <Grid.Row  styleName='heading-row' centered>
+                        <Grid.Row styleName='heading-row' centered>
                             <Grid.Column width={8}>
-                                <Header dividing as={'h3'}>Sell an Item</Header>
+                                <Header dividing as={'h2'}>Sell an Item</Header>
                             </Grid.Column>
                         </Grid.Row>
                         : null}
@@ -309,9 +308,23 @@ export default class SaleItemForm extends React.Component {
                                 </Form.Field>
                                 <Form.Field styleName='field-form' required>
                                     <label>Expires On</label>
-                                    <DateInput
+                                    <Responsive {...Responsive.onlyMobile} >
+                                        <DateInput
+                                            closable
+                                            name="endDate"
+                                            minDate={new Date()}
+                                            placeholder="expires on"
+                                            value={endDate}
+                                            iconPosition="left"
+                                            inline
+                                            required
+                                            dateFormat="YYYY-MM-DD"
+                                            onChange={this.handleChange} />
+                                    </Responsive>
+                                    <Responsive minWidth={Responsive.onlyMobile.maxWidth + 1}>
+                                        <DateInput
                                         closable
-                                        popupPosition="right center"
+                                        popupPosition="bottom center"
                                         name="endDate"
                                         minDate={new Date()}
                                         placeholder="expires on"
@@ -320,120 +333,121 @@ export default class SaleItemForm extends React.Component {
                                         required
                                         dateFormat="YYYY-MM-DD"
                                         onChange={this.handleChange} />
+                                    </Responsive>
                                 </Form.Field>
+                            <Form.Field styleName='field-form'>
+                                <label>Description</label>
+                                <Form.Input
+                                    autoComplete='off'
+                                    name='details'
+                                    onChange={this.handleChange}
+                                    value={details}
+                                    placeholder='Description of the product'
+                                />
+                            </Form.Field>
+                            <Form.Field required styleName='field-form'>
+                                <label>Price</label>
+                                <Form.Input
+                                    autoComplete='off'
+                                    name='cost'
+                                    onChange={this.handleChange}
+                                    value={cost}
+                                    required
+                                    placeholder='Price'
+                                />
+                            </Form.Field>
+                            {costError ?
+                                <Message
+                                    error
+                                    content='Maxium price can only be numeric value.'
+                                />
+                                : null
+                            }
+                            <Form.Field styleName='field-form'>
+                                <label>State of warranty</label>
+                                <Form.Input
+                                    autoComplete='off'
+                                    name='warrantyDetail'
+                                    value={warrantyDetail}
+                                    onChange={this.handleChange}
+                                    placeholder='for eg. 3 months left'
+                                />
+                            </Form.Field>
+                            <Form.Field styleName='field-form'>
+                                <label>Email-id</label>
+                                <Form.Input
+                                    readOnly
+                                    value={user.person ? user.person.contactInformation.emailAddress : ''}
+                                />
+                            </Form.Field>
+                            <Form.Field styleName='field-form'>
+                                <Radio toggle
+                                    label='Add phone number'
+                                    name='isPhoneVisible'
+                                    onChange={this.toggle}
+                                    defaultChecked={item ? item.isPhoneVisible : false} />
+                            </Form.Field>
+                            {!item ?
                                 <Form.Field styleName='field-form'>
-                                    <label>Description</label>
-                                    <Form.Input
-                                        autoComplete='off'
-                                        name='details'
-                                        onChange={this.handleChange}
-                                        value={details}
-                                        placeholder='Description of the product'
-                                    />
+                                    <label>Upload Images</label>
+                                    <div styleName='img-add-div'>
+                                        {!pictures[0] ?
+                                            <UploadButton onChange={this.handleSelectPicture} count={'0'} styles={style} />
+                                            :
+                                            <div styleName='img-div'>
+                                                <Image styleName='upload-img' src={picturesUrl[0]} rounded />
+                                                <Icon onClick={(e) => this.hadleImgClose(e, 0)} key={0} circular inverted link name='close' styleName='close-btn' />
+                                            </div>
+                                        }
+                                        {pictures[0] && !pictures[1] ?
+                                            <UploadButton onChange={this.handleSelectPicture} count={'1'} styles={style} />
+                                            : <>
+                                                {pictures[1] ?
+                                                    <div styleName='img-div'>
+                                                        <Image styleName='upload-img' src={picturesUrl[1]} rounded />
+                                                        <Icon onClick={(e) => this.hadleImgClose(e, 1)} key={1} circular inverted link name='close' styleName='close-btn' />
+                                                    </div>
+                                                    : null
+                                                }
+                                            </>
+                                        }
+                                        {pictures[0] && pictures[1] && !pictures[2] ?
+                                            <UploadButton onChange={this.handleSelectPicture} count={'2'} styles={style} />
+                                            : <>
+                                                {pictures[2] ?
+                                                    <div styleName='img-div'>
+                                                        <Image styleName='upload-img' src={picturesUrl[2]} rounded />
+                                                        <Icon onClick={(e) => this.hadleImgClose(e, 2)} key={2} circular inverted link name='close' styleName='close-btn' />
+                                                    </div>
+                                                    : null
+                                                }
+                                            </>
+                                        }
+                                    </div>
                                 </Form.Field>
-                                <Form.Field required styleName='field-form'>
-                                    <label>Price</label>
-                                    <Form.Input
-                                        autoComplete='off'
-                                        name='cost'
-                                        onChange={this.handleChange}
-                                        value={cost}
-                                        required
-                                        placeholder='Price'
-                                    />
-                                </Form.Field>
-                                {costError ?
-                                    <Message
-                                        error
-                                        content='Maxium price can only be numeric value.'
-                                    />
-                                    : null
-                                }
-                                <Form.Field styleName='field-form'>
-                                    <label>State of warranty</label>
-                                    <Form.Input
-                                        autoComplete='off'
-                                        name='warrantyDetail'
-                                        value={warrantyDetail}
-                                        onChange={this.handleChange}
-                                        placeholder='for eg. 3 months left'
-                                    />
-                                </Form.Field>
-                                <Form.Field styleName='field-form'>
-                                    <label>Email-id</label>
-                                    <Form.Input
-                                        readOnly
-                                        value={user.person ? user.person.contactInformation.emailAddress : ''}
-                                    />
-                                </Form.Field>
-                                <Form.Field styleName='field-form'>
-                                    <Radio toggle
-                                        label='Add phone number'
-                                        name='isPhoneVisible'
-                                        onChange={this.toggle}
-                                        defaultChecked={item ? item.isPhoneVisible : false} />
-                                </Form.Field>
-                                {!item ?
-                                    <Form.Field  styleName='field-form'>
-                                        <label>Upload Images</label>
-                                        <div styleName='img-add-div'>
-                                            {!pictures[0] ?
-                                                <UploadButton onChange={this.handleSelectPicture} count={'0'} styles={style} />
-                                                :
-                                                <div styleName='img-div'>
-                                                    <Image styleName='upload-img' src={picturesUrl[0]} rounded />
-                                                    <Icon onClick={(e) => this.hadleImgClose(e, 0)} key={0} circular inverted link name='close' styleName='close-btn' />
-                                                </div>
-                                            }
-                                            {pictures[0] && !pictures[1] ?
-                                                <UploadButton onChange={this.handleSelectPicture} count={'1'} styles={style} />
-                                                : <>
-                                                    {pictures[1] ?
-                                                        <div styleName='img-div'>
-                                                            <Image styleName='upload-img' src={picturesUrl[1]} rounded />
-                                                            <Icon onClick={(e) => this.hadleImgClose(e, 1)} key={1} circular inverted link name='close' styleName='close-btn' />
-                                                        </div>
-                                                        : null
-                                                    }
-                                                </>
-                                            }
-                                            {pictures[0] && pictures[1] && !pictures[2] ?
-                                                <UploadButton onChange={this.handleSelectPicture} count={'2'} styles={style} />
-                                                : <>
-                                                    {pictures[2] ?
-                                                        <div styleName='img-div'>
-                                                            <Image styleName='upload-img' src={picturesUrl[2]} rounded />
-                                                            <Icon onClick={(e) => this.hadleImgClose(e, 2)} key={2} circular inverted link name='close' styleName='close-btn' />
-                                                        </div>
-                                                        : null
-                                                    }
-                                                </>
-                                            }
-                                        </div>
-                                    </Form.Field>
-                                    : null}
-                                {!item ?
-                                    <Form.Field>
-                                        <Button
-                                            type='submit'
-                                            onClick={this.handleSubmit}
-                                            disabled={formError}
-                                            position='right'
-                                            floated='right'
-                                            color={getTheme()}
-                                            icon
-                                            labelPosition='left'
-                                        >
-                                            <Icon name='send' />
-                                            Submit
+                                : null}
+                            {!item ?
+                                <Form.Field>
+                                    <Button
+                                        type='submit'
+                                        onClick={this.handleSubmit}
+                                        disabled={formError}
+                                        position='right'
+                                        floated='right'
+                                        color={getTheme()}
+                                        icon
+                                        labelPosition='left'
+                                    >
+                                        <Icon name='send' />
+                                        Submit
                                     </Button>
-                                    </Form.Field>
-                                    : null}
+                                </Form.Field>
+                                : null}
                             </Form>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Grid.Column>
+            </Grid.Column >
         )
     }
 }

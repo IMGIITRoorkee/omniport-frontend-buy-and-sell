@@ -15,29 +15,39 @@ export default class RequestItemList extends React.Component {
             loading: false
         }
     }
+    onScroll = () => {
+        const { requestProductCount, page } = this.props
+        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 2 && requestProductCount > (page * 10)) {
+            this.setState({
+                loading: true,
+            }, () => {
+                this.props.getRequestItems(this.props.activeSubCategory, page + 1)
+                this.props.setPageNo('request', page + 1)
+                this.timerHandle = setTimeout(() => {
+                    this.setState({
+                        loading: false
+                    });
+                    this.timerHandle = 0;
+                }, 300);
+            })
+        }
+    }
+
     componentDidMount() {
         this.props.getRequestItems(this.props.activeSubCategory, 1, true)
         this.props.setItemType('request')
         this.props.setPageNo('request', 1)
-        window.addEventListener("scroll", () => {
-            const { requestProductCount, page } = this.props
-            if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight && requestProductCount > (page * 10)) {
-                this.setState({
-                    loading: true,
-                }, () => {
-                    this.props.getRequestItems(this.props.activeSubCategory, page + 1)
-                    this.props.setPageNo('request', page + 1)
-                    setTimeout(() => {
-                        this.setState({
-                            loading: false
-                        });
-                    }, 300);
-                })
-            }
-        })
+        window.addEventListener("scroll", this.onScroll, false)
+
     }
 
     componentWillUnmount() {
+        if (this.timerHandle) {                  // ***
+            // Yes, clear it                     // ***
+            clearTimeout(this.timerHandle);      // ***
+            this.timerHandle = 0;                // ***
+        }
+        window.removeEventListener("scroll", this.onScroll, false)
     }
 
 

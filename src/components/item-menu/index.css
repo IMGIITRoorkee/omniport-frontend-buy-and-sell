@@ -1,0 +1,9 @@
+.item-menu {
+    background: #ffffff !important;
+}
+
+.type-name {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}

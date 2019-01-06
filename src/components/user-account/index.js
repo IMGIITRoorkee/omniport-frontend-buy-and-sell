@@ -11,11 +11,11 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        getRequestItems: () => {
-            dispatch(getUserRequestItems());
+        getRequestItems: (page, replace) => {
+            dispatch(getUserRequestItems(page, replace));
         },
-        getSaleItems: () => {
-            dispatch(getUserSaleItems());
+        getSaleItems: (page, replace) => {
+            dispatch(getUserSaleItems(page, replace));
         },
         changePhoneStatus: (data) => {
             dispatch(changePhoneStatus(data));

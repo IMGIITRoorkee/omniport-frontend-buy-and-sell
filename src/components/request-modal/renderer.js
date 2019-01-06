@@ -6,7 +6,7 @@ import {
     Modal,
     Table,
 } from 'semantic-ui-react'
-import  CustomPopup  from '../custom-popup'
+import CustomPopup from '../custom-popup'
 import { formatDate } from '../../constants'
 import ItemDetail from '../request-item-detail/renderer'
 export default class CustomRequestModal extends React.Component {
@@ -30,12 +30,12 @@ export default class CustomRequestModal extends React.Component {
                     <Table.Cell>{item.name}</Table.Cell>
                     <Table.Cell>{item.cost}</Table.Cell>
                     <Table.Cell>{formatDate(item.endDate)}</Table.Cell>
-                    {this.isOwner(item.person) ?
-                        <Table.Cell textAlign='right'>
+                    <Table.Cell textAlign='right'>
+                        {this.isOwner(item.person) ?
                             <CustomPopup deleteItem={deleteItem} type='request' item={item} />
-                        </Table.Cell>
-                        : null
-                    }
+                            : null
+                        }
+                    </Table.Cell>
                 </Table.Row>
             }
                 closeIcon>

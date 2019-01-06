@@ -12,7 +12,7 @@
 
 .user-grid {
     background: #F5F5F5 !important;
-    padding-top: 2em !important;
+    padding: 2em !important;
 }
 
 .mobile-slider {
@@ -23,6 +23,29 @@
 .category-list {
     margin-top: 1em !important;
 }
-.sub-cat{
+
+.sub-cat {
     text-transform: capitalize;
+}
+
+.load-more {
+    margin-top: 2.2em !important;
+    cursor: pointer;
+}
+
+.load-more-sale {
+    cursor: pointer;
+    margin-top: -2.3em !important;
+}
+
+.load-more-sale:hover {
+    background: rgb(245, 246, 246) !important
+}
+
+.load-more:hover {
+    background: rgb(245, 246, 246) !important
+}
+
+.card-sale {
+    margin-bottom: 1.3em !important;
 }

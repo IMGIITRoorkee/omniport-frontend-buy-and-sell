@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import { render } from 'react-dom'
-import { Grid, Icon, Radio, Button, Dropdown, Form, Header, Message } from 'semantic-ui-react'
+import { Grid, Icon, Radio, Button, Dropdown, Responsive, Form, Header, Message } from 'semantic-ui-react'
 import { getTheme } from 'formula_one'
 import { DateInput } from 'semantic-ui-calendar-react';
 import './index.css'
@@ -168,14 +168,14 @@ export default class RequestItemForm extends React.Component {
     }
     render() {
         const { user, item } = this.props
-        const { formError, costError, nameError, categoryError } = this.state
+        const { formError, costError, nameError, categoryError ,endDate } = this.state
         return (
             <Grid.Column width={16}>
                 <Grid padded stackable styleName={!item ? 'grid-cont' : ''}>
                     {!item ?
                         <Grid.Row styleName='heading-row' centered>
                             <Grid.Column width={8}>
-                                <Header as={'h3'} dividing>Request an item</Header>
+                                <Header as={'h2'} dividing>Request an item</Header>
                             </Grid.Column>
                         </Grid.Row>
                         : null}
@@ -224,17 +224,32 @@ export default class RequestItemForm extends React.Component {
                                 </Form.Field>
                                 <Form.Field styleName='field-form' required>
                                     <label>Expires On</label>
-                                    <DateInput
-                                        closable
-                                        popupPosition="right center"
-                                        name="endDate"
-                                        minDate={new Date()}
-                                        placeholder="expires on"
-                                        value={this.state.endDate}
-                                        iconPosition="left"
-                                        required
-                                        dateFormat="YYYY-MM-DD"
-                                        onChange={this.handleChange} />
+                                    <Responsive {...Responsive.onlyMobile} >
+                                        <DateInput
+                                            closable
+                                            name="endDate"
+                                            minDate={new Date()}
+                                            placeholder="expires on"
+                                            value={endDate}
+                                            iconPosition="left"
+                                            inline
+                                            required
+                                            dateFormat="YYYY-MM-DD"
+                                            onChange={this.handleChange} />
+                                    </Responsive>
+                                    <Responsive minWidth={Responsive.onlyMobile.maxWidth + 1}>
+                                        <DateInput
+                                            closable
+                                            popupPosition="bottom center"
+                                            name="endDate"
+                                            minDate={new Date()}
+                                            placeholder="expires on"
+                                            value={endDate}
+                                            iconPosition="left"
+                                            required
+                                            dateFormat="YYYY-MM-DD"
+                                            onChange={this.handleChange} />
+                                    </Responsive>
                                 </Form.Field>
                                 <Form.Field styleName='field-form' error={costError} required>
                                     <label>Maximum Price</label>

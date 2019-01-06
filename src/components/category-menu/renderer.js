@@ -8,33 +8,56 @@ import './index.css'
 class DropdownMenu extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            open: false
+        }
     }
-
+    mouseOver = () => {
+        this.setState({
+            open: true
+        })
+    }
+    mouseOut = () => {
+        this.setState({
+            open: false
+        })
+    }
+    handleClick = (e, slug, name) => {
+        this.setState({
+            open: false
+        })
+        this.props.onClick(e, slug, name)
+    }
     render() {
-        let { subcategories, name, activeCategory, slug } = this.props
+        const { open } = this.state
+        let { subcategories, name, activeCategory, slug, icon } = this.props
         let dropdown = subcategories ? subcategories.map((subCategory, index) => {
-            return <Dropdown.Item onClick={this.props.onClick} name={name} slug={subCategory.slug} key={index}>{subCategory.name}</Dropdown.Item>
+            return <Dropdown.Item onClick={(e) => this.handleClick(e, subCategory.slug, name)} name={name} slug={subCategory.slug} key={index}>{subCategory.name}</Dropdown.Item>
         }) : null
         const trigger = (
-            <span>
-                <Icon name={this.props.icon} /> {this.props.name}
-            </span>
+            <div onMouseOver={(e) => this.mouseOver(e)} onClick={(e) => this.handleClick(e, slug, name)}>
+                <Icon name={icon} /> {name}
+            </div>
         )
         return (
-            <Dropdown trigger={trigger} className={activeCategory == name ? 'active' : ''} styleName='menu-item' icon={null} item >
-                <Dropdown.Menu>
-                    <Dropdown.Item onClick={this.props.onClick} name={name} slug={slug} icon={this.props.icon} content={`  ${this.props.name}`} />
-                    {dropdown}
-                </Dropdown.Menu>
-            </Dropdown>
+            <div onMouseLeave={this.mouseOut}>
+                <Dropdown open={open} trigger={trigger} className={activeCategory == name ? 'active' : ''} styleName='menu-item' icon={null} item >
+                    <Dropdown.Menu  >
+                        {dropdown}
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
         )
     }
 }
 export default class CategoryMenu extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            open: false
+        }
     }
-    handleItemClick = (e, { slug, name }) => {
+    handleItemClick = (e, slug, name) => {
         this.props.setCategory(name)
         this.props.setSubCategory(slug)
         if (this.props.itemType == 'sale') {
@@ -46,6 +69,16 @@ export default class CategoryMenu extends React.Component {
             this.props.setPageNo('request', 1)
         }
     }
+    mouseOver = (slug) => {
+        this.setState({
+            open: slug
+        })
+    }
+    mouseOut = () => {
+        this.setState({
+            open: ''
+        })
+    }
     componentDidMount() {
     }
     subCategories = (category) => {
@@ -56,19 +89,22 @@ export default class CategoryMenu extends React.Component {
         }
     }
     render() {
+        const { open } = this.state
         const { activeCategory } = this.props
         return (
             <Grid.Column width={16}>
                 <Menu size={'large'} color={getTheme()} styleName='category-menu' borderless icon={'labeled'}>
-                    <Menu.Item name=''
-                        slug=''
-                        active={activeCategory === ''}
-                        onClick={this.handleItemClick}
-                        styleName='menu-item'
-                    >
-                        <Icon name='' />
-                        <span styleName='menu-span'>All</span>
-                    </Menu.Item>
+                    <div onMouseOver={(slug) => this.mouseOver('All')} onMouseLeave={this.mouseOut}>
+                        <Menu.Item name=''
+                            slug=''
+                            active={activeCategory === '' || open == 'All'}
+                            onClick={(e) => this.handleItemClick(e, '', '')}
+                            styleName='menu-item all-item'
+                        >
+                            <Icon name='' />
+                            <span styleName='menu-span'>All</span>
+                        </Menu.Item>
+                    </div>
                     <DropdownMenu
                         icon='computer'
                         name={'Electronics'}
@@ -96,38 +132,43 @@ export default class CategoryMenu extends React.Component {
                         subcategories={this.subCategories(categories.Academic)}
                         activeCategory={activeCategory}
                     />
-                    <Menu.Item name='Bicycles'
-                        slug={categories.Bicycles}
-                        active={activeCategory === 'Bicycles'}
-                        onClick={this.handleItemClick}
+                    <div onMouseOver={(slug) => this.mouseOver('Bicycles')} onMouseLeave={this.mouseOut}>
+                        <Menu.Item name='Bicycles'
+                            slug={categories.Bicycles}
+                            active={activeCategory === 'Bicycles' || open == 'Bicycles'}
+                            onClick={(e) => this.handleItemClick(e, categories.Bicycles, 'Bicycles')}
+                            styleName='menu-item'
+                        >
+                            <span ref={(el) => {
+                                if (el) {
+                                    el.style.setProperty('font-size', '1.2em', 'important');
+                                }
+                            }}>
+                                <Icon name='bicycle' />
+                            </span>
+                            <span styleName='menu-span'>Bicycles</span>
+                        </Menu.Item>
+                    </div>
+                    <div onMouseOver={(slug) => this.mouseOver('Miscellaneous')} onMouseLeave={this.mouseOut}>
+                        <Menu.Item name='Miscellaneous'
+                            slug={categories.Miscellaneous}
+                            active={activeCategory === 'Miscellaneous' || open == 'Miscellaneous'}
+                            onClick={(e) => this.handleItemClick(e, categories.Miscellaneous, 'Miscellaneous')}
                         styleName='menu-item'
-                    >
-                        <span ref={(el) => {
-                            if (el) {
-                                el.style.setProperty('font-size', '1.2em', 'important');
-                            }
-                        }}>
-                            <Icon name='bicycle' />
-                        </span>
-                        <span styleName='menu-span'>Bicycles</span>
-                    </Menu.Item>
-                    <Menu.Item name='Miscellaneous'
-                        slug={categories.Miscellaneous}
-                        active={activeCategory === 'Miscellaneous'}
-                        onClick={this.handleItemClick}
-                        styleName='menu-item'
-                    >
-                        <span ref={(el) => {
-                            if (el) {
-                                el.style.setProperty('font-size', '1em', 'important');
-                            }
-                        }}>
-                            <Icon name='box' />
-                        </span>
-                        <span styleName='menu-span'>Miscellaneous</span>
-                    </Menu.Item>
+                        >   <div>
+                            <span ref={(el) => {
+                                if (el) {
+                                    el.style.setProperty('font-size', '1em', 'important');
+                                }
+                            }}>
+                                <Icon name='box' />
+                            </span>
+                            <span styleName='menu-span'>Miscellaneous</span>
+                        </div>
+                        </Menu.Item>
+                    </div>
                 </Menu>
-            </Grid.Column>
+            </Grid.Column >
         )
     }
 }

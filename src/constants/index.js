@@ -10,14 +10,14 @@ export const sortOptions = [
         content: 'Latest'
     },
     {
-        text: 'Price--Low to High',
-        value: 'price--low to high',
-        content: 'Price--Low to High'
+        text: 'Price: Low to High',
+        value: 'price: low to high',
+        content: 'Price: Low to High'
     },
     {
-        text: 'Price--High to Low',
-        value: 'price--high to low',
-        content: 'Price--High to Low'
+        text: 'Price: High to Low',
+        value: 'price: high to low',
+        content: 'Price: High to Low'
     }
 ]
 

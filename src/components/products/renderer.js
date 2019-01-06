@@ -4,6 +4,8 @@ import { Switch, Route } from 'react-router-dom'
 import './index.css'
 import {
     Breadcrumb,
+    Sticky,
+    Grid
 } from 'semantic-ui-react'
 import CategoryMenu from '../category-menu'
 import ItemMenu from '../item-menu'
@@ -14,16 +16,18 @@ import { getThemeObject } from 'formula_one'
 export default class Items extends React.Component {
     constructor(props) {
         super(props)
+        // this.state = {
+        // }
     }
     handleItemClick = (e, { slug, name }) => {
         this.props.setCategory(name)
         this.props.setSubCategory(slug)
         if (this.props.itemType == 'sale') {
-            this.props.getSaleItems(`${slug}`, 1 , true)
+            this.props.getSaleItems(`${slug}`, 1, true)
             this.props.setPageNo('sale', 1)
         }
         else if (this.props.itemType == 'request') {
-            this.props.getRequestItems(`${slug}`, 1 , true)
+            this.props.getRequestItems(`${slug}`, 1, true)
             this.props.setPageNo('request', 1)
         }
     }
@@ -61,9 +65,9 @@ export default class Items extends React.Component {
                             items.push(
                                 <React.Fragment key={subCategory.slug}>
                                     <Breadcrumb.Divider icon='right angle' />
-                                    <Breadcrumb.Section style={{color : getThemeObject().hexCode}} onClick={this.handleItemClick} slug={category.slug} name={category.name} link>{category.name}</Breadcrumb.Section>
+                                    <Breadcrumb.Section styleName='all-item' style={{ color: getThemeObject().hexCode }} onClick={this.handleItemClick} slug={category.slug} name={category.name} link>{category.name}</Breadcrumb.Section>
                                     <Breadcrumb.Divider icon='right angle' />
-                                    <Breadcrumb.Section active>{subCategory.name}</Breadcrumb.Section>
+                                    <Breadcrumb.Section styleName='all-item' active>{subCategory.name}</Breadcrumb.Section>
                                 </React.Fragment>
                             )
                         }
@@ -73,22 +77,32 @@ export default class Items extends React.Component {
         }
         return (
             <Breadcrumb styleName='breadcrumb-container'>
-                <Breadcrumb.Section style={{color : getThemeObject().hexCode}} name='' slug='' onClick={this.handleItemClick} link>{item}</Breadcrumb.Section>
+                <Breadcrumb.Section style={{ color: getThemeObject().hexCode }} name='' slug='' onClick={this.handleItemClick} styleName='all-item' link>{item}</Breadcrumb.Section>
                 {items}
             </Breadcrumb>
         )
     }
+    // handleContextRef = contextRef => this.setState({ contextRef })
     render() {
         const { match } = this.props
+        // const { contextRef } = this.state
         return (
             <React.Fragment>
-                <Route path={`${match.path}`} component={ItemMenu} />
-                <Route path={`${match.path}`} component={CategoryMenu} />
-                <Switch>
-                    <Route exact path={`${match.path}`} render={(props) => <SaleItemList breadcrumb={this.breadcrumbContent} {...props} />} />
-                    <Route path={`${match.path}buy`} render={(props) => <SaleItemList breadcrumb={this.breadcrumbContent} {...props} />} />
-                    <Route path={`${match.path}request`} render={(props) => <RequestItemList breadcrumb={this.breadcrumbContent} {...props} />} />
-                </Switch>
+                <Grid.Column width={16}>
+                    {/* <Sticky context={contextRef}> */}
+                        <Route path={`${match.path}`} component={ItemMenu} />
+                        <Route path={`${match.path}`} component={CategoryMenu} />
+                    {/* </Sticky> */}
+                </Grid.Column>
+                <Grid.Column width={16}>
+                    {/* <div ref={this.handleContextRef}> */}
+                        <Switch>
+                            <Route exact path={`${match.path}`} render={(props) => <SaleItemList breadcrumb={this.breadcrumbContent} {...props} />} />
+                            <Route path={`${match.path}buy`} render={(props) => <SaleItemList breadcrumb={this.breadcrumbContent} {...props} />} />
+                            <Route path={`${match.path}request`} render={(props) => <RequestItemList breadcrumb={this.breadcrumbContent} {...props} />} />
+                        </Switch>
+                    {/* </div> */}
+                </Grid.Column>
             </React.Fragment>
         )
     }
