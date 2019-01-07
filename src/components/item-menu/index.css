@@ -7,3 +7,11 @@
     flex-direction: row;
     flex-wrap: nowrap;
 }
+
+.link-item {
+    outline: none !important;
+}
+
+.link-item:hover {
+    opacity: .6 !important;
+}

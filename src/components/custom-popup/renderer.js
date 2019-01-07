@@ -5,9 +5,11 @@ import {
     Popup,
     Header,
     Button,
-    Modal
+    Modal,
 } from 'semantic-ui-react'
+import { Redirect } from 'react-router-dom'
 import { getTheme } from 'formula_one'
+import { appUrl } from '../../constants/urls'
 import SaleItemForm from '../sale-item-form'
 import RequestItemForm from '../request-item-form'
 import './index.css'
@@ -18,20 +20,24 @@ export default class CustomPopup extends React.Component {
         this.state = {
             active: false,
             popup: false,
-            dimmerType: ''
+            dimmerType: '',
+            redirect: false,
+            redirectUrl: ''
         }
     }
     edit = (e, ) => {
         e.stopPropagation();
     }
     delete = (e, id, type) => {
+        const { detailView } = this.props
         e.stopPropagation();
         this.props.deleteItem(id, type)
         this.setState({
             active: false,
-            dimmerType: ''
+            dimmerType: '',
+            redirect: detailView,
+            redirectUrl: this.props.type
         })
-        e.stopPropagation();
     }
     handleDimmer = (e, value, type) => {
         this.setState({
@@ -55,15 +61,30 @@ export default class CustomPopup extends React.Component {
         this.childSubmit = childSubmit
         this.childFormError = childFormError
     }
+    renderRedirect = () => {
+        const {redirectUrl} = this.state
+        if (this.state.redirect) {
+            return <Redirect to={`${appUrl}${redirectUrl}`} />
+        }
+    }
     render() {
-        const { item, type } = this.props
+        const { item, type, detailView } = this.props
         const { active, popup, dimmerType } = this.state
         return (
             <>
-                <Popup onClick={(e) => this.stopPropagation(e)} onOpen={(e) => this.handlePopup(e, true)} onClose={(e) => this.handlePopup(e, false)} open={popup} on={['hover', 'click']} position={'right center'} trigger={<Icon floated='right' styleName='edit-icon' name='ellipsis horizontal'></Icon>} hoverable>
-                    <Icon styleName='card-icon' id={item.id} onClick={(e) => this.handleDimmer(e, true, 'edit')} name='edit'></Icon>
-                    <Icon styleName='card-icon' onClick={(e) => this.handleDimmer(e, true, 'delete')} name='delete'></Icon>
-                </Popup>
+                {detailView ?
+                    <>
+                        <div styleName='options-icon'>
+                            <Icon styleName='card-icon' id={item.id} onClick={(e) => this.handleDimmer(e, true, 'edit')} name='edit'></Icon>
+                            <Icon styleName='card-icon' onClick={(e) => this.handleDimmer(e, true, 'delete')} name='trash'></Icon>
+                        </div>
+                    </>
+                    :
+                    <Popup onClick={(e) => this.stopPropagation(e)} onOpen={(e) => this.handlePopup(e, true)} onClose={(e) => this.handlePopup(e, false)} open={popup} on={['hover', 'click']} position={'right center'} trigger={<Icon floated='right' styleName='edit-icon' name='ellipsis horizontal'></Icon>} hoverable>
+                        <Icon styleName='card-icon' id={item.id} onClick={(e) => this.handleDimmer(e, true, 'edit')} name='edit'></Icon>
+                        <Icon styleName='card-icon' onClick={(e) => this.handleDimmer(e, true, 'delete')} name='trash'></Icon>
+                    </Popup>
+                }
                 <Modal size='tiny' basic={dimmerType == 'delete'} open={active} onClose={(e) => this.handleDimmer(e, false, '')} onClick={(e) => this.stopPropagation(e)}>
                     {dimmerType == 'delete' ?
                         <>
@@ -104,6 +125,7 @@ export default class CustomPopup extends React.Component {
                         </>
                     }
                 </Modal>
+                {this.renderRedirect()}
             </>
         )
     }

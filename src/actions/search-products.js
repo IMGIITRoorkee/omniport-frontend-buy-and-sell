@@ -11,6 +11,7 @@ export const getSearchProducts = (query) => {
                 query: query
             },
         }).then((response) => {
+            console.log(response.data.results.slice())
             dispatch({
                 type: SEARCH_PRODUCTS,
                 payload: response.data.results.slice()

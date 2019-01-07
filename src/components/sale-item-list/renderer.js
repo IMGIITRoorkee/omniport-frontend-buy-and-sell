@@ -22,7 +22,7 @@ export default class SaleItemList extends React.Component {
     }
     onScroll = () => {
         const { saleProductCount, page } = this.props
-        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 2 && saleProductCount > (page * 10)) {
+        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 1 && saleProductCount > (page * 10)) {
             this.setState({
                 loading: true,
             }, () => {
@@ -116,13 +116,16 @@ export default class SaleItemList extends React.Component {
                                                     closeIcon>
                                                     <Modal.Content>
                                                         <Grid container styleName="dimmer-grid" >
-                                                            <ItemDetail saleItemDetail={item} />
+                                                            <ItemDetail modal={true} saleItemDetail={item} />
                                                         </Grid>
                                                     </Modal.Content>
                                                 </Modal>
                                             </Grid.Column>
                                         )
                                     })}
+                                    {this.props.saleItems.length == 0 ?
+                                        <Grid.Column styleName='no-items' width={16}>No items to show</Grid.Column>
+                                        : null}
                                 </Grid.Row>
                                 <Grid.Row centered styleName={'loader'}>
                                     <Grid.Column width={16} padded={"vertically"}>

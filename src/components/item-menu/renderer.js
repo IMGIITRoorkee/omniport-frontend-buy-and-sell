@@ -20,6 +20,7 @@ export default class ItemMenu extends React.Component {
             <Grid.Column width={16}>
                 <Menu styleName='item-menu' widths={width} size={'huge'} color={getTheme()} pointing secondary>
                     <Menu.Item
+                        styleName='link-item'
                         as={Link} name='sale'
                         active={itemType === 'sale'}
                         to={appUrl + 'buy/'}
@@ -29,6 +30,7 @@ export default class ItemMenu extends React.Component {
                         </span>
                     </Menu.Item>
                     <Menu.Item
+                        styleName='link-item'
                         as={Link} name='request'
                         active={itemType === 'request'}
                         to={appUrl + 'request/'}

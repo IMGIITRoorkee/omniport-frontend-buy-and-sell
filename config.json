@@ -1,4 +1,9 @@
+
 {
+	"nomenclature": {
+		"name": "buy_and_sell",
+		"verboseName": "Buy and sell"
+	},
 	"baseUrl": "/buy_and_sell",
 	"source": "buy_and_sell/src/index"
 }

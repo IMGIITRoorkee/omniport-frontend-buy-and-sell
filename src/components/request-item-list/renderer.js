@@ -3,7 +3,9 @@ import { render } from 'react-dom'
 import {
     Grid,
     Table,
-    Loader
+    Loader,
+    Placeholder,
+    Visibility
 } from 'semantic-ui-react'
 import CustomModal from '../request-modal'
 import { getTheme } from 'formula_one'
@@ -17,7 +19,7 @@ export default class RequestItemList extends React.Component {
     }
     onScroll = () => {
         const { requestProductCount, page } = this.props
-        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 2 && requestProductCount > (page * 10)) {
+        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 1 && requestProductCount > (page * 10)) {
             this.setState({
                 loading: true,
             }, () => {
@@ -40,6 +42,15 @@ export default class RequestItemList extends React.Component {
         window.addEventListener("scroll", this.onScroll, false)
 
     }
+    handleLoading = () => {
+        this.setState({ loading: true })
+
+        this.timerHandle = setTimeout(() => {
+            this.setState({
+                loading: false,
+            });
+        }, 1000);
+    }
 
     componentWillUnmount() {
         if (this.timerHandle) {                  // ***
@@ -57,6 +68,7 @@ export default class RequestItemList extends React.Component {
         return (
             <React.Fragment>
                 <Grid.Column width={16} styleName='items-grid'>
+                <Visibility fireOnMount onTopVisible={this.handleLoading} />
                     <Grid padded={"vertically"}>
                         <Grid.Row>
                             <Grid.Column width={8} floated={'left'}>
@@ -65,23 +77,36 @@ export default class RequestItemList extends React.Component {
                         </Grid.Row>
                         <Grid.Row >
                             <Grid.Column width={16} >
-                                <Table unstackable color={getTheme()} selectable>
-                                    <Table.Header>
-                                        <Table.Row>
-                                            <Table.HeaderCell width={6}>Item</Table.HeaderCell>
-                                            <Table.HeaderCell width={6}>Maximum price</Table.HeaderCell>
-                                            <Table.HeaderCell width={3} >Expiry date</Table.HeaderCell>
-                                            <Table.HeaderCell width={1}></Table.HeaderCell>
-                                        </Table.Row>
-                                    </Table.Header>
-                                    <Table.Body>
-                                        {requestItems.map((item, index) => {
-                                            return (
-                                                <CustomModal index={index} item={item} key={index} />
-                                            )
-                                        })}
-                                    </Table.Body>
-                                </Table>
+                                {loading ?
+                                    <Placeholder fluid>
+                                        <Placeholder.Header>
+                                            <Placeholder.Line styleName='p-holder' />
+                                            <Placeholder.Line styleName='p-holder' />
+                                            <Placeholder.Line styleName='p-holder' />
+                                        </Placeholder.Header>
+                                    </Placeholder>
+                                    :
+                                    <Table unstackable color={getTheme()} selectable>
+                                        <Table.Header>
+                                            <Table.Row>
+                                                <Table.HeaderCell width={6}>Item</Table.HeaderCell>
+                                                <Table.HeaderCell width={6}>Maximum price</Table.HeaderCell>
+                                                <Table.HeaderCell width={3} >Expiry date</Table.HeaderCell>
+                                                <Table.HeaderCell width={1}></Table.HeaderCell>
+                                            </Table.Row>
+                                        </Table.Header>
+                                        <Table.Body>
+                                            {requestItems.map((item, index) => {
+                                                return (
+                                                    <CustomModal index={index} item={item} key={index} />
+                                                )
+                                            })}
+                                        </Table.Body>
+                                    </Table>
+                                }
+                                {requestItems.length == 0 && !loading?
+                                    <Grid.Column styleName='no-items' width={16}>No items to show</Grid.Column>
+                                    : null}
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row styleName={'loader'}>

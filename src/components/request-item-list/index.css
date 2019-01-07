@@ -16,3 +16,12 @@
 .loader {
     padding-bottom: 2em !important;
 }
+
+.no-items {
+    font-size: 1.1em !important;
+    margin-left: .5em !important;
+}
+.p-holder{
+    padding-top:1em;
+    margin-top: 3em;
+}

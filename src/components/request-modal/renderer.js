@@ -23,7 +23,7 @@ export default class CustomRequestModal extends React.Component {
         return false
     }
     render() {
-        const { item, index, deleteItem } = this.props
+        const { item, index } = this.props
         return (
             <Modal key={index} trigger={
                 <Table.Row>
@@ -32,7 +32,7 @@ export default class CustomRequestModal extends React.Component {
                     <Table.Cell>{formatDate(item.endDate)}</Table.Cell>
                     <Table.Cell textAlign='right'>
                         {this.isOwner(item.person) ?
-                            <CustomPopup deleteItem={deleteItem} type='request' item={item} />
+                            <CustomPopup type='request' item={item} />
                             : null
                         }
                     </Table.Cell>

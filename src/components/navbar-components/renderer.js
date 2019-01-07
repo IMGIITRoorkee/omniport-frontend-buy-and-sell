@@ -79,12 +79,12 @@ export default class SearchBar extends React.Component {
     render() {
         const { isLoading, value } = this.state
         return (
-            <Grid container>
+            <Grid styleName='nav-cont' >
                 <Grid.Row centered>
-                    <Grid.Column computer={12} tablet={8} mobile={8}>
+                    <Grid.Column computer={10} tablet={8} mobile={8}>
                         <Grid padded={'horizontally'}>
                             <Grid.Row centered>
-                                <Grid.Column floated='right' computer={10} mobile={16}>
+                                <Grid.Column floated='right' computer={12} mobile={16}>
                                     <Search
                                         category
                                         loading={isLoading}
@@ -100,10 +100,10 @@ export default class SearchBar extends React.Component {
                             </Grid.Row>
                         </Grid>
                     </Grid.Column>
-                    <Grid.Column floated='right' computer={4} tablet={8} mobile={8} >
+                    <Grid.Column floated='right' computer={6} tablet={8} mobile={8} >
                         <Grid>
                             <Grid.Row>
-                                <Grid.Column width={8}>
+                                <Grid.Column width={6}>
                                     <Link to={appUrl + 'request_item/'}>
                                         <Button fluid={true}
                                             content='Request'
@@ -111,12 +111,18 @@ export default class SearchBar extends React.Component {
                                         />
                                     </Link>
                                 </Grid.Column>
-                                <Grid.Column width={8}>
+                                <Grid.Column width={6}>
                                     <Link to={appUrl + 'sell_item/'}>
                                         <Button fluid={true}
                                             color={getTheme()}
                                             content='Sell'
                                         />
+                                    </Link>
+
+                                </Grid.Column>
+                                <Grid.Column width={4}>
+                                    <Link to={appUrl + 'my_account/'}>
+                                        View Profile
                                     </Link>
                                 </Grid.Column>
                             </Grid.Row>

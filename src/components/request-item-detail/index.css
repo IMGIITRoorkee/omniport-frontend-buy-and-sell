@@ -69,3 +69,20 @@
     border-radius: 50%;
     margin-right: 10px;
 }
+
+.title {
+    text-transform: capitalize !important;
+    display: inline !important;
+    font-size: 1.5em !important;
+    font-weight: 700 !important;
+}
+
+.title-item {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+}
+
+.p-holder {
+    padding-top: 1em !important;
+}

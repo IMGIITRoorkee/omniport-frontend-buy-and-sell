@@ -248,7 +248,7 @@ export default class SaleItemForm extends React.Component {
                     {!item ?
                         <Grid.Row styleName='heading-row' centered>
                             <Grid.Column width={8}>
-                                <Header dividing as={'h2'}>Sell an Item</Header>
+                                <Header dividing as={'h2'}>Sell an item</Header>
                             </Grid.Column>
                         </Grid.Row>
                         : null}

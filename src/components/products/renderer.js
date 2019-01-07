@@ -16,8 +16,8 @@ import { getThemeObject } from 'formula_one'
 export default class Items extends React.Component {
     constructor(props) {
         super(props)
-        // this.state = {
-        // }
+        this.state = {
+        }
     }
     handleItemClick = (e, { slug, name }) => {
         this.props.setCategory(name)
@@ -82,26 +82,26 @@ export default class Items extends React.Component {
             </Breadcrumb>
         )
     }
-    // handleContextRef = contextRef => this.setState({ contextRef })
+    handleContextRef = contextRef => this.setState({ contextRef })
     render() {
         const { match } = this.props
-        // const { contextRef } = this.state
+        const { contextRef } = this.state
         return (
             <React.Fragment>
                 <Grid.Column width={16}>
-                    {/* <Sticky context={contextRef}> */}
+                    {/* <Sticky scrollContext={window}> */}
                         <Route path={`${match.path}`} component={ItemMenu} />
                         <Route path={`${match.path}`} component={CategoryMenu} />
                     {/* </Sticky> */}
                 </Grid.Column>
                 <Grid.Column width={16}>
-                    {/* <div ref={this.handleContextRef}> */}
+                    <div ref={this.handleContextRef}>
                         <Switch>
                             <Route exact path={`${match.path}`} render={(props) => <SaleItemList breadcrumb={this.breadcrumbContent} {...props} />} />
                             <Route path={`${match.path}buy`} render={(props) => <SaleItemList breadcrumb={this.breadcrumbContent} {...props} />} />
                             <Route path={`${match.path}request`} render={(props) => <RequestItemList breadcrumb={this.breadcrumbContent} {...props} />} />
                         </Switch>
-                    {/* </div> */}
+                    </div>
                 </Grid.Column>
             </React.Fragment>
         )

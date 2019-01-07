@@ -6,3 +6,7 @@
 :global .bns-nav-search-bar>.input>.prompt {
     border-radius: 4px;
 }
+
+.nav-cont {
+    flex-grow: 1 !important;
+}

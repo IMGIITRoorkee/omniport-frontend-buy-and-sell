@@ -51,6 +51,9 @@
 
 .title {
     text-transform: capitalize !important;
+    display: inline !important;
+    font-size: 1.5em !important;
+    font-weight: 700 !important;
 }
 
 .popup-flex {
@@ -71,4 +74,18 @@
 
 .detail-div {
     margin-top: 1em !important;
+}
+
+.table-p {
+    margin-top: 1.5em !important;
+}
+
+.pholder-line {
+    padding-top: 1em !important;
+}
+
+.title-item {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
 }

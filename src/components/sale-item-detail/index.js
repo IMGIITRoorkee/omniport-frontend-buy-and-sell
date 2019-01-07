@@ -11,7 +11,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getSaleItemDetail: (param) => {
             dispatch(getSaleItemDetail(param));
-        }
+        },
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

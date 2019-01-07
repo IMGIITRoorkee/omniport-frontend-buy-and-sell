@@ -33,3 +33,8 @@
     float: right !important;
     text-align: left;
 }
+
+.no-items {
+    font-size: 1.1em !important;
+    margin-left: .5em !important;
+}
