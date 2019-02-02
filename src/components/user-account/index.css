@@ -5,7 +5,7 @@
     background-position: 50% 50% !important;
     background-repeat: no-repeat !important;
     border: #ffffff 3px solid;
-    border-radius: 5px;
+    border-radius: 50%;
     box-sizing: border-box !important;
 }
 
@@ -77,15 +77,25 @@
 .sale-row {
     margin-top: -1em !important;
 }
-.slide{
+
+.slide {
     padding-top: .4em !important;
     margin-left: .5em !important;
 }
+
 .no-items {
     font-size: 1.1em !important;
     margin-left: .5em !important;
 }
-.p-holder{
-    padding-top:1em;
-    margin-top: 3em;
+
+.p-holder {
+    background: #F5F5F5 !important;
+}
+
+.p-holder-img {
+    color: #F5F5F5 !important;
+}
+
+.p-holder-h::before {
+    background: #F5F5F5 !important;
 }

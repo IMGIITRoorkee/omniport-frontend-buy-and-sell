@@ -1,8 +1,6 @@
 .items-grid {
+    margin-top: 1.5em !important;
     background-color: #F5F5F5 !important;
-    padding-left: 42px !important;
-    padding-right: 42px !important;
-    margin-top: .5em !important;
 }
 
 .item-img {
@@ -21,7 +19,9 @@
     font-size: 1.1em !important;
     margin-left: .5em !important;
 }
-.p-holder{
-    padding-top:1em;
+
+.p-holder {
+    padding-top: 1em;
     margin-top: 3em;
+    background: #F5F5F5 !important;
 }

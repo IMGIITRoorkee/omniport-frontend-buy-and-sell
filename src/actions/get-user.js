@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { whoAmIUrl, GET_USER, loginUrl } from '../constants'
+import { whoAmIUrl, GET_USER } from '../constants'
 
 export const getUser = () => {
   return dispatch => {
@@ -12,7 +12,6 @@ export const getUser = () => {
           payload: res.data
         })
       })
-      .catch(err => {
-      })
+      .catch(err => {})
   }
 }

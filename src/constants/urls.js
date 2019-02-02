@@ -1,12 +1,13 @@
-export const saleItemUrl = "/api/buy_and_sell/sale/"
-export const saleProductUrl = "/api/buy_and_sell/sale_product/"
-export const appUrl = '/buy_and_sell/';
+export const saleItemUrl = '/api/buy_and_sell/sale/'
+export const saleProductUrl = '/api/buy_and_sell/sale_product/'
+export const appUrl = '/buy_and_sell/'
 export const categoriesUrl = '/api/buy_and_sell/categories/'
 export const paymentUrl = '/api/buy_and_sell/payment/'
 export const whoAmIUrl = '/api/buy_and_sell/who_am_i/'
 export const loginUrl = '/session_auth/login/'
-export const defaultImageUrl = 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
-export const requestItemUrl = "/api/buy_and_sell/request/"
-export const requestProductUrl = "/api/buy_and_sell/request_product/"
-export const searchUrl = "/api/buy_and_sell/search/"
-export const pictureUrl = "/api/buy_and_sell/picture/"
+export const defaultImageUrl =
+  'https://react.semantic-ui.com/images/avatar/large/matthew.png'
+export const requestItemUrl = '/api/buy_and_sell/request/'
+export const requestProductUrl = '/api/buy_and_sell/request_product/'
+export const searchUrl = '/api/buy_and_sell/search/'
+export const pictureUrl = '/api/buy_and_sell/picture/'

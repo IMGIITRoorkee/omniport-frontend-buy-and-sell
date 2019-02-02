@@ -1,25 +1,32 @@
 import { connect } from 'react-redux'
-import { getUserRequestItems, getUserSaleItems, changePhoneStatus } from '../../actions';
-import Component from './renderer';
+import {
+  getUserRequestItems,
+  getUserSaleItems,
+  changePhoneStatus
+} from '../../actions'
+import Component from './renderer'
 
-function mapStateToProps(state) {
-    return {
-        userProducts: state.userProducts,
-        categories: state.categories,
-        user: state.user
-    }
+function mapStateToProps (state) {
+  return {
+    userProducts: state.userProducts,
+    categories: state.categories,
+    user: state.user
+  }
 }
 const mapDispatchToProps = dispatch => {
-    return {
-        getRequestItems: (page, replace) => {
-            dispatch(getUserRequestItems(page, replace));
-        },
-        getSaleItems: (page, replace) => {
-            dispatch(getUserSaleItems(page, replace));
-        },
-        changePhoneStatus: (data) => {
-            dispatch(changePhoneStatus(data));
-        },
+  return {
+    getRequestItems: (page, replace) => {
+      dispatch(getUserRequestItems(page, replace))
+    },
+    getSaleItems: (page, replace) => {
+      dispatch(getUserSaleItems(page, replace))
+    },
+    changePhoneStatus: data => {
+      dispatch(changePhoneStatus(data))
     }
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Component);
+  }
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Component)

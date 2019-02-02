@@ -7,56 +7,48 @@ import { getTheme } from 'formula_one'
 import './index.css'
 
 export default class ItemMenu extends React.Component {
-    constructor(props) {
-        super(props)
-
-    }
-    componentDidMount() {
-
-    }
-    getMenu = (width) => {
-        const { itemType } = this.props
-        return (
-            <Grid.Column width={16}>
-                <Menu styleName='item-menu' widths={width} size={'huge'} color={getTheme()} pointing secondary>
-                    <Menu.Item
-                        styleName='link-item'
-                        as={Link} name='sale'
-                        active={itemType === 'sale'}
-                        to={appUrl + 'buy/'}
-                    >
-                        <span styleName='type-name'>
-                            Items for sale
-                        </span>
-                    </Menu.Item>
-                    <Menu.Item
-                        styleName='link-item'
-                        as={Link} name='request'
-                        active={itemType === 'request'}
-                        to={appUrl + 'request/'}
-                    >
-                        <span styleName='type-name'>
-                            Requested items
-                        </span>
-                    </Menu.Item>
-                </Menu>
-            </Grid.Column>
-        )
-    }
-    render() {
-        return (
-            <>
-                <Responsive
-                    {...Responsive.onlyMobile}
-                >
-                    {this.getMenu(2)}
-                </Responsive>
-                <Responsive
-                minWidth={Responsive.onlyMobile.maxWidth+1}
-                >
-                    {this.getMenu(4)}
-                </Responsive>
-            </>
-        )
-    }
+  getMenu = width => {
+    const { itemType } = this.props
+    return (
+      <Grid.Column width={16}>
+        <Menu
+          styleName='item-menu'
+          widths={width}
+          size={'huge'}
+          color={getTheme()}
+          pointing
+          secondary
+        >
+          <Menu.Item
+            styleName='link-item'
+            as={Link}
+            name='sale'
+            active={itemType === 'sale'}
+            to={appUrl + 'buy/'}
+          >
+            <span styleName='type-name'>Items for sale</span>
+          </Menu.Item>
+          <Menu.Item
+            styleName='link-item'
+            as={Link}
+            name='request'
+            active={itemType === 'request'}
+            to={appUrl + 'request/'}
+          >
+            <span styleName='type-name'>Requested items</span>
+          </Menu.Item>
+        </Menu>
+      </Grid.Column>
+    )
+  }
+  render () {
+    return (
+      <>
+        <Responsive {...Responsive.onlyMobile}>{this.getMenu(2)}</Responsive>
+        <Responsive minWidth={Responsive.onlyMobile.maxWidth + 1}>
+          {this.getMenu(4)}
+        </Responsive>
+      </>
+    )
+  }
 }

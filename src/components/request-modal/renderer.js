@@ -1,50 +1,51 @@
-
 import React from 'react'
 import { render } from 'react-dom'
-import {
-    Grid,
-    Modal,
-    Table,
-} from 'semantic-ui-react'
+import { Grid, Modal, Table } from 'semantic-ui-react'
+import { isMobile } from 'react-device-detect'
 import CustomPopup from '../custom-popup'
 import { formatDate } from '../../constants'
 import ItemDetail from '../request-item-detail/renderer'
+import './index.css'
 export default class CustomRequestModal extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
+  constructor (props) {
+    super(props)
+    this.state = {}
+  }
+  isOwner = itemUser => {
+    const { user } = this.props
+    if (user.person) {
+      return user.person.id === itemUser.person.id
+    }
+    return false
+  }
+  render () {
+    const { item, index } = this.props
+    return (
+      <Modal
+        size='tiny'
+        key={index}
+        trigger={
+          <Table.Row>
+            <Table.Cell>{item.name}</Table.Cell>
+            <Table.Cell>₹{item.cost}</Table.Cell>
+            <Table.Cell>{formatDate(item.endDate)}</Table.Cell>
+            {!isMobile ? (
+              <Table.Cell width={1} textAlign='right'>
+                {this.isOwner(item.person) ? (
+                  <CustomPopup type='request' item={item} />
+                ) : null}
+              </Table.Cell>
+            ) : null}
+          </Table.Row>
         }
-    }
-    isOwner = (itemUser) => {
-        const { user } = this.props
-        if (user.person) {
-            return user.person.contactInformation.emailAddress == itemUser.person.contactInformation.emailAddress
-        }
-        return false
-    }
-    render() {
-        const { item, index } = this.props
-        return (
-            <Modal key={index} trigger={
-                <Table.Row>
-                    <Table.Cell>{item.name}</Table.Cell>
-                    <Table.Cell>{item.cost}</Table.Cell>
-                    <Table.Cell>{formatDate(item.endDate)}</Table.Cell>
-                    <Table.Cell textAlign='right'>
-                        {this.isOwner(item.person) ?
-                            <CustomPopup type='request' item={item} />
-                            : null
-                        }
-                    </Table.Cell>
-                </Table.Row>
-            }
-                closeIcon>
-                <Modal.Content>
-                    <Grid container >
-                        <ItemDetail modal={true} requestItemDetail={item} />
-                    </Grid>
-                </Modal.Content>
-            </Modal>
-        )
-    }
+        closeIcon
+      >
+        <Modal.Content>
+          <Grid>
+            <ItemDetail modal requestItemDetail={item} />
+          </Grid>
+        </Modal.Content>
+      </Modal>
+    )
+  }
 }

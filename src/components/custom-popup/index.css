@@ -35,10 +35,9 @@
 }
 
 .options-icon {
-    min-width: 42px !important;
+    min-width: 45px !important;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
-    margin-top: .3em; 
 }

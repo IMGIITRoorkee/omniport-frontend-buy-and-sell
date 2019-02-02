@@ -46,12 +46,18 @@
     cursor: default;
 }
 
+.data-values {
+    font-weight: 700 !important;
+    text-align: right !important;
+}
+
 .enquire-flex {
     justify-content: flex-end !important;
 }
 
 .title {
     text-transform: capitalize !important;
+    padding-bottom: .3em !important
 }
 
 .popup-flex {
@@ -85,4 +91,8 @@
 
 .p-holder {
     padding-top: 1em !important;
+}
+
+.detail-div {
+    padding-top: 3em !important;
 }

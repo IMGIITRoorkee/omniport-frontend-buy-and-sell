@@ -1,10 +1,10 @@
-import { SET_ITEM_TYPE } from '../constants/action-types';
+import { SET_ITEM_TYPE } from '../constants/action-types'
 const setItemType = (state = '', action) => {
-    switch (action.type) {
-        case SET_ITEM_TYPE:
-            return action.payload;
-        default:
-            return state
-    }
+  switch (action.type) {
+    case SET_ITEM_TYPE:
+      return action.payload
+    default:
+      return state
+  }
 }
-export default setItemType;
+export default setItemType

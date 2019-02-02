@@ -1,20 +1,21 @@
 import { connect } from 'react-redux'
 import Component from './renderer'
-import { getCategories, getUser } from '../../actions';
+import { getCategories, getUser } from '../../actions'
 
-function mapStateToProps(state) {
-    return {
-    }
+function mapStateToProps (state) {
+  return {}
 }
 const mapDispatchToProps = dispatch => {
-    return {
-        getCategories: () => {
-            dispatch(getCategories());
-        },
-        getUser: () => {
-            dispatch(getUser())
-        }
-
+  return {
+    getCategories: () => {
+      dispatch(getCategories())
+    },
+    getUser: () => {
+      dispatch(getUser())
     }
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Component);
+  }
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Component)

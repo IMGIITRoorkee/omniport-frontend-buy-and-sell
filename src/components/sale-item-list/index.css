@@ -1,9 +1,7 @@
 .items-grid {
     background-color: #F5F5F5 !important;
-    padding-left: 42px !important;
     margin-top: 1.5em !important;
     box-sizing: border-box !important;
-    padding-right: 1em !important;
 }
 
 .sort-dropdown {}
@@ -27,6 +25,9 @@
 .card-div {
     height: 100% !important;
     margin-bottom: 1.3em !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .sort {
@@ -37,4 +38,8 @@
 .no-items {
     font-size: 1.1em !important;
     margin-left: .5em !important;
+}
+
+.sort-mobile {
+    margin-top: 1em !important;
 }
