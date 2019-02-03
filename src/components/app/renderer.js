@@ -24,7 +24,7 @@ const creators = [
 export default class App extends React.Component {
   componentDidMount () {
     this.props.getCategories()
-    this.props.getUser()
+    // this.props.getUser()
   }
 
   render () {
