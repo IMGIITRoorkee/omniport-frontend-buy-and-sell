@@ -30,7 +30,7 @@ export default class AddButton extends React.Component {
             >
               +
             </div>
-            <Transition visible={visible} animation='fade up' duration={500}>
+            <Transition visible={visible} animation='zoom' duration={400}>
               <Link
                 onClick={this.toggleVisibility}
                 to='/buy_and_sell/sell_item/'
@@ -39,7 +39,7 @@ export default class AddButton extends React.Component {
                 <div styleName='item-btn-div'>Add Sale Item</div>
               </Link>
             </Transition>
-            <Transition visible={visible} animation='fade up' duration={500}>
+            <Transition visible={visible} animation='zoom' duration={400}>
               <Link
                 onClick={this.toggleVisibility}
                 to='/buy_and_sell/request_item/'

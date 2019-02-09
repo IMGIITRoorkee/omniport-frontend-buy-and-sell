@@ -164,7 +164,7 @@ export default class SaleItemDetail extends React.Component {
                     ) : (
                       <>
                         <div styleName='title'>{saleItemDetail.name}</div>
-                        {!modal ? (
+                        {!modal && this.isOwner(saleItemDetail.person) ? (
                           <CustomPopup
                             detailView
                             type='buy'
