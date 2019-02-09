@@ -10,7 +10,8 @@ function mapStateToProps (state) {
   return {
     userProducts: state.userProducts,
     categories: state.categories,
-    user: state.user
+    user: state.user,
+    loaders: state.loaders
   }
 }
 const mapDispatchToProps = dispatch => {

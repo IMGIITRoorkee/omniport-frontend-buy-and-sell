@@ -11,6 +11,8 @@ import RequestItemDetail from '../request-item-detail'
 import RequestItemForm from '../request-item-form'
 import SearchBar from '../navbar-components'
 import UserAccount from '../user-account'
+import AddButton from '../add-item-button'
+
 const creators = [
   {
     name: 'Vivek Chand',
@@ -21,16 +23,21 @@ const creators = [
     role: 'Designer'
   }
 ]
+
 export default class App extends React.Component {
   componentDidMount () {
     this.props.getCategories()
-    // this.props.getUser()
+    this.props.getUser()
   }
 
   render () {
     const { match } = this.props
     return (
       <div styleName='app-wrapper'>
+        <Route
+          path={`${match.path}`}
+          render={props => <AddButton {...props} />}
+        />
         <Switch>
           <Route
             path={`${match.path}`}

@@ -1,12 +1,98 @@
 :global .bns-nav-search-bar>.input {
     width: 100% !important;
     border-radius: 0 !important;
+    z-index: 1000 !important;
+}
+
+:global .bns-nav-search-bar>.input>.prompt::placeholder {
+    color: #333333 !important;
 }
 
 :global .bns-nav-search-bar>.input>.prompt {
     border-radius: 4px;
 }
 
+:global .bns-nav-search-bar-mobile {
+    width: 100% !important;
+}
+
+:global .focused-search-mobile>.input.icon.ui {
+    width: 100% !important;
+}
+
+:global .bns-nav-search-bar-mobile>.input {
+    width: 50px !important;
+    -webkit-transition: width 0.4s ease-in !important;
+    -moz-transition: width 0.4s ease-in !important;
+    transition: width 0.4s ease-in !important;
+    float: right !important;
+    margin-top: 5px !important;
+}
+
+:global .bns-nav-search-bar-mobile>.input>.search {
+    font-size: 120% !important;
+}
+
+:global .bns-nav-search-bar-mobile>.input>input {
+    -webkit-transition: border 0.4s ease-in !important;
+    -moz-transition: border 0.4s ease-in !important;
+    transition: border 0.4s ease-in !important;
+    border: none !important;
+}
+
+:global .bns-nav-search-bar-mobile>.input>input:focus {
+    border: 1px solid #85b7d9 !important;
+    width: 100% !important;
+}
+
 .nav-cont {
     flex-grow: 1 !important;
+    z-index: 50 !important;
+}
+
+.account-btn {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-end !important;
+}
+
+.account-btn-link {
+    align-self: center !important;
+    outline: none !important;
+    opacity: .75 !important;
+    font-size: 75% !important;
+    margin-top: .3em !important;
+}
+
+.account-btn-link:hover {
+    opacity: 1 !important;
+}
+
+.form-btn {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+}
+
+.search-btn-mobile {
+    opacity: .75 !important;
+    font-size: 1.5em !important;
+    margin-top: .3em !important;
+    cursor: pointer !important;
+}
+
+.search-btn-mobile:hover {
+    opacity: 1 !important;
+}
+
+.mobile-modal {
+    background: rgba(0, 0, 0, 0) !important;
+    box-shadow: none !important;
+    top: 0 !important;
+    margin: 0 !important;
+}
+
+.mobile-modal-search {
+    background: rgba(0, 0, 0, 0) !important;
+    box-shadow: none !important;
 }

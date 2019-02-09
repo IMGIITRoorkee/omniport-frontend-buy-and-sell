@@ -6,57 +6,39 @@ import {
   Header,
   Modal,
   Loader,
-  Divider
+  Divider,
+  Visibility
 } from 'semantic-ui-react'
 import { isMobile } from 'react-device-detect'
 import ItemCard from '../sale-item-card/'
 import ItemDetail from '../sale-item-detail/renderer'
 import { sortOptions } from '../../constants'
+import { getTheme } from 'formula_one'
 import './index.css'
 
 export default class SaleItemList extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      loading: false
-    }
+  state = {
+    bottom: true
   }
-  onScroll = () => {
-    const { saleProductCount, page } = this.props
-    if (
-      window.innerHeight + window.scrollY >= document.body.scrollHeight - 1 &&
-      saleProductCount > page * 10
-    ) {
-      this.setState(
-        {
-          loading: true
-        },
-        () => {
-          this.props.getSaleItems(this.props.activeSubCategory, 1 + page)
-          this.props.setPageNo('sale', page + 1)
-          this.timerHandle = setTimeout(() => {
-            this.setState({
-              loading: false
-            })
-            this.timerHandle = 0
-          }, 300)
-        }
-      )
-    }
-  }
+
   componentDidMount () {
-    this.props.getSaleItems(this.props.activeSubCategory, 1, true)
-    this.props.setItemType('sale')
-    this.props.setPageNo('sale', 1)
-    window.addEventListener('scroll', this.onScroll, false)
+    const {
+      getSaleItems,
+      setItemType,
+      setPageNo,
+      activeSubCategory
+    } = this.props
+    getSaleItems(activeSubCategory, 1, true)
+    setItemType('sale')
+    setPageNo('sale', 1)
   }
-  componentWillUnmount () {
-    if (this.timerHandle) {
-      // ***
-      clearTimeout(this.timerHandle) // ***
-      this.timerHandle = 0 // ***
+
+  componentDidUpdate (prevProps) {
+    if (this.props.activeSubCategory !== prevProps.activeSubCategory) {
+      this.setState({
+        bottom: true
+      })
     }
-    window.removeEventListener('scroll', this.onScroll, false)
   }
   handleSortChange = (e, { value }) => {
     let itemsNewList = this.props.saleItems.slice()
@@ -82,9 +64,21 @@ export default class SaleItemList extends React.Component {
     }
   }
 
+  handleUpdate = () => {
+    const { saleProductCount, page, activeSubCategory } = this.props
+    if (saleProductCount > page * 10) {
+      this.props.getSaleItems(activeSubCategory, 1 + page)
+      this.props.setPageNo('sale', page + 1)
+    } else {
+      this.setState({
+        bottom: false
+      })
+    }
+  }
+
   render () {
-    const { breadcrumb } = this.props
-    const { loading } = this.state
+    const { bottom } = this.state
+    const { breadcrumb, loading, saleItems } = this.props
     return (
       <React.Fragment>
         <Grid.Column width={16} styleName='items-grid'>
@@ -130,7 +124,7 @@ export default class SaleItemList extends React.Component {
             <Grid.Row centered>
               <Grid divided={'vertically'} stackable columns={5}>
                 <Grid.Row stretched>
-                  {this.props.saleItems.map((item, index) => {
+                  {saleItems.map((item, index) => {
                     return (
                       <Grid.Column stretched key={index}>
                         <Modal
@@ -151,19 +145,25 @@ export default class SaleItemList extends React.Component {
                       </Grid.Column>
                     )
                   })}
-                  {this.props.saleItems.length == 0 ? (
+                  {saleItems.length == 0 && loading === false ? (
                     <Grid.Column styleName='no-items' width={16}>
                       No items to show
                     </Grid.Column>
                   ) : null}
                 </Grid.Row>
-                <Grid.Row centered styleName={'loader'}>
-                  <Grid.Column width={16} padded={'vertically'}>
-                    <Divider hidden fitted />
-                    {loading ? <Loader active /> : null}
-                    <Divider hidden fitted />
-                  </Grid.Column>
-                </Grid.Row>
+                {bottom ? (
+                  <Grid.Row centered styleName={'loader'}>
+                    <Grid.Column width={16} padded={'vertically'}>
+                      <Visibility
+                        once={false}
+                        onBottomVisible={() => this.handleUpdate()}
+                      />
+                      <Divider hidden fitted />
+                      {loading ? <Loader active /> : null}
+                      <Divider hidden fitted />
+                    </Grid.Column>
+                  </Grid.Row>
+                ) : null}
               </Grid>
             </Grid.Row>
           </Grid>

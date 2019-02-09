@@ -12,6 +12,7 @@ export default class AppRouter extends Component {
   constructor (props) {
     super(props)
     this.store = createStore(rootReducers, applyMiddleware(thunk))
+    window.store = this.store
   }
 
   render () {

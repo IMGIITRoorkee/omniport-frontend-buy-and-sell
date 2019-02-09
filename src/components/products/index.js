@@ -13,7 +13,8 @@ function mapStateToProps (state) {
     activeCategory: state.activeCategory,
     activeSubCategory: state.activeSubCategory,
     categories: state.categories,
-    itemType: state.itemType
+    itemType: state.itemType,
+    searchFocus: state.searchFocus
   }
 }
 const mapDispatchToProps = dispatch => {

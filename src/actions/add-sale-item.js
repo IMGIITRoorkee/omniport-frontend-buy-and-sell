@@ -18,6 +18,10 @@ export const addSaleItem = (data, pictures) => {
     })
       .then(response => {
         if (response.statusText == 'Created') {
+          let responseData = {
+            status: true,
+            value: 'Congratulations! item has been added to Sale items.'
+          }
           pictures.map((picture, index) => {
             let headers = {
               Accept: 'application/json',
@@ -35,34 +39,17 @@ export const addSaleItem = (data, pictures) => {
                 headers: headers,
                 data: formData
               })
-                .then(res => {
-                  const response = {
-                    messageType: 'success',
-                    value: 'Your item has been added to Sale items.'
-                  }
-                  dispatch({
-                    type: SALE_ITEM_ADD_MESSAGE,
-                    payload: response
-                  })
-                })
-                .catch(error => {
-                  const response = {
-                    messageType: 'error',
-                    value:
-                      'Sorry. There seems to be an error, some of the images could not be added. Please try again'
-                  }
-                  dispatch({
-                    type: SALE_ITEM_ADD_MESSAGE,
-                    payload: response
-                  })
-                })
             }
+          })
+          dispatch({
+            type: SALE_ITEM_ADD_MESSAGE,
+            payload: responseData
           })
         }
       })
-      .catch(error => {
+      .catch(() => {
         const response = {
-          messageType: 'negative',
+          status: false,
           value: 'Sorry. There has been an error. Please try again!'
         }
         dispatch({

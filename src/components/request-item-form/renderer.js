@@ -12,6 +12,7 @@ import {
   Header,
   Message
 } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import { getTheme } from 'formula_one'
 import { DateInput } from 'semantic-ui-calendar-react'
 import './index.css'
@@ -66,6 +67,42 @@ export default class RequestItemForm extends React.Component {
     }
   }
 
+  componentDidMount () {
+    const { item, shareSubmit } = this.props
+    if (item) {
+      shareSubmit(this.handleSubmit.bind(this))
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    if (
+      this.props.appMessages.requestItemMessage !==
+      prevProps.appMessages.requestItemMessage
+    ) {
+      const { appMessages } = this.props
+      if (appMessages.requestItemMessage.status) {
+        this.setState({
+          endDate: '',
+          name: '',
+          category: {
+            name: '',
+            slug: ''
+          },
+          cost: '',
+          isPhoneVisible: false,
+          nameError: false,
+          costError: false,
+          categoryError: false,
+          formError: true
+        })
+      }
+    }
+  }
+
+  componentWillUnmount () {
+    this.props.updateMessage()
+  }
+
   toggle = () => this.setState({ isPhoneVisible: !this.state.isPhoneVisible })
 
   handleChange = (event, { name, value }) => {
@@ -104,9 +141,10 @@ export default class RequestItemForm extends React.Component {
       }
     }
   }
+
   handleSubmit = e => {
     const { endDate, name, category, cost, isPhoneVisible } = this.state
-    const { item } = this.props
+    const { item, appMessages } = this.props
     if (category.slug === '') {
       this.setState({
         categoryError: true,
@@ -144,17 +182,9 @@ export default class RequestItemForm extends React.Component {
       this.props.handleDimmer(e)
     } else {
       this.props.addRequestItem(formData)
-      setTimeout(() => {
-        this.props.history.replace('/buy_and_sell/request/')
-      }, 500)
     }
   }
-  componentDidMount () {
-    const { item, shareSubmit } = this.props
-    if (item) {
-      shareSubmit(this.handleSubmit.bind(this))
-    }
-  }
+
   handleCategoryChange = (e, { value, name, slug }) => {
     let result = false
     const { costError, nameError, categoryError } = this.state
@@ -170,6 +200,7 @@ export default class RequestItemForm extends React.Component {
       formError: result
     })
   }
+
   dropdown = () => {
     const { categories } = this.props
     const item = []
@@ -205,8 +236,9 @@ export default class RequestItemForm extends React.Component {
     })
     return item
   }
+
   render () {
-    const { user, item } = this.props
+    const { user, item, appMessages } = this.props
     const {
       formError,
       costError,
@@ -214,9 +246,33 @@ export default class RequestItemForm extends React.Component {
       categoryError,
       endDate
     } = this.state
+
     return (
       <Grid.Column width={16}>
         <Grid padded stackable styleName={!item ? 'grid-cont' : ''}>
+          {appMessages.requestItemMessage.status !== null ? (
+            <Grid.Row centered>
+              <Grid.Column width={8}>
+                {!appMessages.requestItemMessage.status ? (
+                  <Message negative>
+                    <Message.Header>
+                      {appMessages.requestItemMessage.value}
+                    </Message.Header>
+                  </Message>
+                ) : (
+                  <Message success>
+                    <Message.Header>
+                      {appMessages.requestItemMessage.value}
+                    </Message.Header>
+                    <p>
+                      You can view your item{' '}
+                      <Link to='/buy_and_sell/request'>here</Link>
+                    </p>
+                  </Message>
+                )}
+              </Grid.Column>
+            </Grid.Row>
+          ) : null}
           {!item ? (
             <Grid.Row styleName='heading-row' centered>
               <Grid.Column width={8}>
@@ -322,8 +378,13 @@ export default class RequestItemForm extends React.Component {
                   />
                 </Form.Field>
                 <Form.Field styleName='field-form'>
+                  <label>Mobile number</label>
                   <Radio
-                    label='Add phone number'
+                    label={` ${
+                      user.person
+                        ? user.person.contactInformation.primaryPhoneNumber
+                        : ''
+                    }  ( Add mobile number )`}
                     name='isPhoneVisible'
                     onChange={this.toggle}
                     toggle

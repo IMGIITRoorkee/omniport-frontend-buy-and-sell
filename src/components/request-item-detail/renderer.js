@@ -36,6 +36,12 @@ export default class RequestItemDetail extends React.Component {
       }
     }
   }
+
+  componentWillUnmount () {
+    if (this.props.clearRequestItem) {
+      this.props.clearRequestItem()
+    }
+  }
   handleLoading = () => {
     this.setState({ loading: true })
     this.timerHandle = setTimeout(() => {
@@ -45,6 +51,15 @@ export default class RequestItemDetail extends React.Component {
       this.timerHandle = 0
     }, 500)
   }
+
+  isOwner = itemUser => {
+    const { user } = this.props
+    if (user.person) {
+      return user.person.id === itemUser.person.id
+    }
+    return false
+  }
+
   render () {
     const { requestItemDetail, modal } = this.props
     const { loading } = this.state
@@ -72,7 +87,7 @@ export default class RequestItemDetail extends React.Component {
                   ) : (
                     <Grid.Column width={16} styleName='title-item'>
                       <div styleName='title'>{requestItemDetail.name}</div>
-                      {!modal ? (
+                      {!modal && this.isOwner(requestItemDetail.person) ? (
                         <CustomPopup
                           detailView
                           type='request'

@@ -16,7 +16,7 @@
     border: none !important;
     box-shadow: none !important;
     justify-content: center !important;
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important;
 }
 
 .menu-item:hover {

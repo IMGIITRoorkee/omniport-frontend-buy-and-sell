@@ -11,8 +11,10 @@ import {
   Form,
   Header,
   Image,
+  TextArea,
   Responsive
 } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import { DateInput } from 'semantic-ui-calendar-react'
 import { getTheme } from 'formula_one'
 import './index.css'
@@ -24,6 +26,7 @@ class UploadButton extends React.Component {
         <input
           styleName={this.props.styles.image}
           type='file'
+          accept='image/*'
           onChange={this.props.onChange}
           count={this.props.count}
           name={`picture${this.props.count}`}
@@ -105,6 +108,50 @@ export default class SaleItemForm extends React.Component {
       }
     }
   }
+
+  componentDidMount () {
+    this.props.getPayment()
+    const { item, shareSubmit } = this.props
+    if (item) {
+      shareSubmit(this.handleSubmit.bind(this))
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    if (
+      this.props.appMessages.saleItemMessage !==
+      prevProps.appMessages.saleItemMessage
+    ) {
+      const { appMessages } = this.props
+      if (appMessages.saleItemMessage.status) {
+        this.setState({
+          endDate: '',
+          name: '',
+          category: {
+            name: '',
+            slug: ''
+          },
+          details: '',
+          cost: '',
+          warrantyDetail: '',
+          isPhoneVisible: false,
+          paymentModes: [],
+          pictures: ['', '', ''],
+          picturesUrl: ['', '', ''],
+          nameError: false,
+          costError: false,
+          categoryError: false,
+          formError: true
+        })
+      }
+      window.scrollTo(0, 0)
+    }
+  }
+
+  componentWillUnmount () {
+    this.props.updateMessage()
+  }
+
   toggle = () => this.setState({ isPhoneVisible: !this.state.isPhoneVisible })
 
   handleChangePhone = (event, { name }) => {
@@ -112,6 +159,7 @@ export default class SaleItemForm extends React.Component {
       this.setState({ [name]: !this.state[name] })
     }
   }
+
   handleChange = (event, { name, value }) => {
     if (this.state.hasOwnProperty(name)) {
       this.setState({ [name]: value })
@@ -148,6 +196,7 @@ export default class SaleItemForm extends React.Component {
       }
     }
   }
+
   handleSelectPicture = e => {
     if (e.target.files && e.target.files.length > 0) {
       const newPictures = this.state.pictures.slice()
@@ -161,9 +210,11 @@ export default class SaleItemForm extends React.Component {
       })
     }
   }
+
   handlePaymentChange = (event, { value }) => {
     this.setState({ paymentModes: value })
   }
+
   handleSubmit = e => {
     const {
       name,
@@ -219,11 +270,9 @@ export default class SaleItemForm extends React.Component {
       this.props.handleDimmer(e)
     } else {
       this.props.addSaleItem(formData, pictures)
-      setTimeout(() => {
-        this.props.history.replace('/buy_and_sell/')
-      }, 50000)
     }
   }
+
   handleCategoryChange = (e, { value, name, slug }) => {
     let result = false
     const { costError, nameError } = this.state
@@ -239,13 +288,7 @@ export default class SaleItemForm extends React.Component {
       formError: result
     })
   }
-  componentDidMount () {
-    this.props.getPayment()
-    const { item, shareSubmit } = this.props
-    if (item) {
-      shareSubmit(this.handleSubmit.bind(this))
-    }
-  }
+
   dropdown = () => {
     const { categories } = this.props
     const item = []
@@ -292,7 +335,7 @@ export default class SaleItemForm extends React.Component {
     })
   }
   render () {
-    const { user, item } = this.props
+    const { user, item, appMessages } = this.props
     const {
       categoryError,
       picturesUrl,
@@ -318,6 +361,30 @@ export default class SaleItemForm extends React.Component {
     return (
       <Grid.Column width={16}>
         <Grid padded stackable styleName={!item ? 'grid-cont' : ''}>
+          {appMessages.saleItemMessage.status !== null ? (
+            <Grid.Row centered>
+              <Grid.Column width={8}>
+                {!appMessages.saleItemMessage.status ? (
+                  <Message negative>
+                    <Message.Header>
+                      {appMessages.saleItemMessage.value}
+                    </Message.Header>
+                  </Message>
+                ) : (
+                  <Message success>
+                    <Message.Header>
+                      {appMessages.saleItemMessage.value}
+                    </Message.Header>
+                    <p>
+                      You can view your item{' '}
+                      <Link to='/buy_and_sell/buy/'>here</Link>
+                    </p>
+                  </Message>
+                )}
+              </Grid.Column>
+            </Grid.Row>
+          ) : null}
+
           {!item ? (
             <Grid.Row styleName='heading-row' centered>
               <Grid.Column width={8}>
@@ -329,11 +396,10 @@ export default class SaleItemForm extends React.Component {
           ) : null}
           <Grid.Row centered>
             <Grid.Column width={`${!item ? 8 : 14}`}>
-              <Form error={formError} encType='multiple/form-data'>
+              <Form attachted={'top'} error={formError} encType='multiple/form-data'>
                 <Form.Field styleName='field-form' required>
                   <label>Item name</label>
                   <Form.Input
-                    autoComplete='off'
                     name='name'
                     onChange={this.handleChange}
                     value={name}
@@ -344,34 +410,78 @@ export default class SaleItemForm extends React.Component {
                 {nameError ? (
                   <Message error content={`Field is empty or invalid name`} />
                 ) : null}
-                <Form.Field styleName='field-form' required>
-                  <label>Category</label>
-                  <Dropdown
-                    scrolling
-                    fluid
-                    value={category.name}
-                    text={category.name}
-                    placeholder={'Select a category'}
-                    styleName='category-field'
-                  >
-                    <Dropdown.Menu>{this.dropdown()}</Dropdown.Menu>
-                  </Dropdown>
-                  {categoryError ? (
-                    <Message error content={`Category field can't be empty.`} />
-                  ) : null}
-                </Form.Field>
+                <Form.Group widths={'equal'}>
+                  <Form.Field styleName='field-form' required>
+                    <label>Category</label>
+                    <Dropdown
+                      scrolling
+                      fluid
+                      value={category.name}
+                      text={category.name}
+                      placeholder={'Select a category'}
+                      styleName='category-field'
+                    >
+                      <Dropdown.Menu>{this.dropdown()}</Dropdown.Menu>
+                    </Dropdown>
+                    {categoryError ? (
+                      <Message
+                        error
+                        content={`Category field can't be empty.`}
+                      />
+                    ) : null}
+                  </Form.Field>
+                  <Form.Field styleName='field-form'>
+                    <label>Accepted modes of payment</label>
+                    <Dropdown
+                      placeholder='Payment modes'
+                      fluid
+                      multiple
+                      value={this.state.paymentModes}
+                      selection
+                      onChange={this.handlePaymentChange}
+                      options={paymentModes}
+                    />
+                  </Form.Field>
+                </Form.Group>
                 <Form.Field styleName='field-form'>
-                  <label>Accepted modes of payment</label>
-                  <Dropdown
-                    placeholder='Payment modes'
-                    fluid
-                    multiple
-                    value={this.state.paymentModes}
-                    selection
-                    onChange={this.handlePaymentChange}
-                    options={paymentModes}
+                  <label>Description</label>
+                  <TextArea
+                    autoHeight
+                    placeholder='Description of the product'
+                    name='details'
+                    onChange={this.handleChange}
+                    value={details}
                   />
                 </Form.Field>
+                <Form.Group widths={'equal'}>
+                  <Form.Field required styleName='field-form'>
+                    <label>Price</label>
+                    <Form.Input
+                      name='cost'
+                      onChange={this.handleChange}
+                      value={cost}
+                      required
+                      placeholder='Price'
+                    />
+                    {costError ? (
+                      <Message
+                        error
+                        size='tiny'
+                        compact
+                        content='Price can only range between 0 to 10 lakh.'
+                      />
+                    ) : null}
+                  </Form.Field>
+                  <Form.Field styleName='field-form'>
+                    <label>State of warranty</label>
+                    <Form.Input
+                      name='warrantyDetail'
+                      value={warrantyDetail}
+                      onChange={this.handleChange}
+                      placeholder='For eg. 3 months left'
+                    />
+                  </Form.Field>
+                </Form.Group>
                 <Form.Field styleName='field-form' required>
                   <label>Expires On</label>
                   <Responsive {...Responsive.onlyMobile}>
@@ -403,43 +513,7 @@ export default class SaleItemForm extends React.Component {
                     />
                   </Responsive>
                 </Form.Field>
-                <Form.Field styleName='field-form'>
-                  <label>Description</label>
-                  <Form.Input
-                    autoComplete='off'
-                    name='details'
-                    onChange={this.handleChange}
-                    value={details}
-                    placeholder='Description of the product'
-                  />
-                </Form.Field>
-                <Form.Field required styleName='field-form'>
-                  <label>Price</label>
-                  <Form.Input
-                    autoComplete='off'
-                    name='cost'
-                    onChange={this.handleChange}
-                    value={cost}
-                    required
-                    placeholder='Price'
-                  />
-                </Form.Field>
-                {costError ? (
-                  <Message
-                    error
-                    content='Price can only range between 0 to 1000000.'
-                  />
-                ) : null}
-                <Form.Field styleName='field-form'>
-                  <label>State of warranty</label>
-                  <Form.Input
-                    autoComplete='off'
-                    name='warrantyDetail'
-                    value={warrantyDetail}
-                    onChange={this.handleChange}
-                    placeholder='For eg. 3 months left'
-                  />
-                </Form.Field>
+
                 <Form.Field styleName='field-form'>
                   <label>Email-id</label>
                   <Form.Input
@@ -454,9 +528,14 @@ export default class SaleItemForm extends React.Component {
                   />
                 </Form.Field>
                 <Form.Field styleName='field-form'>
+                <label>Mobile number</label>
                   <Radio
                     toggle
-                    label='Add phone number'
+                    label={` ${
+                      user.person
+                        ? user.person.contactInformation.primaryPhoneNumber
+                        : ''
+                    }  ( Add mobile number )`}
                     name='isPhoneVisible'
                     onChange={this.toggle}
                     defaultChecked={item ? item.isPhoneVisible : false}

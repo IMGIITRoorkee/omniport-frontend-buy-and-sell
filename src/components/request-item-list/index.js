@@ -14,7 +14,8 @@ function mapStateToProps (state) {
     activeSubCategory: state.activeSubCategory,
     requestProductCount: state.requestProductCount,
     page: state.pageNo.request,
-    user: state.user
+    user: state.user,
+    loading: state.loaders.requestList
   }
 }
 const mapDispatchToProps = dispatch => {

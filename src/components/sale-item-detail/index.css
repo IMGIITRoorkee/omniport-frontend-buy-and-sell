@@ -29,11 +29,12 @@
 }
 
 .carousel-indicator {
-    width: 16px !important;
-    height: 16px !important;
+    width: 25px !important;
+    height: 25px !important;
     border-radius: 50%;
     background: #C4C4C4;
     margin-right: 6px;
+    margin-left: 6px;
     cursor: pointer;
 }
 
@@ -82,6 +83,10 @@
     padding-top: 3em !important;
 }
 
+.detail-div-modal {
+    padding-top: 2.1em !important;
+}
+
 .table-p {
     margin-top: 1.5em !important;
 }
@@ -94,6 +99,10 @@
     display: flex !important;
     flex-direction: row !important;
     justify-content: space-between !important;
+}
+
+.title-item-mobile {
+    margin-top: 1em !important;
 }
 
 .title-row {

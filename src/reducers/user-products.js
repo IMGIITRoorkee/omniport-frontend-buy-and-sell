@@ -54,7 +54,7 @@ const userProducts = (state = initialState, action) => {
         })
       }
     case UPDATE_USER_REQUEST_PRODUCTS:
-      return { ...state, request: [...state.sale, ...action.payload] }
+      return { ...state, request: [...state.request, ...action.payload] }
     case UPDATE_USER_SALE_PRODUCTS:
       return { ...state, sale: [...state.sale, ...action.payload] }
     case USER_SALE_PRODUCTS_COUNT:

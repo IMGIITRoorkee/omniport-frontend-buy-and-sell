@@ -13,17 +13,14 @@ import {
 } from 'semantic-ui-react'
 import { formatDate, defaultImageUrl, stringifyNumber } from '../../constants'
 import CustomPopup from '../custom-popup'
-import { getTheme } from 'formula_one'
 import './index.css'
 
 export default class SaleItemDetail extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      indicator: 0,
-      loading: false
-    }
+  state = {
+    indicator: 0,
+    loading: false
   }
+
   componentDidMount () {
     if (!this.props.saleItemDetail.name && this.props.match !== undefined) {
       const id = this.props.match.params.id
@@ -38,6 +35,13 @@ export default class SaleItemDetail extends React.Component {
       }
     }
   }
+
+  componentWillUnmount () {
+    if (this.props.clearSaleItem) {
+      this.props.clearSaleItem()
+    }
+  }
+
   handleLoading = () => {
     this.setState({ loading: true })
     this.timerHandle = setTimeout(() => {
@@ -52,11 +56,23 @@ export default class SaleItemDetail extends React.Component {
       indicator: index
     })
   }
+
+  isOwner = itemUser => {
+    const { user } = this.props
+    if (user.person) {
+      return user.person.id === itemUser.person.id
+    }
+    return false
+  }
+
   render () {
     const { saleItemDetail, modal } = this.props
     const { loading } = this.state
     return saleItemDetail.name ? (
-      <Grid.Column styleName={!modal ? 'detail-div' : ''} width={16}>
+      <Grid.Column
+        styleName={!modal ? 'detail-div' : 'detail-div-modal'}
+        width={16}
+      >
         <Visibility fireOnMount onTopVisible={this.handleLoading} />
         <Grid>
           <Grid.Row centered>
@@ -64,7 +80,7 @@ export default class SaleItemDetail extends React.Component {
               styleName='img-container'
               computer={8}
               tablet={8}
-              mobile={14}
+              mobile={16}
             >
               <Grid styleName='img-grid'>
                 {loading ? (
@@ -133,7 +149,12 @@ export default class SaleItemDetail extends React.Component {
             <Grid.Column computer={8} tablet={8} mobile={14}>
               <Grid textAlign='left'>
                 <Grid.Row styleName='title-row'>
-                  <Grid.Column width={16} styleName='title-item'>
+                  <Grid.Column
+                    width={16}
+                    styleName={`title-item ${
+                      isMobile ? 'title-item-mobile' : ''
+                    }`}
+                  >
                     {loading ? (
                       <Placeholder>
                         <Placeholder.Header>
@@ -191,7 +212,7 @@ export default class SaleItemDetail extends React.Component {
                       </Placeholder>
                     </Grid.Column>
                   ) : (
-                    <Table styleName='item-data'>
+                    <Table unstackable styleName='item-data'>
                       <Table.Body>
                         <Table.Row>
                           <Table.Cell styleName='data-col'>Price</Table.Cell>
@@ -311,9 +332,6 @@ export default class SaleItemDetail extends React.Component {
                     </Table>
                   )}
                 </Grid.Row>
-                {/* <Grid.Row styleName='enquire-flex'>
-                                    <Button content='Enquire' color={getTheme()} />
-                                </Grid.Row> */}
               </Grid>
             </Grid.Column>
           </Grid.Row>

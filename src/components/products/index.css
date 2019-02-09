@@ -6,3 +6,10 @@
 .all-item {
     font-weight: 500 !important;
 }
+
+.fixed-nav {
+    position: fixed !important;
+    z-index: 100 !important;
+    top: 0 !important;
+    left: 0 !important;
+}

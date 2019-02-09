@@ -7,40 +7,30 @@ import {
   Placeholder,
   Transition
 } from 'semantic-ui-react'
-import { formatDate, getExcerpt } from '../../constants/'
+import { formatDate, getExcerpt, defaultImageUrl } from '../../constants/'
 import CustomPopup from '../custom-popup'
 import { getTheme } from 'formula_one'
 import './index.css'
 
 export default class SaleItemCard extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      loading: false
-    }
+  state = {
+    loading: true
   }
+
+  componentDidMount () {
+    this.timerHandle = setTimeout(() => {
+      this.setState({
+        loading: false
+      })
+    }, 500)
+  }
+
   isOwner = itemUser => {
     const { user } = this.props
     if (user.person) {
       return user.person.id === itemUser.person.id
     }
     return false
-  }
-  handleLoading = () => {
-    this.setState({ loading: true })
-
-    this.timerHandle = setTimeout(() => {
-      this.setState({
-        loading: false
-      })
-    }, 1000)
-  }
-  componentWillUnmount () {
-    if (this.timerHandle) {
-      // ***
-      clearTimeout(this.timerHandle) // ***
-      this.timerHandle = 0 // ***
-    }
   }
 
   render () {
@@ -64,9 +54,7 @@ export default class SaleItemCard extends React.Component {
               styleName='item-card-img'
               style={{
                 background: `url(${
-                  item.pictures.length
-                    ? item.pictures[0]
-                    : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
+                  item.pictures.length ? item.pictures[0] : defaultImageUrl
                 })`
               }}
             />

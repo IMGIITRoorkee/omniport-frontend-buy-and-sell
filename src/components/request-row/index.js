@@ -1,11 +1,5 @@
 import { connect } from 'react-redux'
-import {
-  getRequestItems,
-  sortRequestItems,
-  deleteItem,
-  setItemType,
-  setPageNo
-} from '../../actions'
+import { deleteItem } from '../../actions'
 import Component from './renderer'
 
 function mapStateToProps (state) {

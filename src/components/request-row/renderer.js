@@ -1,12 +1,12 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Grid, Modal, Table } from 'semantic-ui-react'
+import { Grid, Responsive, Modal, Table } from 'semantic-ui-react'
 import { isMobile } from 'react-device-detect'
 import CustomPopup from '../custom-popup'
 import { formatDate } from '../../constants'
 import ItemDetail from '../request-item-detail/renderer'
 import './index.css'
-export default class CustomRequestModal extends React.Component {
+export default class CustomRequestRow extends React.Component {
   constructor (props) {
     super(props)
     this.state = {}
@@ -25,17 +25,20 @@ export default class CustomRequestModal extends React.Component {
         size='tiny'
         key={index}
         trigger={
-          <Table.Row>
-            <Table.Cell>{item.name}</Table.Cell>
-            <Table.Cell>₹{item.cost}</Table.Cell>
-            <Table.Cell>{formatDate(item.endDate)}</Table.Cell>
-            {!isMobile ? (
-              <Table.Cell width={1} textAlign='right'>
-                {this.isOwner(item.person) ? (
-                  <CustomPopup type='request' item={item} />
-                ) : null}
-              </Table.Cell>
-            ) : null}
+          <Table.Row styleName='request-item-row'>
+            <Table.Cell styleName='first-cell'>{item.name}</Table.Cell>
+            <Responsive
+              as={React.Fragment}
+              minWidth={Responsive.onlyTablet.maxWidth + 1}
+            >
+              <Table.Cell>₹{item.cost}</Table.Cell>
+              <Table.Cell>{formatDate(item.endDate)}</Table.Cell>
+            </Responsive>
+            <Table.Cell width={1} textAlign='right'>
+              {this.isOwner(item.person) ? (
+                <CustomPopup type='request' item={item} />
+              ) : null}
+            </Table.Cell>
           </Table.Row>
         }
         closeIcon

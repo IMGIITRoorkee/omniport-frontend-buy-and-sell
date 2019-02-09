@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Grid, Menu, Icon, Dropdown } from 'semantic-ui-react'
+import { isMobile } from 'react-device-detect'
 import { getTheme } from 'formula_one'
 import { categories } from '../../constants'
 import './index.css'
@@ -23,10 +24,12 @@ class DropdownMenu extends React.Component {
     })
   }
   handleClick = (e, slug, name) => {
+    e.stopPropagation()
+    const { onClick } = this.props
     this.setState({
       open: false
     })
-    this.props.onClick(e, slug, name)
+    onClick(e, slug, name)
   }
   render () {
     const { open } = this.state
@@ -46,10 +49,7 @@ class DropdownMenu extends React.Component {
       })
       : null
     const trigger = (
-      <div
-        onMouseOver={e => this.mouseOver(e)}
-        onClick={e => this.handleClick(e, slug, name)}
-      >
+      <div onMouseOver={e => this.mouseOver(e)}>
         <Icon name={icon} /> {name}
       </div>
     )
@@ -62,6 +62,7 @@ class DropdownMenu extends React.Component {
           styleName='menu-item'
           icon={null}
           item
+          onClick={e => this.handleClick(e, slug, name)}
         >
           <Dropdown.Menu>{dropdown}</Dropdown.Menu>
         </Dropdown>
@@ -77,14 +78,22 @@ export default class CategoryMenu extends React.Component {
     }
   }
   handleItemClick = (e, slug, name) => {
-    this.props.setCategory(name)
-    this.props.setSubCategory(slug)
-    if (this.props.itemType == 'sale') {
-      this.props.getSaleItems(`${slug}`, 1, true)
-      this.props.setPageNo('sale', 1)
-    } else if (this.props.itemType == 'request') {
-      this.props.getRequestItems(`${slug}`, 1, true)
-      this.props.setPageNo('request', 1)
+    const {
+      setCategory,
+      setSubCategory,
+      itemType,
+      getSaleItems,
+      setPageNo,
+      getRequestItems
+    } = this.props
+    setCategory(name)
+    setSubCategory(slug)
+    if (itemType == 'sale') {
+      getSaleItems(`${slug}`, 1, true)
+      setPageNo('sale', 1)
+    } else if (itemType == 'request') {
+      getRequestItems(`${slug}`, 1, true)
+      setPageNo('request', 1)
     }
   }
   mouseOver = slug => {

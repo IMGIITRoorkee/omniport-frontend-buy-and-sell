@@ -14,18 +14,19 @@ export const addRequestItem = data => {
       .post(requestProductUrl, data, { headers: headers })
       .then(res => {
         const response = {
-          messageType: 'success',
-          value: 'Your item has been added to Requested items.'
+          status: true,
+          value:
+            'Congratulations! Your item has been added to Requested items.'
         }
         dispatch({
           type: REQUEST_ITEM_ADD_MESSAGE,
           payload: response
         })
       })
-      .catch(error => {
+      .catch(() => {
         const response = {
-          messageType: 'negative',
-          value: 'Sorry. There has been an error. Please try again!'
+          value: 'Sorry! There has been an error. Please try again!',
+          status: false
         }
         dispatch({
           type: REQUEST_ITEM_ADD_MESSAGE,

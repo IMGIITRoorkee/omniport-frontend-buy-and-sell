@@ -15,6 +15,9 @@ import searchProducts from './search-products'
 import userProducts from './user-products'
 import pageNo from './page-no'
 import appMessages from './app-messages'
+import loaders from './loaders'
+import searchFocus from './search-focus'
+
 const rootReducer = combineReducers({
   saleItems: SaleItems,
   requestItems: RequestItems,
@@ -33,6 +36,8 @@ const rootReducer = combineReducers({
   searchProducts: searchProducts,
   userProducts: userProducts,
   pageNo: pageNo,
-  appMessages: appMessages
+  appMessages: appMessages,
+  loaders: loaders,
+  searchFocus: searchFocus
 })
 export default rootReducer

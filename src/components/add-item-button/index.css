@@ -1,0 +1,48 @@
+.add-product-btn {
+    position: fixed;
+    z-index: 1000;
+    bottom: 4vh;
+    right: 6vw;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.3em;
+    cursor: pointer;
+}
+
+.add-item-btn {
+    position: fixed;
+    z-index: 1000;
+    right: calc(6vw + 70px);
+    color: #555555;
+    background-color: #ffffff !important;
+    padding: .5em !important;
+    border-radius: 5px;
+    width: 130px;
+    outline: none;
+    box-shadow: 0 1px 3px rgba(161, 158, 158, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.item-btn-div {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.add-item-btn:hover {
+    color: #111111;
+}
+
+.sale-btn {
+    bottom: calc(5vh + 45px)
+}
+
+.request-btn {
+    bottom: 5vh;
+}

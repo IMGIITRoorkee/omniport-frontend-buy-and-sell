@@ -3,8 +3,7 @@ import {
   getSaleItems,
   sortSaleItems,
   setItemType,
-  setPageNo,
-  addSaleItem
+  setPageNo
 } from '../../actions'
 import Component from './renderer'
 
@@ -13,7 +12,8 @@ function mapStateToProps (state) {
     saleItems: state.saleItems,
     activeSubCategory: state.activeSubCategory,
     saleProductCount: state.saleProductCount,
-    page: state.pageNo.sale
+    page: state.pageNo.sale,
+    loading: state.loaders.saleList
   }
 }
 const mapDispatchToProps = dispatch => {

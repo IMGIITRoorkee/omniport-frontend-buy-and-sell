@@ -1,39 +1,45 @@
 import React from 'react'
 import { render } from 'react-dom'
+import {isMobile} from 'react-device-detect';
 import {
   Placeholder,
-  Visibility,
   Header,
+  Responsive,
   Grid,
   Modal,
   Radio,
   Divider,
   Table,
   List,
-  Segment
+  Segment,
+  Loader
 } from 'semantic-ui-react'
 import SaleItemCard from '../sale-item-card/'
 import SaleItemDetail from '../sale-item-detail/renderer'
-import CustomModal from '../request-modal'
+import CustomModal from '../request-row'
 import { getTheme, DefaultDP } from 'formula_one'
 import './index.css'
 
 export default class UserAccount extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
+    state = {
       requestLoad: 1,
       saleLoad: 1,
-      loading: false
+      loading: true,
     }
-  }
+
   componentDidMount () {
     this.props.getSaleItems(1, true)
     this.props.getRequestItems(1, true)
     this.setState({
       isPhoneVisible: this.props.user.isPhoneVisible
     })
+    setTimeout(() => {
+      this.setState({
+        loading: false
+      })
+    }, 1000)
   }
+
   componentDidUpdate (prevProps) {
     if (prevProps.user.isPhoneVisible !== this.props.user.isPhoneVisible) {
       this.setState({
@@ -41,12 +47,12 @@ export default class UserAccount extends React.Component {
       })
     }
   }
+
   toggle = () =>
     this.setState({ isPhoneVisible: !this.state.isPhoneVisible }, () => {
-      let formData = new FormData()
-      formData.append('phone_status', this.state.isPhoneVisible)
-      this.props.changePhoneStatus(formData)
+      this.props.changePhoneStatus(this.state.isPhoneVisible)
     })
+
   renderCategories = () => {
     const { categories } = this.props
     let categoryList = []
@@ -77,14 +83,16 @@ export default class UserAccount extends React.Component {
       </List>
     )
   }
+
   requestLoader = () => {
-    const { userProducts, getRequestItems } = this.props
+    const { getRequestItems } = this.props
     const { requestLoad } = this.state
     getRequestItems(requestLoad + 1, false)
     this.setState({
       requestLoad: requestLoad + 1
     })
   }
+
   saleLoader = () => {
     const { userProducts, getSaleItems } = this.props
     const { saleLoad } = this.state
@@ -99,33 +107,22 @@ export default class UserAccount extends React.Component {
       })
     }
   }
-  handleLoading = () => {
-    this.setState({ loading: true })
 
-    this.timerHandle = setTimeout(() => {
-      this.setState({
-        loading: false
-      })
-    }, 1000)
-  }
-  componentWillUnmount () {
-    if (this.timerHandle) {
-      // ***
-      clearTimeout(this.timerHandle) // ***
-      this.timerHandle = 0 // ***
-    }
-  }
   render () {
-    const { userProducts, user } = this.props
+    const { userProducts, user, loaders } = this.props
     const { saleLoad, loading, requestLoad, isPhoneVisible } = this.state
     return (
       <React.Fragment>
         {user.person ? (
           <Grid.Column width={16} styleName='user-grid'>
-            <Visibility fireOnMount onTopVisible={this.handleLoading} />
+
             <Grid>
               <Grid.Row>
-                <Grid.Column computer={3} tablet={4} mobile={4}>
+              <Responsive
+                as={React.Fragment}
+                minWidth={Responsive.onlyTablet.maxWidth + 1}
+              > 
+                <Grid.Column width={3}>
                   <Grid>
                     {loading ? (
                       <Grid.Row>
@@ -173,19 +170,25 @@ export default class UserAccount extends React.Component {
                             <div styleName='user-name'>
                               {user.person.fullName}
                             </div>
-                            <div styleName='user-role'>
-                              {user.person.roles.map((role, i) => {
-                                return `${role.role}${
-                                  i != user.person.roles.length - 1 ? ', ' : ''
-                                }`
-                              })}
+                              <div styleName='user-role'>
+                                {user.person.roles.map((role, i) => {
+                                  return `${role.role}${
+                                    i != user.person.roles.length - 1 ? ', ' : ''
+                                  }`
+                                })}
+                              </div>
+                            <div styleName='user-contact user-contact-email'>
+                              {user.person.contactInformation.emailAddress}
+                            </div>
+                            <div styleName='user-contact'>
+                              {user.person.contactInformation.primaryPhoneNumber}
                             </div>
                           </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
                           <Grid.Column width={16}>
                             <Header as='h4'>
-                              Mobile No
+                              Mobile No.
                               <Radio
                                 styleName='slide'
                                 onChange={this.toggle}
@@ -195,53 +198,88 @@ export default class UserAccount extends React.Component {
                             </Header>
                           </Grid.Column>
                           <Grid.Column width={16}>
-                            (decide whether people can see your phone number)
-                            <Divider />
+                            (decide whether people can see your mobile number)
                           </Grid.Column>
                         </Grid.Row>
                       </>
                     )}
-                    {!loading ? (
-                      <Grid.Row>
-                        <Grid.Column width={16}>
-                          <Header as='h3'>Categories</Header>
-                        </Grid.Column>
-                        <Grid.Column width={16}>
-                          {this.renderCategories()}
-                        </Grid.Column>
-                      </Grid.Row>
-                    ) : (
-                      <Grid.Row>
-                        <Grid.Column width={16}>
-                          <Placeholder>
-                            <Placeholder.Paragraph>
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                              <Placeholder.Line styleName='p-holder' />
-                            </Placeholder.Paragraph>
-                          </Placeholder>
-                        </Grid.Column>
-                      </Grid.Row>
-                    )}
                   </Grid>
                 </Grid.Column>
+                </Responsive>
+                <Responsive
+                          as={React.Fragment}
+                          maxWidth={Responsive.onlyTablet.maxWidth }
+                        > 
+                        <Grid.Column width={16}>
+                  <Grid>
+                        <Grid.Row>
+                          {user.person ? (
+                              user.person.displayPicture ? (
+                                <div
+                                  styleName='person-img-mobile'
+                                  style={{
+                                    background: `url(${
+                                      user.person.displayPicture
+                                    })`
+                                  }}
+                                />
+                              ) : (
+                                <div 
+                                  styleName='person-img-mobile'
+                                >
+                                <DefaultDP
+                                  name={user.person.fullName}
+                                  size={'2em'}
+                                />
+                                </div>
+                              )
+                            ) : (
+                              <div 
+                                  styleName='person-img-mobile'
+                              >
+                              <DefaultDP
+                              styleName='person-img-mobile'
+                                name={user.person.fullName}
+                                size={'2em'}
+                              />
+                              </div>
+                            )}
+                          <Grid.Column computer={16} mobile={4} tablet={4}>
+                            <div styleName='user-name-mobile'>
+                              {user.person.fullName}
+                            </div>
+                            <div styleName='user-contact user-contact-email'>
+                              {user.person.contactInformation.emailAddress}
+                            </div>
+                            <div styleName='user-contact'>
+                              {user.person.contactInformation.primaryPhoneNumber}
+                            </div>
+                          </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                          <Grid.Column width={16}>
+                          <div styleName='mobile-visibility-mobile'>
+                              Mobile No. Visibility
+                              <Radio
+                                styleName='slide'
+                                onChange={this.toggle}
+                                checked={isPhoneVisible}
+                                slider
+                              />
+                          </div>
+                          </Grid.Column>
+                          <Grid.Column width={16} styleName='mobile-visibility-detail-mobile'>
+                            (decide whether people can see your mobile number)
+                          </Grid.Column>
+                        </Grid.Row>
+                  </Grid>
+                </Grid.Column>
+                        </Responsive>
                 <Grid.Column
-                  styleName='account-body'
+                  styleName={isMobile? 'account-body-mobile':'account-body'}
                   computer={13}
-                  mobile={12}
-                  tablet={12}
+                  mobile={16}
+                  tablet={16}
                 >
                   <Grid>
                     <Grid.Row>
@@ -251,14 +289,14 @@ export default class UserAccount extends React.Component {
                     </Grid.Row>
                     <Grid.Row>
                       <Grid.Column>
-                        <Header as='h4'>
+                        <Header as='h4' styleName='item-heading'>
                           Items added for sale
                           <Divider fitted />
                         </Header>
                       </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row styleName='sale-row'>
-                      <Grid divided={'vertically'} doubling columns={4}>
+                    <Grid.Row centered={isMobile} styleName='sale-row'>
+                      <Grid divided={'vertically'} stackable columns={4}>
                         <Grid.Row stretched>
                           {userProducts.sale.map((item, index) => {
                             if (index < 4 * saleLoad) {
@@ -286,7 +324,7 @@ export default class UserAccount extends React.Component {
                               )
                             }
                           })}
-                          {userProducts.sale.length == 0 ? (
+                          {userProducts.sale.length == 0 && !loaders.userSaleList? (
                             <Grid.Column styleName='no-items' width={16}>
                               You haven't added any Item for Sale.
                             </Grid.Column>
@@ -305,7 +343,11 @@ export default class UserAccount extends React.Component {
                             attached
                           >
                             <Header color={getTheme()} as='h4'>
-                              More
+                              {loaders.userSaleList ? (
+                                <Loader inline active size='small' />
+                              ) : (
+                                <>More</>
+                              )}
                             </Header>
                           </Segment>
                         </Grid.Column>
@@ -314,32 +356,31 @@ export default class UserAccount extends React.Component {
                   </Grid>
                   <Grid.Row styleName='request-head'>
                     <Grid.Column>
-                      <Header as='h4'>Items requested</Header>
+                      <Header as='h4' styleName='item-heading'>
+                        Items requested
+                        <Divider fitted />                      
+                      </Header>
                     </Grid.Column>
                   </Grid.Row>
                   <Grid.Row>
                     <Grid.Column width={16}>
-                      {loading ? (
-                        <Placeholder fluid>
-                          <Placeholder.Header>
-                            <Placeholder.Line styleName='p-holder' />
-                            <Placeholder.Line styleName='p-holder' />
-                            <Placeholder.Line styleName='p-holder' />
-                          </Placeholder.Header>
-                        </Placeholder>
-                      ) : (
                         <Table unstackable selectable>
                           <Table.Header>
                             <Table.Row>
                               <Table.HeaderCell width={6}>
-                                Item
+                                Item Name
                               </Table.HeaderCell>
+                              <Responsive 
+                                as={React.Fragment}  
+                                minWidth={Responsive.onlyTablet.maxWidth + 1}
+                              >
                               <Table.HeaderCell width={6}>
                                 Maximum price
                               </Table.HeaderCell>
                               <Table.HeaderCell width={3}>
                                 Expiry date
                               </Table.HeaderCell>
+                              </Responsive>
                               <Table.HeaderCell width={1} />
                             </Table.Row>
                           </Table.Header>
@@ -355,8 +396,7 @@ export default class UserAccount extends React.Component {
                             })}
                           </Table.Body>
                         </Table>
-                      )}
-                      {userProducts.request.length == 0 ? (
+                      {userProducts.request.length == 0 && !loaders.userRequestList ? (
                         <Grid.Column styleName='no-items' width={16}>
                           You haven't added any Item for Request.
                         </Grid.Column>
@@ -372,7 +412,11 @@ export default class UserAccount extends React.Component {
                           attached
                         >
                           <Header color={getTheme()} as='h4'>
-                            More
+                            {loaders.userRequestList ? (
+                              <Loader inline active size='small' />
+                            ) : (
+                              <>More</>
+                            )}
                           </Header>
                         </Segment>
                       </Grid.Column>

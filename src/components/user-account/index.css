@@ -9,6 +9,17 @@
     box-sizing: border-box !important;
 }
 
+.person-img-mobile {
+    width: 75px !important;
+    height: 75px !important;
+    background-size: cover !important;
+    background-position: 50% 50% !important;
+    background-repeat: no-repeat !important;
+    border: #ffffff 1.5px solid;
+    border-radius: 50%;
+    box-sizing: border-box !important;
+}
+
 .dimmer-grid {
     background: #ffffff !important;
 }
@@ -55,7 +66,6 @@
 
 .user-name {
     font-size: 1.5em !important;
-    font-weight: 700;
     margin-top: 1em !important;
     text-transform: capitalize !important;
 }
@@ -72,6 +82,11 @@
 .account-body {
     border-left: 1px solid rgba(34, 36, 38, 0.15) !important;
     padding-left: 1.5em !important;
+    margin-top: 1em !important;
+}
+
+.account-body-mobile {
+    margin-top: 2.5em !important;
 }
 
 .sale-row {
@@ -98,4 +113,38 @@
 
 .p-holder-h::before {
     background: #F5F5F5 !important;
+}
+
+.user-contact {
+    opacity: .8;
+}
+
+.user-contact-email {
+    margin-top: .4em !important;
+}
+
+.user-name {
+    font-size: 1.5em !important;
+    margin-top: 1em !important;
+    text-transform: capitalize !important;
+}
+
+.user-name-mobile {
+    font-size: 1.5em !important;
+    text-transform: capitalize !important;
+    margin-top: .5em !important;
+}
+
+.mobile-visibility-mobile {
+    font-size: 1em !important;
+    text-transform: capitalize !important;
+    margin-top: -.5em !important;
+}
+
+.mobile-visibility-detail-mobile {
+    font-size: .85em !important;
+}
+
+.item-heading {
+    font-size: 1.2em !important;
 }

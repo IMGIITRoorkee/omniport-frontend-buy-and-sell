@@ -2,7 +2,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Switch, Route } from 'react-router-dom'
 import './index.css'
-import { Breadcrumb, Grid } from 'semantic-ui-react'
+import { Breadcrumb, Grid, Visibility } from 'semantic-ui-react'
 import CategoryMenu from '../category-menu'
 import ItemMenu from '../item-menu'
 import SaleItemList from '../sale-item-list'
@@ -13,21 +13,8 @@ export default class Items extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      calculations: {
-        direction: 'none',
-        height: 0,
-        width: 0,
-        topPassed: false,
-        bottomPassed: false,
-        pixelsPassed: 0,
-        percentagePassed: 0,
-        topVisible: false,
-        bottomVisible: false,
-        fits: false,
-        passing: false,
-        onScreen: false,
-        offScreen: false
-      }
+      topPassed: false,
+      height: 0
     }
   }
   handleItemClick = (e, { slug, name }) => {
@@ -41,6 +28,17 @@ export default class Items extends React.Component {
       this.props.setPageNo('request', 1)
     }
   }
+
+  handleUpdate = (e, { calculations }) =>
+    this.setState({
+      topPassed: calculations.topPassed
+    })
+
+  setHeight = (e, { calculations }) =>
+    this.setState({
+      height: calculations.height
+    })
+
   breadcrumbContent = () => {
     const items = []
     const {
@@ -114,14 +112,25 @@ export default class Items extends React.Component {
       </Breadcrumb>
     )
   }
+
   render () {
-    const { match } = this.props
+    const { match, searchFocus } = this.props
+    const { height, topPassed } = this.state
     return (
       <React.Fragment>
-        <Grid.Column width={16}>
-          <Route path={`${match.path}`} component={ItemMenu} />
-          <Route path={`${match.path}`} component={CategoryMenu} />
+        <Visibility once={false} onUpdate={this.handleUpdate} />
+        <Grid.Column
+          styleName={topPassed && !searchFocus ? 'fixed-nav' : ''}
+          width={16}
+        >
+          <Visibility onUpdate={this.setHeight} fireOnMount>
+            <Route path={`${match.path}`} component={ItemMenu} />
+            <Route path={`${match.path}`} component={CategoryMenu} />
+          </Visibility>
         </Grid.Column>
+        {topPassed && !searchFocus ? (
+          <Grid.Column width={16} style={{ height: height }} />
+        ) : null}
         <Grid.Column width={16}>
           <Switch>
             <Route

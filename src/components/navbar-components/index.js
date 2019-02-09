@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import { getSearchProducts } from '../../actions'
+import { SET_SEARCH_FOCUS } from '../../constants/action-types'
 
 import Component from './renderer'
 
@@ -12,6 +13,12 @@ const mapDispatchToProps = dispatch => {
   return {
     getSearchProducts: query => {
       dispatch(getSearchProducts(query))
+    },
+    setSearchFocus: value => {
+      dispatch({
+        type: SET_SEARCH_FOCUS,
+        payload: value
+      })
     }
   }
 }

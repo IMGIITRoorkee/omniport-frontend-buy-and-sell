@@ -141,18 +141,14 @@ export default class CustomPopup extends React.Component {
         )}
         <Modal
           size='tiny'
-          basic={dimmerType == 'delete'}
           open={active}
           onClose={e => this.handleDimmer(e, false, '')}
           onClick={e => this.stopPropagation(e)}
+          closeIcon
         >
           {dimmerType == 'delete' ? (
             <>
-              <Header
-                styleName='archive'
-                icon='archive'
-                content='Delete this item'
-              />
+              <Header icon='archive' content='Delete this item' />
               <Modal.Content>
                 <p>Do you really want to delete {item.name} ?</p>
               </Modal.Content>
@@ -160,27 +156,24 @@ export default class CustomPopup extends React.Component {
                 <div styleName='yesNo'>
                   <Button
                     onClick={e => this.handleDimmer(e, false, '')}
-                    basic
-                    color='red'
+                    color={getTheme()}
                     inverted
                   >
-                    <Icon name='remove' />
-                    No
+                    Cancel
                   </Button>
                   <Button
                     onClick={e => this.delete(e, item.id, type)}
-                    color='green'
-                    inverted
+                    color={getTheme()}
                   >
-                    <Icon name='checkmark' />
-                    Yes
+                    <Icon name='trash' />
+                    Delete
                   </Button>
                 </div>
               </Modal.Actions>
             </>
           ) : (
             <>
-              <Modal.Header>{`Update ${item.name}`}</Modal.Header>
+              <Modal.Header>{`Update`}</Modal.Header>
               <Modal.Content scrolling styleName='modal-cont'>
                 {type == 'buy' ? (
                   <SaleItemForm
