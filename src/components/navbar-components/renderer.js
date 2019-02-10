@@ -245,12 +245,23 @@ export default class SearchBar extends React.Component {
             </Grid.Column>
             <Grid.Column styleName='account-btn' width={1}>
               <Link to={appUrl + 'my_account/'} styleName='account-btn-link'>
-                <Popup
-                  keepInViewPort
-                  position='bottom center'
-                  trigger={<Icon name='user' color='black' size='big' />}
-                  content='My account'
-                />
+                <Responsive
+                  as={React.Fragment}
+                  minWidth={Responsive.onlyTablet.maxWidth + 1}
+                >
+                  <Popup
+                    keepInViewPort
+                    position='bottom center'
+                    trigger={<Icon name='user' color='black' size='big' />}
+                    content='My account'
+                  />
+                </Responsive>
+                <Responsive
+                  as={React.Fragment}
+                  maxWidth={Responsive.onlyTablet.maxWidth}
+                >
+                  <Icon name='user' color='black' size='big' />
+                </Responsive>
               </Link>
             </Grid.Column>
           </Grid.Row>

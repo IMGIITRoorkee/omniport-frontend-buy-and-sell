@@ -115,6 +115,7 @@ export default class SaleItemForm extends React.Component {
     if (item) {
       shareSubmit(this.handleSubmit.bind(this))
     }
+    this.props.scrollDiv()
   }
 
   componentDidUpdate (prevProps) {
@@ -271,6 +272,8 @@ export default class SaleItemForm extends React.Component {
     } else {
       this.props.addSaleItem(formData, pictures)
     }
+    this.props.scrollDiv()
+
   }
 
   handleCategoryChange = (e, { value, name, slug }) => {

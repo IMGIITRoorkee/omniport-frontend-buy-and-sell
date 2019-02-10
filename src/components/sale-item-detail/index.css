@@ -38,6 +38,10 @@
     cursor: pointer;
 }
 
+.detail-grid {
+    margin-top: 1.1em !important;
+}
+
 .active-indicator {
     background: #646363 !important;
 }

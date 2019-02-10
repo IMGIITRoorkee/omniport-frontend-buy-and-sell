@@ -72,6 +72,7 @@ export default class RequestItemForm extends React.Component {
     if (item) {
       shareSubmit(this.handleSubmit.bind(this))
     }
+    this.props.scrollDiv()
   }
 
   componentDidUpdate (prevProps) {
@@ -183,6 +184,7 @@ export default class RequestItemForm extends React.Component {
     } else {
       this.props.addRequestItem(formData)
     }
+    this.props.scrollDiv()
   }
 
   handleCategoryChange = (e, { value, name, slug }) => {

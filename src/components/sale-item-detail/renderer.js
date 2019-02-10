@@ -80,7 +80,7 @@ export default class SaleItemDetail extends React.Component {
               styleName='img-container'
               computer={8}
               tablet={8}
-              mobile={16}
+              mobile={14}
             >
               <Grid styleName='img-grid'>
                 {loading ? (
@@ -146,7 +146,12 @@ export default class SaleItemDetail extends React.Component {
                 )}
               </Grid>
             </Grid.Column>
-            <Grid.Column computer={8} tablet={8} mobile={14}>
+            <Grid.Column
+              styleName='detail-grid'
+              computer={8}
+              tablet={8}
+              mobile={14}
+            >
               <Grid textAlign='left'>
                 <Grid.Row styleName='title-row'>
                   <Grid.Column

@@ -9,7 +9,10 @@ export default class AddButton extends React.Component {
   state = { visible: false }
 
   toggleVisibility = () => this.setState({ visible: !this.state.visible })
-
+  handleClick = () => {
+    this.toggleVisibility()
+    this.props.scrollDiv()
+  }
   render () {
     const { visible } = this.state
     const { location } = this.props
@@ -32,7 +35,7 @@ export default class AddButton extends React.Component {
             </div>
             <Transition visible={visible} animation='zoom' duration={400}>
               <Link
-                onClick={this.toggleVisibility}
+                onClick={this.handleClick}
                 to='/buy_and_sell/sell_item/'
                 styleName='add-item-btn sale-btn'
               >
@@ -41,7 +44,7 @@ export default class AddButton extends React.Component {
             </Transition>
             <Transition visible={visible} animation='zoom' duration={400}>
               <Link
-                onClick={this.toggleVisibility}
+                onClick={this.handleClick}
                 to='/buy_and_sell/request_item/'
                 styleName='add-item-btn request-btn'
               >

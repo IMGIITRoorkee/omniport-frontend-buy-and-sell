@@ -25,18 +25,30 @@ const creators = [
 ]
 
 export default class App extends React.Component {
+  constructor (props) {
+    super(props)
+    this.divRef = React.createRef()
+  }
+
   componentDidMount () {
     this.props.getCategories()
     this.props.getUser()
   }
 
+  scrollDiv = () => {
+    if (this.divRef && this.divRef.current) {
+      this.divRef.current.scrollTo(0, 0)
+    }
+  }
+
   render () {
     const { match } = this.props
+
     return (
-      <div styleName='app-wrapper'>
+      <div ref={this.divRef} styleName='app-wrapper'>
         <Route
           path={`${match.path}`}
-          render={props => <AddButton {...props} />}
+          render={props => <AddButton scrollDiv={this.scrollDiv} {...props} />}
         />
         <Switch>
           <Route
@@ -57,11 +69,15 @@ export default class App extends React.Component {
               <Switch>
                 <Route
                   path={`${match.path}sell_item`}
-                  component={SaleItemForm}
+                  render={props => (
+                    <SaleItemForm scrollDiv={this.scrollDiv} {...props} />
+                  )}
                 />
                 <Route
                   path={`${match.path}request_item`}
-                  component={RequestItemForm}
+                  render={props => (
+                    <RequestItemForm scrollDiv={this.scrollDiv} {...props} />
+                  )}
                 />
                 <Route
                   path={`${match.path}my_account`}
