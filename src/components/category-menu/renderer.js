@@ -1,7 +1,13 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Grid, Menu, Icon, Dropdown } from 'semantic-ui-react'
-import { isMobile } from 'react-device-detect'
+import {
+  Grid,
+  Menu,
+  Popup,
+  Icon,
+  Dropdown,
+  Responsive
+} from 'semantic-ui-react'
 import { getTheme } from 'formula_one'
 import { categories } from '../../constants'
 import './index.css'
@@ -70,6 +76,89 @@ class DropdownMenu extends React.Component {
     )
   }
 }
+
+class PopupMenu extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      open: false
+    }
+  }
+
+  togglePopup = () => {
+    this.setState({
+      open: !this.state.open
+    })
+  }
+  handleClick = (e, slug, name) => {
+    e.stopPropagation()
+    const { onClick } = this.props
+    this.togglePopup()
+    onClick(e, slug, name)
+  }
+  render () {
+    const { open } = this.state
+    let { subcategories, name, activeCategory, slug, icon } = this.props
+    let dropdown = subcategories
+      ? subcategories.map((subCategory, index) => {
+        return (
+          <div
+            onClick={e => this.handleClick(e, subCategory.slug, name)}
+            name={name}
+            slug={subCategory.slug}
+            key={index}
+            styleName='popup-menu-subcat'
+          >
+            {subCategory.name}
+          </div>
+        )
+      })
+      : null
+    const trigger = (
+      <Menu.Item
+        className={activeCategory == name ? 'active' : ''}
+        name={name}
+        styleName='menu-item'
+      >
+        <span>
+          <Icon name={icon} />
+        </span>
+        <span styleName='menu-span'>{name}</span>
+      </Menu.Item>
+    )
+    return (
+      <div>
+        <Popup
+          hideOnScroll
+          trigger={trigger}
+          on='click'
+          onOpen={this.togglePopup}
+          onClose={this.togglePopup}
+          open={open}
+          position='bottom center'
+        >
+          <Popup.Content>
+            <div>
+              <div
+                onClick={e => this.handleClick(e, slug, name)}
+                icon={icon}
+                content={name}
+                styleName='popup-menu-heading'
+              >
+                <span>
+                  <Icon name={icon} />
+                </span>
+                <span styleName='menu-span'>{name}</span>
+              </div>
+              {dropdown}
+            </div>
+          </Popup.Content>
+        </Popup>
+      </div>
+    )
+  }
+}
+
 export default class CategoryMenu extends React.Component {
   constructor (props) {
     super(props)
@@ -119,115 +208,269 @@ export default class CategoryMenu extends React.Component {
     const { activeCategory } = this.props
     return (
       <Grid.Column width={16}>
-        <Menu
-          size={'large'}
-          color={getTheme()}
-          styleName='category-menu'
-          borderless
-          icon={'labeled'}
+        <Responsive
+          as={React.Fragment}
+          minWidth={Responsive.onlyTablet.maxWidth + 1}
         >
-          <div
-            onMouseOver={slug => this.mouseOver('All')}
-            onMouseLeave={this.mouseOut}
+          <Menu
+            size={'large'}
+            color={getTheme()}
+            styleName='category-menu'
+            borderless
+            icon={'labeled'}
           >
-            <Menu.Item
-              name=''
-              slug=''
-              active={activeCategory === '' || open == 'All'}
-              onClick={e => this.handleItemClick(e, '', '')}
-              styleName='menu-item all-item'
+            <div
+              onMouseOver={slug => this.mouseOver('All')}
+              onMouseLeave={this.mouseOut}
             >
-              <Icon name='' />
-              <span styleName='menu-span'>All</span>
-            </Menu.Item>
-          </div>
-          <DropdownMenu
-            icon='computer'
-            name={'Electronics'}
-            slug={categories.Electronics}
-            active={activeCategory === 'Electronics'}
-            onClick={this.handleItemClick}
-            subcategories={this.subCategories(categories.Electronics)}
-            activeCategory={activeCategory}
-          />
-          <DropdownMenu
-            icon='book'
-            name='Books'
-            slug={categories.Books}
-            active={activeCategory === 'Books'}
-            onClick={this.handleItemClick}
-            subcategories={this.subCategories(categories.Books)}
-            activeCategory={activeCategory}
-          />
-          <DropdownMenu
-            icon='student'
-            name='Academic'
-            slug={categories.Academic}
-            active={activeCategory === 'Academic'}
-            onClick={this.handleItemClick}
-            subcategories={this.subCategories(categories.Academic)}
-            activeCategory={activeCategory}
-          />
-          <div
-            onMouseOver={slug => this.mouseOver('Bicycles')}
-            onMouseLeave={this.mouseOut}
-          >
-            <Menu.Item
-              name='Bicycles'
-              slug={categories.Bicycles}
-              active={activeCategory === 'Bicycles' || open == 'Bicycles'}
-              onClick={e =>
-                this.handleItemClick(e, categories.Bicycles, 'Bicycles')
-              }
-              styleName='menu-item'
-            >
-              <span
-                ref={el => {
-                  if (el) {
-                    el.style.setProperty('font-size', '1.2em', 'important')
-                  }
-                }}
+              <Menu.Item
+                name=''
+                slug=''
+                active={activeCategory === '' || open == 'All'}
+                onClick={e => this.handleItemClick(e, '', '')}
+                styleName='menu-item all-item'
               >
-                <Icon name='bicycle' />
-              </span>
-              <span styleName='menu-span'>Bicycles</span>
-            </Menu.Item>
-          </div>
-          <div
-            onMouseOver={slug => this.mouseOver('Miscellaneous')}
-            onMouseLeave={this.mouseOut}
-          >
-            <Menu.Item
-              name='Miscellaneous'
-              slug={categories.Miscellaneous}
-              active={
-                activeCategory === 'Miscellaneous' || open == 'Miscellaneous'
-              }
-              onClick={e =>
-                this.handleItemClick(
-                  e,
-                  categories.Miscellaneous,
-                  'Miscellaneous'
-                )
-              }
-              styleName='menu-item'
+                <Icon name='' />
+                <span styleName='menu-span'>All</span>
+              </Menu.Item>
+            </div>
+            <DropdownMenu
+              icon='computer'
+              name={'Electronics'}
+              slug={categories.Electronics}
+              active={activeCategory === 'Electronics'}
+              onClick={this.handleItemClick}
+              subcategories={this.subCategories(categories.Electronics)}
+              activeCategory={activeCategory}
+            />
+            <DropdownMenu
+              icon='book'
+              name='Books'
+              slug={categories.Books}
+              active={activeCategory === 'Books'}
+              onClick={this.handleItemClick}
+              subcategories={this.subCategories(categories.Books)}
+              activeCategory={activeCategory}
+            />
+            <DropdownMenu
+              icon='student'
+              name='Academic'
+              slug={categories.Academic}
+              active={activeCategory === 'Academic'}
+              onClick={this.handleItemClick}
+              subcategories={this.subCategories(categories.Academic)}
+              activeCategory={activeCategory}
+            />
+            <div
+              onMouseOver={slug => this.mouseOver('Bicycles')}
+              onMouseLeave={this.mouseOut}
             >
-              {' '}
-              <div>
+              <Menu.Item
+                name='Bicycles'
+                slug={categories.Bicycles}
+                active={activeCategory === 'Bicycles' || open == 'Bicycles'}
+                onClick={e =>
+                  this.handleItemClick(e, categories.Bicycles, 'Bicycles')
+                }
+                styleName='menu-item'
+              >
                 <span
                   ref={el => {
                     if (el) {
-                      el.style.setProperty('font-size', '1em', 'important')
+                      el.style.setProperty('font-size', '1.2em', 'important')
                     }
                   }}
                 >
-                  <Icon name='box' />
+                  <Icon name='bicycle' />
                 </span>
-                <span styleName='menu-span'>Miscellaneous</span>
+                <span styleName='menu-span'>Bicycles</span>
+              </Menu.Item>
+            </div>
+            <div
+              onMouseOver={slug => this.mouseOver('Miscellaneous')}
+              onMouseLeave={this.mouseOut}
+            >
+              <Menu.Item
+                name='Miscellaneous'
+                slug={categories.Miscellaneous}
+                active={
+                  activeCategory === 'Miscellaneous' || open == 'Miscellaneous'
+                }
+                onClick={e =>
+                  this.handleItemClick(
+                    e,
+                    categories.Miscellaneous,
+                    'Miscellaneous'
+                  )
+                }
+                styleName='menu-item'
+              >
+                {' '}
+                <div>
+                  <span
+                    ref={el => {
+                      if (el) {
+                        el.style.setProperty('font-size', '1em', 'important')
+                      }
+                    }}
+                  >
+                    <Icon name='box' />
+                  </span>
+                  <span styleName='menu-span'>Miscellaneous</span>
+                </div>
+              </Menu.Item>
+            </div>
+          </Menu>
+        </Responsive>
+
+        <Responsive
+          as={React.Fragment}
+          maxWidth={Responsive.onlyTablet.maxWidth}
+        >
+          <div styleName='wrapper-mobile'>
+            <Menu
+              size={'large'}
+              color={getTheme()}
+              styleName='category-menu category-menu-mobile'
+              borderless
+              icon={'labeled'}
+            >
+              <div>
+                <Menu.Item styleName='menu-item all-item'>
+                  <Icon name='' />
+                  <span styleName='menu-span' />
+                </Menu.Item>
               </div>
-            </Menu.Item>
+              <div>
+                <Menu.Item styleName='menu-item all-item'>
+                  <Icon name='' />
+                  <span styleName='menu-span' />
+                </Menu.Item>
+              </div>
+              <div>
+                <Menu.Item styleName='menu-item all-item'>
+                  <Icon name='' />
+                  <span styleName='menu-span' />
+                </Menu.Item>
+              </div>
+              <div>
+                <Menu.Item styleName='menu-item all-item'>
+                  <Icon name='' />
+                  <span styleName='menu-span' />
+                </Menu.Item>
+              </div>
+              <div>
+                <Menu.Item styleName='menu-item all-item'>
+                  <Icon name='' />
+                  <span styleName='menu-span' />
+                </Menu.Item>
+              </div>
+              <div>
+                <Menu.Item styleName='menu-item all-item'>
+                  <Icon name='' />
+                  <span styleName='menu-span' />
+                </Menu.Item>
+              </div>
+              <div>
+                <Menu.Item
+                  name=''
+                  slug=''
+                  active={activeCategory === '' || open == 'All'}
+                  onClick={e => this.handleItemClick(e, '', '')}
+                  styleName='menu-item all-item'
+                >
+                  <Icon name='' />
+                  <span styleName='menu-span'>All</span>
+                </Menu.Item>
+              </div>
+              <PopupMenu
+                icon='computer'
+                name={'Electronics'}
+                slug={categories.Electronics}
+                active={activeCategory === 'Electronics'}
+                onClick={this.handleItemClick}
+                subcategories={this.subCategories(categories.Electronics)}
+                activeCategory={activeCategory}
+              />
+              <PopupMenu
+                icon='book'
+                name='Books'
+                slug={categories.Books}
+                active={activeCategory === 'Books'}
+                onClick={this.handleItemClick}
+                subcategories={this.subCategories(categories.Books)}
+                activeCategory={activeCategory}
+              />
+              <PopupMenu
+                icon='student'
+                name='Academic'
+                slug={categories.Academic}
+                active={activeCategory === 'Academic'}
+                onClick={this.handleItemClick}
+                subcategories={this.subCategories(categories.Academic)}
+                activeCategory={activeCategory}
+              />
+              <div
+                onMouseOver={slug => this.mouseOver('Bicycles')}
+                onMouseLeave={this.mouseOut}
+              >
+                <Menu.Item
+                  name='Bicycles'
+                  slug={categories.Bicycles}
+                  active={activeCategory === 'Bicycles' || open == 'Bicycles'}
+                  onClick={e =>
+                    this.handleItemClick(e, categories.Bicycles, 'Bicycles')
+                  }
+                  styleName='menu-item'
+                >
+                  <span
+                    ref={el => {
+                      if (el) {
+                        el.style.setProperty('font-size', '1.2em', 'important')
+                      }
+                    }}
+                  >
+                    <Icon name='bicycle' />
+                  </span>
+                  <span styleName='menu-span'>Bicycles</span>
+                </Menu.Item>
+              </div>
+              <div
+                onMouseOver={slug => this.mouseOver('Miscellaneous')}
+                onMouseLeave={this.mouseOut}
+              >
+                <Menu.Item
+                  name='Miscellaneous'
+                  slug={categories.Miscellaneous}
+                  active={
+                    activeCategory === 'Miscellaneous' ||
+                    open == 'Miscellaneous'
+                  }
+                  onClick={e =>
+                    this.handleItemClick(
+                      e,
+                      categories.Miscellaneous,
+                      'Miscellaneous'
+                    )
+                  }
+                  styleName='menu-item'
+                >
+                  {' '}
+                  <span
+                    ref={el => {
+                      if (el) {
+                        el.style.setProperty('font-size', '1em', 'important')
+                      }
+                    }}
+                  >
+                    <Icon name='box' />
+                  </span>
+                  <span styleName='menu-span'>Miscellaneous</span>
+                </Menu.Item>
+              </div>
+            </Menu>
           </div>
-        </Menu>
+        </Responsive>
       </Grid.Column>
     )
   }

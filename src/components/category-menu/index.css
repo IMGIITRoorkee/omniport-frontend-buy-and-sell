@@ -2,6 +2,7 @@
     flex-direction: row !important;
     background: none !important;
     height: 100% !important;
+    z-index: 10 !important;
 }
 
 .menu-span {
@@ -32,4 +33,24 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+}
+
+.category-menu-mobile {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.wrapper-mobile {
+    overflow: hidden;
+    height: 60px;
+}
+
+.popup-menu-heading {
+    margin: 7px auto;
+    padding: 3px 5px !important;
+}
+
+.popup-menu-subcat {
+    margin: 7px auto;
+    padding: 3px 5px !important;
 }
