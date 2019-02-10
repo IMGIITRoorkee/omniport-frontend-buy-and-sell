@@ -12,14 +12,14 @@ export const deleteItem = (id, type) => {
     'X-CSRFToken': getCookie('csrftoken')
   }
   return dispatch => {
-    if (type == 'request') {
+    if (type === 'request') {
       axios.delete(requestProductUrl + id, { headers: headers }).then(res => {
         dispatch({
           type: DELETE_REQUEST_ITEM,
           payload: id
         })
       })
-    } else if (type == 'buy') {
+    } else if (type === 'buy') {
       axios.delete(saleProductUrl + id, { headers: headers }).then(res => {
         dispatch({
           type: DELETE_SALE_ITEM,

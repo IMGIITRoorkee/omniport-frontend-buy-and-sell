@@ -145,7 +145,7 @@ export default class SaleItemList extends React.Component {
                       </Grid.Column>
                     )
                   })}
-                  {saleItems.length == 0 && loading === false ? (
+                  {saleItems.length === 0 && loading === false ? (
                     <Grid.Column styleName='no-items' width={16}>
                       No items to show
                     </Grid.Column>

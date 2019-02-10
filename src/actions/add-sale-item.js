@@ -17,7 +17,7 @@ export const addSaleItem = (data, pictures) => {
       data: data
     })
       .then(response => {
-        if (response.statusText == 'Created') {
+        if (response.statusText === 'Created') {
           let responseData = {
             status: true,
             value: 'Congratulations! item has been added to Sale items.'

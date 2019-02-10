@@ -100,7 +100,7 @@ export default class SaleItemDetail extends React.Component {
                             <Transition
                               key={index}
                               transitionOnMount
-                              visible={this.state.indicator == index}
+                              visible={this.state.indicator === index}
                               animation='scale'
                               duration={500}
                             >
@@ -133,7 +133,7 @@ export default class SaleItemDetail extends React.Component {
                               key={index}
                               onClick={() => this.handleIndicator(index)}
                               styleName={`carousel-indicator ${
-                                this.state.indicator == index
+                                this.state.indicator === index
                                   ? 'active-indicator'
                                   : ''
                               }`}

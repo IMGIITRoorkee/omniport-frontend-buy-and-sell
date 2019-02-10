@@ -66,7 +66,7 @@ export default class RequestItemList extends React.Component {
                     })}
                   </Table.Body>
                 </Table>
-                {requestItems.length == 0 && !loading ? (
+                {requestItems.length === 0 && !loading ? (
                   <Grid.Column styleName='no-items' width={16}>
                     No items to show
                   </Grid.Column>

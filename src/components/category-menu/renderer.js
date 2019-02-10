@@ -64,7 +64,7 @@ class DropdownMenu extends React.Component {
         <Dropdown
           open={open}
           trigger={trigger}
-          className={activeCategory == name ? 'active' : ''}
+          className={activeCategory === name ? 'active' : ''}
           styleName='menu-item'
           icon={null}
           item
@@ -116,7 +116,7 @@ class PopupMenu extends React.Component {
       : null
     const trigger = (
       <Menu.Item
-        className={activeCategory == name ? 'active' : ''}
+        className={activeCategory === name ? 'active' : ''}
         name={name}
         styleName='menu-item'
       >
@@ -177,10 +177,10 @@ export default class CategoryMenu extends React.Component {
     } = this.props
     setCategory(name)
     setSubCategory(slug)
-    if (itemType == 'sale') {
+    if (itemType === 'sale') {
       getSaleItems(`${slug}`, 1, true)
       setPageNo('sale', 1)
-    } else if (itemType == 'request') {
+    } else if (itemType === 'request') {
       getRequestItems(`${slug}`, 1, true)
       setPageNo('request', 1)
     }
@@ -226,7 +226,7 @@ export default class CategoryMenu extends React.Component {
               <Menu.Item
                 name=''
                 slug=''
-                active={activeCategory === '' || open == 'All'}
+                active={activeCategory === '' || open === 'All'}
                 onClick={e => this.handleItemClick(e, '', '')}
                 styleName='menu-item all-item'
               >
@@ -268,7 +268,7 @@ export default class CategoryMenu extends React.Component {
               <Menu.Item
                 name='Bicycles'
                 slug={categories.Bicycles}
-                active={activeCategory === 'Bicycles' || open == 'Bicycles'}
+                active={activeCategory === 'Bicycles' || open === 'Bicycles'}
                 onClick={e =>
                   this.handleItemClick(e, categories.Bicycles, 'Bicycles')
                 }
@@ -294,7 +294,7 @@ export default class CategoryMenu extends React.Component {
                 name='Miscellaneous'
                 slug={categories.Miscellaneous}
                 active={
-                  activeCategory === 'Miscellaneous' || open == 'Miscellaneous'
+                  activeCategory === 'Miscellaneous' || open === 'Miscellaneous'
                 }
                 onClick={e =>
                   this.handleItemClick(
@@ -375,7 +375,7 @@ export default class CategoryMenu extends React.Component {
                 <Menu.Item
                   name=''
                   slug=''
-                  active={activeCategory === '' || open == 'All'}
+                  active={activeCategory === '' || open === 'All'}
                   onClick={e => this.handleItemClick(e, '', '')}
                   styleName='menu-item all-item'
                 >
@@ -417,7 +417,7 @@ export default class CategoryMenu extends React.Component {
                 <Menu.Item
                   name='Bicycles'
                   slug={categories.Bicycles}
-                  active={activeCategory === 'Bicycles' || open == 'Bicycles'}
+                  active={activeCategory === 'Bicycles' || open === 'Bicycles'}
                   onClick={e =>
                     this.handleItemClick(e, categories.Bicycles, 'Bicycles')
                   }
@@ -444,7 +444,7 @@ export default class CategoryMenu extends React.Component {
                   slug={categories.Miscellaneous}
                   active={
                     activeCategory === 'Miscellaneous' ||
-                    open == 'Miscellaneous'
+                    open === 'Miscellaneous'
                   }
                   onClick={e =>
                     this.handleItemClick(

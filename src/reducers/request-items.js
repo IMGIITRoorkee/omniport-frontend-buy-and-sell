@@ -15,7 +15,7 @@ const requestItems = (state = [], action) => {
       return action.payload
     case UPDATE_REQUEST_ITEM:
       return state.map(x => {
-        if (action.payload.id == x.id) return action.payload
+        if (action.payload.id === x.id) return action.payload
         return x
       })
     case DELETE_REQUEST_ITEM:

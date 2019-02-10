@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import { render } from 'react-dom'
 import { Switch, Route } from 'react-router-dom'
-import { Grid, Icon, Dropdown } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import './index.css'
-import { AppHeader, AppFooter } from 'formula_one'
-import Products from '../products'
-import SaleItemForm from '../sale-item-form'
-import SaleItemDetail from '../sale-item-detail'
-import RequestItemDetail from '../request-item-detail'
-import RequestItemForm from '../request-item-form'
-import SearchBar from '../navbar-components'
-import UserAccount from '../user-account'
-import AddButton from '../add-item-button'
+import { AppHeader, AppFooter, Loading } from 'formula_one'
+const Products = lazy(() => import('../products'))
+const SaleItemForm = lazy(() => import('../sale-item-form'))
+const SaleItemDetail = lazy(() => import('../sale-item-detail'))
+const RequestItemDetail = lazy(() => import('../request-item-detail'))
+const RequestItemForm = lazy(() => import('../request-item-form'))
+const SearchBar = lazy(() => import('../navbar-components'))
+const UserAccount = lazy(() => import('../user-account'))
+const AddButton = lazy(() => import('../add-item-button'))
 
 const creators = [
   {
@@ -46,56 +46,60 @@ export default class App extends React.Component {
 
     return (
       <div ref={this.divRef} styleName='app-wrapper'>
-        <Route
-          path={`${match.path}`}
-          render={props => <AddButton scrollDiv={this.scrollDiv} {...props} />}
-        />
-        <Switch>
+        <Suspense fallback={<Loading />}>
           <Route
             path={`${match.path}`}
             render={props => (
-              <AppHeader
-                appName='buy_and_sell'
-                mode={'app'}
-                middle={<SearchBar {...props} />}
-                userDropdown
-              />
+              <AddButton scrollDiv={this.scrollDiv} {...props} />
             )}
           />
-        </Switch>
-        <div styleName='app-container'>
-          <Grid container>
-            <Grid.Row>
-              <Switch>
-                <Route
-                  path={`${match.path}sell_item`}
-                  render={props => (
-                    <SaleItemForm scrollDiv={this.scrollDiv} {...props} />
-                  )}
+          <Switch>
+            <Route
+              path={`${match.path}`}
+              render={props => (
+                <AppHeader
+                  appName='buy_and_sell'
+                  mode={'app'}
+                  middle={<SearchBar {...props} />}
+                  userDropdown
                 />
-                <Route
-                  path={`${match.path}request_item`}
-                  render={props => (
-                    <RequestItemForm scrollDiv={this.scrollDiv} {...props} />
-                  )}
-                />
-                <Route
-                  path={`${match.path}my_account`}
-                  component={UserAccount}
-                />
-                <Route
-                  path={`${match.path}buy/:id`}
-                  component={SaleItemDetail}
-                />
-                <Route
-                  path={`${match.path}request/:id`}
-                  component={RequestItemDetail}
-                />
-                <Route path={`${match.path}`} component={Products} />
-              </Switch>
-            </Grid.Row>
-          </Grid>
-        </div>
+              )}
+            />
+          </Switch>
+          <div styleName='app-container'>
+            <Grid container>
+              <Grid.Row>
+                <Switch>
+                  <Route
+                    path={`${match.path}sell_item`}
+                    render={props => (
+                      <SaleItemForm scrollDiv={this.scrollDiv} {...props} />
+                    )}
+                  />
+                  <Route
+                    path={`${match.path}request_item`}
+                    render={props => (
+                      <RequestItemForm scrollDiv={this.scrollDiv} {...props} />
+                    )}
+                  />
+                  <Route
+                    path={`${match.path}my_account`}
+                    component={UserAccount}
+                  />
+                  <Route
+                    path={`${match.path}buy/:id`}
+                    component={SaleItemDetail}
+                  />
+                  <Route
+                    path={`${match.path}request/:id`}
+                    component={RequestItemDetail}
+                  />
+                  <Route path={`${match.path}`} component={Products} />
+                </Switch>
+              </Grid.Row>
+            </Grid>
+          </div>
+        </Suspense>
         <AppFooter creators={creators} />
       </div>
     )

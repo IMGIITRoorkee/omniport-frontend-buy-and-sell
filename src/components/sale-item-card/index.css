@@ -22,4 +22,10 @@
 }
 
 .date {
-    color: #828282 !important;}
+    color: #828282 !important;
+}
+
+.card-description {
+    overflow: hidden !important;
+    text-overflow: clip
+}

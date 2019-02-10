@@ -324,7 +324,7 @@ export default class UserAccount extends React.Component {
                               )
                             }
                           })}
-                          {userProducts.sale.length == 0 && !loaders.userSaleList? (
+                          {userProducts.sale.length === 0 && !loaders.userSaleList? (
                             <Grid.Column styleName='no-items' width={16}>
                               You haven't added any Item for Sale.
                             </Grid.Column>
@@ -396,7 +396,7 @@ export default class UserAccount extends React.Component {
                             })}
                           </Table.Body>
                         </Table>
-                      {userProducts.request.length == 0 && !loaders.userRequestList ? (
+                      {userProducts.request.length === 0 && !loaders.userRequestList ? (
                         <Grid.Column styleName='no-items' width={16}>
                           You haven't added any Item for Request.
                         </Grid.Column>

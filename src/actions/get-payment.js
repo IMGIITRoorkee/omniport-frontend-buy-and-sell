@@ -8,13 +8,11 @@ export const getPayment = () => {
       method: 'get',
       url: paymentUrl,
       params: {}
-    })
-      .then(response => {
-        dispatch({
-          type: GET_PAYMENT,
-          payload: response.data.results
-        })
+    }).then(response => {
+      dispatch({
+        type: GET_PAYMENT,
+        payload: response.data.results
       })
-      .catch(error => {})
+    })
   }
 }

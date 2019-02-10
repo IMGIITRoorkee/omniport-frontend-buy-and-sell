@@ -10,13 +10,11 @@ export const getSearchProducts = query => {
       params: {
         query: query
       }
-    })
-      .then(response => {
-        dispatch({
-          type: SEARCH_PRODUCTS,
-          payload: response.data.results.slice()
-        })
+    }).then(response => {
+      dispatch({
+        type: SEARCH_PRODUCTS,
+        payload: response.data.results.slice()
       })
-      .catch(error => {})
+    })
   }
 }

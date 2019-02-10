@@ -41,7 +41,7 @@ const userProducts = (state = initialState, action) => {
       return {
         ...state,
         sale: state.sale.map(x => {
-          if (action.payload.id == x.id) return action.payload
+          if (action.payload.id === x.id) return action.payload
           return x
         })
       }
@@ -49,7 +49,7 @@ const userProducts = (state = initialState, action) => {
       return {
         ...state,
         sale: state.sale.map(x => {
-          if (action.payload.id == x.id) return action.payload
+          if (action.payload.id === x.id) return action.payload
           return x
         })
       }

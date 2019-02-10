@@ -45,7 +45,7 @@ export default class CustomPopup extends React.Component {
     this.setState({
       popup: value
     })
-    if (e.type == 'click') e.stopPropagation()
+    if (e.type === 'click') e.stopPropagation()
   }
   stopPropagation = e => {
     e.stopPropagation()
@@ -68,30 +68,16 @@ export default class CustomPopup extends React.Component {
         {detailView ? (
           <>
             <div styleName='options-icon'>
-              <Popup
-                trigger={
-                  <Icon
-                    styleName='card-icon'
-                    id={item.id}
-                    onClick={e => this.handleDimmer(e, true, 'edit')}
-                    name='edit'
-                  />
-                }
-                inverted
-                position='top center'
-                content='Edit'
+              <Icon
+                styleName='card-icon'
+                id={item.id}
+                onClick={e => this.handleDimmer(e, true, 'edit')}
+                name='edit'
               />
-              <Popup
-                trigger={
-                  <Icon
-                    styleName='card-icon'
-                    onClick={e => this.handleDimmer(e, true, 'delete')}
-                    name='trash'
-                  />
-                }
-                inverted
-                position='top center'
-                content='Delete'
+              <Icon
+                styleName='card-icon'
+                onClick={e => this.handleDimmer(e, true, 'delete')}
+                name='trash'
               />
             </div>
           </>
@@ -140,13 +126,13 @@ export default class CustomPopup extends React.Component {
           </Popup>
         )}
         <Modal
-          size='tiny'
+          size='small'
           open={active}
           onClose={e => this.handleDimmer(e, false, '')}
           onClick={e => this.stopPropagation(e)}
           closeIcon
         >
-          {dimmerType == 'delete' ? (
+          {dimmerType === 'delete' ? (
             <>
               <Header icon='archive' content='Delete this item' />
               <Modal.Content>
@@ -175,7 +161,7 @@ export default class CustomPopup extends React.Component {
             <>
               <Modal.Header>{`Update`}</Modal.Header>
               <Modal.Content scrolling styleName='modal-cont'>
-                {type == 'buy' ? (
+                {type === 'buy' ? (
                   <SaleItemForm
                     item={item}
                     shareSubmit={this.acceptSubmit.bind(this)}

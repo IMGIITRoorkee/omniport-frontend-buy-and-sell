@@ -91,7 +91,7 @@ export default class SaleItemCard extends React.Component {
                   {item.cost}
                 </span>
               </Card.Meta>
-              <Card.Description>
+              <Card.Description styleName='card-description'>
                 {getExcerpt(item.details, 42)}
               </Card.Description>
             </>

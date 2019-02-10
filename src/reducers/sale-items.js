@@ -20,7 +20,7 @@ const SaleItems = (state = [], action) => {
       })
     case UPDATE_SALE_ITEM:
       return state.map(x => {
-        if (action.payload.id == x.id) return action.payload
+        if (action.payload.id === x.id) return action.payload
         return x
       })
     default:

@@ -39,12 +39,12 @@ export default class RequestItemForm extends React.Component {
     } else {
       let categoryName = ''
       this.props.categories.map(category => {
-        if (item.category == category.slug) {
+        if (item.category === category.slug) {
           categoryName = category.name
           return
         }
         category.subCategories.map(subCategory => {
-          if (item.category == subCategory.slug) {
+          if (item.category === subCategory.slug) {
             categoryName = subCategory.name
           }
         })
@@ -72,7 +72,9 @@ export default class RequestItemForm extends React.Component {
     if (item) {
       shareSubmit(this.handleSubmit.bind(this))
     }
-    this.props.scrollDiv()
+    if (this.props.scrollDiv) {
+      this.props.scrollDiv()
+    }
   }
 
   componentDidUpdate (prevProps) {
@@ -109,7 +111,7 @@ export default class RequestItemForm extends React.Component {
   handleChange = (event, { name, value }) => {
     if (this.state.hasOwnProperty(name)) {
       this.setState({ [name]: value })
-      if (name == 'cost') {
+      if (name === 'cost') {
         if (
           isNaN(value) ||
           parseFloat(value) < 0 ||
@@ -126,7 +128,7 @@ export default class RequestItemForm extends React.Component {
             formError: err
           })
         }
-      } else if (name == 'name') {
+      } else if (name === 'name') {
         if (!isNaN(value) && value.length > 0) {
           this.setState({
             nameError: true,
@@ -184,7 +186,9 @@ export default class RequestItemForm extends React.Component {
     } else {
       this.props.addRequestItem(formData)
     }
-    this.props.scrollDiv()
+    if (this.props.scrollDiv) {
+      this.props.scrollDiv()
+    }
   }
 
   handleCategoryChange = (e, { value, name, slug }) => {
@@ -248,6 +252,9 @@ export default class RequestItemForm extends React.Component {
       categoryError,
       endDate
     } = this.state
+
+    const dateCurrent = new Date()
+    dateCurrent.setDate(dateCurrent.getDate() + 1)
 
     return (
       <Grid.Column width={16}>
@@ -323,7 +330,7 @@ export default class RequestItemForm extends React.Component {
                     <DateInput
                       closable
                       name='endDate'
-                      minDate={new Date()}
+                      minDate={dateCurrent}
                       placeholder='Expires on'
                       value={endDate}
                       iconPosition='left'

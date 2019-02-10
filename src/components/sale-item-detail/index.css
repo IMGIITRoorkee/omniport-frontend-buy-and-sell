@@ -64,7 +64,9 @@
     display: inline !important;
     font-size: 1.5em !important;
     font-weight: 700 !important;
-    padding-bottom: .3em !important
+    padding-bottom: .3em !important;
+    text-overflow: clip !important;
+    overflow: hidden !important;
 }
 
 .popup-flex {
@@ -111,4 +113,6 @@
 
 .title-row {
     padding-bottom: 0 !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
 }

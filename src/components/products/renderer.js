@@ -20,10 +20,10 @@ export default class Items extends React.Component {
   handleItemClick = (e, { slug, name }) => {
     this.props.setCategory(name)
     this.props.setSubCategory(slug)
-    if (this.props.itemType == 'sale') {
+    if (this.props.itemType === 'sale') {
       this.props.getSaleItems(`${slug}`, 1, true)
       this.props.setPageNo('sale', 1)
-    } else if (this.props.itemType == 'request') {
+    } else if (this.props.itemType === 'request') {
       this.props.getRequestItems(`${slug}`, 1, true)
       this.props.setPageNo('request', 1)
     }
@@ -48,12 +48,12 @@ export default class Items extends React.Component {
       itemType
     } = this.props
     let item = ''
-    if (itemType == 'request') {
+    if (itemType === 'request') {
       item = 'Items requested'
-    } else if (itemType == 'sale') {
+    } else if (itemType === 'sale') {
       item = 'Items for sale'
     }
-    if (activeCategory == '') {
+    if (activeCategory === '') {
       items.push(
         <React.Fragment key={'root'}>
           <Breadcrumb.Divider icon='right angle' />
@@ -62,7 +62,7 @@ export default class Items extends React.Component {
       )
     } else {
       categories.map(category => {
-        if (category.slug == activeSubCategory) {
+        if (category.slug === activeSubCategory) {
           items.push(
             <React.Fragment key={category.slug}>
               <Breadcrumb.Divider icon='right angle' />
@@ -71,7 +71,7 @@ export default class Items extends React.Component {
           )
         } else {
           category.subCategories.map(subCategory => {
-            if (subCategory.slug == activeSubCategory) {
+            if (subCategory.slug === activeSubCategory) {
               items.push(
                 <React.Fragment key={subCategory.slug}>
                   <Breadcrumb.Divider icon='right angle' />
