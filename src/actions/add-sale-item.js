@@ -2,6 +2,8 @@ import axios from 'axios'
 import { saleProductUrl, pictureUrl } from '../constants/urls'
 import { SALE_ITEM_ADD_MESSAGE } from '../constants/action-types'
 
+import { toast } from 'react-semantic-toasts'
+
 import { getCookie } from 'formula_one/src/utils'
 
 export const addSaleItem = (data, pictures) => {
@@ -47,11 +49,19 @@ export const addSaleItem = (data, pictures) => {
           })
         }
       })
-      .catch(() => {
+      .catch(err => {
         const response = {
           status: false,
           value: 'Sorry. There has been an error. Please try again!'
         }
+        toast({
+          type: 'error',
+          title: 'Error occured.Try again',
+          description: err.response.data.error,
+          animation: 'fade up',
+          icon: 'frown outline',
+          time: 4000
+        })
         dispatch({
           type: SALE_ITEM_ADD_MESSAGE,
           payload: response
