@@ -13,6 +13,13 @@ export const updateRequestItem = (data, id) => {
     axios
       .patch(`${requestProductUrl}${id}/`, data, { headers: headers })
       .then(res => {
+        toast({
+          type: 'success',
+          title: 'Item updated succesfully',
+          animation: 'fade up',
+          icon: 'smile outline',
+          time: 4000
+        })
         dispatch({
           type: UPDATE_REQUEST_ITEM,
           payload: res.data

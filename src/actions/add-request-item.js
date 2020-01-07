@@ -20,6 +20,13 @@ export const addRequestItem = data => {
           value:
             'Congratulations! Your item has been added to Requested items.'
         }
+        toast({
+          type: 'success',
+          title: 'Item added succesfully',
+          animation: 'fade up',
+          icon: 'smile outline',
+          time: 4000
+        })
         dispatch({
           type: REQUEST_ITEM_ADD_MESSAGE,
           payload: response

@@ -24,6 +24,13 @@ export const deleteItem = (id, type) => {
       })
     } else if (type === 'buy') {
       axios.delete(saleProductUrl + id, { headers: headers }).then(res => {
+        toast({
+          type: 'success',
+          title: 'Item deleted succesfully',
+          animation: 'fade up',
+          icon: 'smile outline',
+          time: 4000
+        })
         dispatch({
           type: DELETE_SALE_ITEM,
           payload: id

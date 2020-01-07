@@ -24,6 +24,13 @@ export const addSaleItem = (data, pictures) => {
             status: true,
             value: 'Congratulations! item has been added to Sale items.'
           }
+          toast({
+            type: 'success',
+            title: 'Item added succesfully',
+            animation: 'fade up',
+            icon: 'smile outline',
+            time: 4000
+          })
           pictures.map((picture, index) => {
             let headers = {
               Accept: 'application/json',
