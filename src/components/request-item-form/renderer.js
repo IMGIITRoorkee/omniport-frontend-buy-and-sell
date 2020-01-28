@@ -15,6 +15,7 @@ import {
 import { Link } from 'react-router-dom'
 import { getTheme } from 'formula_one'
 import { DateInput } from 'semantic-ui-calendar-react'
+import { toast } from 'react-semantic-toasts'
 import './index.css'
 
 export default class RequestItemForm extends React.Component {
@@ -185,6 +186,13 @@ export default class RequestItemForm extends React.Component {
       this.props.handleDimmer(e)
     } else {
       this.props.addRequestItem(formData)
+      toast({
+        type: 'success',
+        title: 'Item added succesfully',
+        animation: 'fade up',
+        icon: 'smile outline',
+        time: 4000
+      })
     }
     if (this.props.scrollDiv) {
       this.props.scrollDiv()

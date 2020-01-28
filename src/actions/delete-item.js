@@ -4,6 +4,9 @@ import {
   DELETE_REQUEST_ITEM,
   DELETE_SALE_ITEM
 } from '../constants/action-types'
+
+import { toast } from 'react-semantic-toasts'
+
 import { getCookie } from 'formula_one/src/utils'
 
 export const deleteItem = (id, type) => {
@@ -21,11 +24,28 @@ export const deleteItem = (id, type) => {
       })
     } else if (type === 'buy') {
       axios.delete(saleProductUrl + id, { headers: headers }).then(res => {
+        toast({
+          type: 'success',
+          title: 'Item deleted succesfully',
+          animation: 'fade up',
+          icon: 'smile outline',
+          time: 4000
+        })
         dispatch({
           type: DELETE_SALE_ITEM,
           payload: id
         })
       })
+        .catch(err => {
+          toast({
+            type: 'error',
+            title: 'Error occured, please try again',
+            description: err.response.data.error,
+            animation: 'fade up',
+            icon: 'frown outline',
+            time: 4000
+          })
+        })
     }
   }
 }

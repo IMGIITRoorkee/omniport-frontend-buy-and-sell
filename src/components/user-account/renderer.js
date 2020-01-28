@@ -156,13 +156,15 @@ export default class UserAccount extends React.Component {
                               ) : (
                                 <DefaultDP
                                   name={user.person.fullName}
-                                  size={'3em'}
+                                  size={'8em'}
+                                  gravatarHash={user.person.gravatarHash}
                                 />
                               )
                             ) : (
                               <DefaultDP
                                 name={user.person.fullName}
-                                size={'3em'}
+                                size={'8em'}
+                                gravatarHash={user.person.gravatarHash}
                               />
                             )}
                           </Grid.Column>
