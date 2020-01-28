@@ -63,7 +63,7 @@ export const addSaleItem = (data, pictures) => {
         }
         toast({
           type: 'error',
-          title: 'Error occured.Try again',
+          title: 'Error occured. Try again',
           description: err.response.data.error,
           animation: 'fade up',
           icon: 'frown outline',
