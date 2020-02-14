@@ -20,13 +20,6 @@ export const addRequestItem = data => {
           value:
             'Congratulations! Your item has been added to Requested items.'
         }
-        toast({
-          type: 'success',
-          title: 'Item added succesfully',
-          animation: 'fade up',
-          icon: 'smile outline',
-          time: 4000
-        })
         dispatch({
           type: REQUEST_ITEM_ADD_MESSAGE,
           payload: response
@@ -37,14 +30,6 @@ export const addRequestItem = data => {
           value: 'Sorry! There has been an error. Please try again!',
           status: false
         }
-        toast({
-          type: 'error',
-          title: 'Error occured. Try again',
-          description: err.response.data.error,
-          animation: 'fade up',
-          icon: 'frown outline',
-          time: 4000
-        })
         dispatch({
           type: REQUEST_ITEM_ADD_MESSAGE,
           payload: response

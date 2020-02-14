@@ -56,6 +56,20 @@ export default class SaleItemDetail extends React.Component {
       indicator: index
     })
   }
+  handleDecreaseIndex = index => {
+    if(index > 0){
+    this.setState({
+      indicator: index-1
+    })
+  }
+  }
+  handleIncreaseIndex = (index, length) => {
+    if(index < length - 1){
+    this.setState({
+      indicator: index+1
+    })
+  }
+  }
 
   isOwner = itemUser => {
     const { user } = this.props
@@ -107,7 +121,37 @@ export default class SaleItemDetail extends React.Component {
                               <div
                                 styleName='item-img'
                                 style={{ background: `url(${image})` }}
-                              />
+                              >
+                                <div styleName='swipe'>
+                                  <div
+                                   styleName='angle-container'
+                                   onClick={() => this.handleDecreaseIndex(index)}
+                                   styleName={`${
+                                        this.state.indicator > 0
+                                          ? ''
+                                          : 'disactive-arrow'
+                                      }`}
+                                  >
+                                    <Icon
+                                      name='angle left'
+                                    />
+                                  </div>
+                                  <div
+                                   styleName='angle-container-right'
+                                   onClick={() =>
+                                    this.handleIncreaseIndex(index, saleItemDetail.pictures.length)}
+                                    styleName={`${
+                                      this.state.indicator < saleItemDetail.pictures.length - 1
+                                        ? ''
+                                        : 'disactive-arrow'
+                                    }`}
+                                  >
+                                    <Icon
+                                     name='angle right'
+                                    />
+                                  </div>
+                                </div>
+                              </div>
                             </Transition>
                           )
                         })

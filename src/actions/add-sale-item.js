@@ -24,13 +24,6 @@ export const addSaleItem = (data, pictures) => {
             status: true,
             value: 'Congratulations! item has been added to Sale items.'
           }
-          toast({
-            type: 'success',
-            title: 'Item added succesfully',
-            animation: 'fade up',
-            icon: 'smile outline',
-            time: 4000
-          })
           pictures.map((picture, index) => {
             let headers = {
               Accept: 'application/json',
@@ -61,14 +54,6 @@ export const addSaleItem = (data, pictures) => {
           status: false,
           value: 'Sorry. There has been an error. Please try again!'
         }
-        toast({
-          type: 'error',
-          title: 'Error occured. Try again',
-          description: err.response.data.error,
-          animation: 'fade up',
-          icon: 'frown outline',
-          time: 4000
-        })
         dispatch({
           type: SALE_ITEM_ADD_MESSAGE,
           payload: response
