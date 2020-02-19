@@ -75,7 +75,7 @@ export default class SaleItemCard extends React.Component {
             <>
               <Card.Header styleName='title'>
                 <div styleName='card-header'>
-                  <div>{getExcerpt(item.name, 18, false)}</div>
+                  <div styleName='item-name'>{getExcerpt(item.name, 18, false)}</div>
                   {this.isOwner(item.person) ? (
                     <>
                       <div>

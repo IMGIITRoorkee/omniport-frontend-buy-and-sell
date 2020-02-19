@@ -1,5 +1,10 @@
 import { connect } from 'react-redux'
-import { getPayment, addSaleItem, updateSaleItem } from '../../actions'
+import { getPayment,
+         addSaleItem,
+         updateSaleItem,
+         setCategory,
+         setSubCategory
+         } from '../../actions'
 import { SALE_ITEM_ADD_MESSAGE } from '../../constants'
 import SaleItemForm from './renderer'
 
@@ -8,7 +13,7 @@ function mapStateToProps (state) {
     categories: state.categories,
     user: state.user,
     paymentModes: state.paymentModes,
-    appMessages: state.appMessages
+    appMessages: state.appMessages,
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -18,6 +23,12 @@ const mapDispatchToProps = dispatch => {
     },
     addSaleItem: (data, pictures) => {
       dispatch(addSaleItem(data, pictures))
+    },
+    setCategory: param => {
+      dispatch(setCategory(param))
+    },
+    setSubCategory: param => {
+      dispatch(setSubCategory(param))
     },
     updateSaleItem: (data, id) => {
       dispatch(updateSaleItem(data, id))

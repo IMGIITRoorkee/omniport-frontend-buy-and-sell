@@ -121,7 +121,7 @@ export default class UserAccount extends React.Component {
               <Responsive
                 as={React.Fragment}
                 minWidth={Responsive.onlyTablet.maxWidth + 1}
-              > 
+              >
                 <Grid.Column width={3}>
                   <Grid>
                     {loading ? (
@@ -209,7 +209,7 @@ export default class UserAccount extends React.Component {
                 <Responsive
                           as={React.Fragment}
                           maxWidth={Responsive.onlyTablet.maxWidth }
-                        > 
+                        >
                         <Grid.Column width={16}>
                   <Grid>
                         <Grid.Row>
@@ -224,7 +224,7 @@ export default class UserAccount extends React.Component {
                                   }}
                                 />
                               ) : (
-                                <div 
+                                <div
                                   styleName='person-img-mobile'
                                 >
                                 <DefaultDP
@@ -234,7 +234,7 @@ export default class UserAccount extends React.Component {
                                 </div>
                               )
                             ) : (
-                              <div 
+                              <div
                                   styleName='person-img-mobile'
                               >
                               <DefaultDP
@@ -358,7 +358,7 @@ export default class UserAccount extends React.Component {
                     <Grid.Column>
                       <Header as='h4' styleName='item-heading'>
                         Items requested
-                        <Divider fitted />                      
+                        <Divider fitted />
                       </Header>
                     </Grid.Column>
                   </Grid.Row>
@@ -370,8 +370,8 @@ export default class UserAccount extends React.Component {
                               <Table.HeaderCell width={6}>
                                 Item Name
                               </Table.HeaderCell>
-                              <Responsive 
-                                as={React.Fragment}  
+                              <Responsive
+                                as={React.Fragment}
                                 minWidth={Responsive.onlyTablet.maxWidth + 1}
                               >
                               <Table.HeaderCell width={6}>

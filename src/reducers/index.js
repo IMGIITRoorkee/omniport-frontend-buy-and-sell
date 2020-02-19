@@ -10,6 +10,7 @@ import setItemType from './set-item-type'
 import { setCategory, setSubCategory } from './set-category'
 import requestForm from './request-form'
 import saleForm from './sale-form'
+import sortingOrder from './set-sort-order'
 import { saleProductCount, requestProductCount } from './count'
 import searchProducts from './search-products'
 import userProducts from './user-products'
@@ -38,6 +39,7 @@ const rootReducer = combineReducers({
   pageNo: pageNo,
   appMessages: appMessages,
   loaders: loaders,
-  searchFocus: searchFocus
+  searchFocus: searchFocus,
+  sortingOrder: sortingOrder
 })
 export default rootReducer

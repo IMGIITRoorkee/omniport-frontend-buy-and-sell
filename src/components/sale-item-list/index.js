@@ -3,7 +3,8 @@ import {
   getSaleItems,
   sortSaleItems,
   setItemType,
-  setPageNo
+  setPageNo,
+  setSortingOrder,
 } from '../../actions'
 import Component from './renderer'
 
@@ -13,7 +14,8 @@ function mapStateToProps (state) {
     activeSubCategory: state.activeSubCategory,
     saleProductCount: state.saleProductCount,
     page: state.pageNo.sale,
-    loading: state.loaders.saleList
+    loading: state.loaders.saleList,
+    sortingOrder: state.sortingOrder
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -29,7 +31,10 @@ const mapDispatchToProps = dispatch => {
     },
     setPageNo: (type, no) => {
       dispatch(setPageNo(type, no))
-    }
+    },
+    setSortingOrder: (order) => {
+      dispatch(setSortingOrder(order))
+    },
   }
 }
 export default connect(
