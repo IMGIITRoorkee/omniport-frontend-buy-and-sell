@@ -21,9 +21,9 @@ const creators = [
   },
   {
     name: 'Manya Singh',
-    role: 'Designer'
+    role: 'Designer',
     link: 'https://dribbble.com/manyas'
-  }
+  },
   {
     name: 'Suyash Salampuria',
     role: 'Developer',
