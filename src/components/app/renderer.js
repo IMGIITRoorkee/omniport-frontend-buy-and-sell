@@ -16,11 +16,18 @@ const AddButton = lazy(() => import('../add-item-button'))
 const creators = [
   {
     name: 'Vivek Chand',
-    role: 'Developer'
+    role: 'Developer',
+    link: 'https://github.com/Vivekrajput20'
   },
   {
     name: 'Manya Singh',
     role: 'Designer'
+    link: 'https://dribbble.com/manyas'
+  }
+  {
+    name: 'Suyash Salampuria',
+    role: 'Developer',
+    link: 'https://github.com/SuyashSalampuria'
   }
 ]
 
