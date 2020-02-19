@@ -18,7 +18,8 @@ import './index.css'
 
 export default class SaleItemList extends React.Component {
   state = {
-    bottom: true
+    bottom: true,
+    sort: 'latest'
   }
 
   componentDidMount () {
@@ -36,11 +37,18 @@ export default class SaleItemList extends React.Component {
   componentDidUpdate (prevProps) {
     if (this.props.activeSubCategory !== prevProps.activeSubCategory) {
       this.setState({
-        bottom: true
+        bottom: true,
+        sort: 'latest',
       })
     }
+    if(this.state.sort !== this.props.sortingOrder && this.props.saleItems.length > 0)
+    {
+      this.handleSortChange(null, {value: this.props.sortingOrder});
+    }
   }
+
   handleSortChange = (e, { value }) => {
+    this.props.setSortingOrder(value)
     let itemsNewList = this.props.saleItems.slice()
     switch (value) {
       case 'price: low to high':
@@ -62,6 +70,7 @@ export default class SaleItemList extends React.Component {
         this.props.sortItems(itemsNewList)
         break
     }
+    this.setState({sort: value})
   }
 
   handleUpdate = () => {
@@ -69,6 +78,7 @@ export default class SaleItemList extends React.Component {
     if (saleProductCount > page * 10) {
       this.props.getSaleItems(activeSubCategory, 1 + page)
       this.props.setPageNo('sale', page + 1)
+      this.handleSortChange(null, {value: this.props.sortingOrder})
     } else {
       this.setState({
         bottom: false

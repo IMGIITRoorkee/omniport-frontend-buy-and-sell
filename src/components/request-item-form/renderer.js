@@ -148,7 +148,7 @@ export default class RequestItemForm extends React.Component {
 
   handleSubmit = e => {
     const { endDate, name, category, cost, isPhoneVisible } = this.state
-    const { item, appMessages } = this.props
+    const { item, appMessages, setCategory, setSubCategory } = this.props
     if (category.slug === '') {
       this.setState({
         categoryError: true,
@@ -197,6 +197,8 @@ export default class RequestItemForm extends React.Component {
     if (this.props.scrollDiv) {
       this.props.scrollDiv()
     }
+    setCategory('')
+    setSubCategory('')
   }
 
   handleCategoryChange = (e, { value, name, slug }) => {

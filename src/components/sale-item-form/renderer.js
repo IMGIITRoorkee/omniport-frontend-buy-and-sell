@@ -227,9 +227,12 @@ export default class SaleItemForm extends React.Component {
       details,
       cost,
       warrantyDetail,
-      isPhoneVisible
+      isPhoneVisible,
     } = this.state
-    const { item } = this.props
+    const { item,
+            setCategory,
+            setSubCategory
+          } = this.props
     if (category.slug === '') {
       this.setState({
         categoryError: true,
@@ -276,6 +279,8 @@ export default class SaleItemForm extends React.Component {
     if(this.props.scrollDiv){
       this.props.scrollDiv()
       }
+    setCategory('')
+    setSubCategory('')
   }
 
   handleCategoryChange = (e, { value, name, slug }) => {
@@ -476,7 +481,7 @@ export default class SaleItemForm extends React.Component {
                         error
                         size='tiny'
                         compact
-                        content='Price can only range between 0 to 10 lakh.'
+                        content='Price can  between 0 to 10 lakh.'
                       />
                     ) : null}
                   </Form.Field>

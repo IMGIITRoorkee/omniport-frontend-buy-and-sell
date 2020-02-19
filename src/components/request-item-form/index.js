@@ -7,7 +7,9 @@ function mapStateToProps (state) {
   return {
     categories: state.categories,
     user: state.user,
-    appMessages: state.appMessages
+    appMessages: state.appMessages,
+    setCategory: state.setCategory,
+    setSubCategory: state.setSubCategory,
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -17,6 +19,12 @@ const mapDispatchToProps = dispatch => {
     },
     updateRequestItem: (data, id) => {
       dispatch(updateRequestItem(data, id))
+    },
+    setCategory: param => {
+      dispatch(setCategory(param))
+    },
+    setSubCategory: param => {
+      dispatch(setSubCategory(param))
     },
     updateMessage: () => {
       dispatch({

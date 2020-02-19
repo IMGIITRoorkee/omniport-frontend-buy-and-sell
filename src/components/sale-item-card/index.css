@@ -9,6 +9,11 @@
     text-transform: capitalize;
 }
 
+.item-name{ 
+    max-width: 80%;
+    overflow: hidden;
+}
+
 .card-header {
     width: 100% !important;
     display: flex;

@@ -212,19 +212,6 @@ export default class SearchBar extends React.Component {
         >
           <Grid.Row>
             <Grid.Column floated='right' styleName='account-btn' width={14}>
-              {/* <Modal
-                size='fullscreen'
-                trigger={
-                  <Icon
-                    styleName='search-btn-mobile'
-                    name='search'
-                    color='black'
-                    size='big'
-                  />
-                }
-                styleName='mobile-modal'
-              > */}
-              {/* <Modal.Content styleName='mobile-modal-search'> */}
               <Search
                 loading={isLoading}
                 onResultSelect={this.handleResultSelect}
@@ -240,8 +227,6 @@ export default class SearchBar extends React.Component {
                   searchFocus ? 'focused-search-mobile' : ''
                 }`}
               />
-              {/* </Modal.Content> */}
-              {/* </Modal> */}
             </Grid.Column>
             <Grid.Column styleName='account-btn' width={1}>
               <Link to={appUrl + 'my_account/'} styleName='account-btn-link'>
