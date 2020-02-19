@@ -2,7 +2,7 @@
 {
 	"nomenclature": {
 		"name": "buy_and_sell",
-		"verboseName": "Buy and sell"
+		"verboseName": "Buy & Sell"
 	},
 	"baseUrl": "/buy_and_sell",
 	"source": "buy_and_sell/src/index"
