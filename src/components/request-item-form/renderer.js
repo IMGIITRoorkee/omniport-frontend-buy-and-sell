@@ -186,13 +186,6 @@ export default class RequestItemForm extends React.Component {
       this.props.handleDimmer(e)
     } else {
       this.props.addRequestItem(formData)
-      toast({
-        type: 'success',
-        title: 'Item added succesfully',
-        animation: 'fade up',
-        icon: 'smile outline',
-        time: 4000
-      })
     }
     if (this.props.scrollDiv) {
       this.props.scrollDiv()
