@@ -16,7 +16,6 @@
 .category-menu {
     border: none !important;
     box-shadow: none !important;
-    justify-content: center !important;
     flex-wrap: nowrap !important;
 }
 
@@ -38,6 +37,11 @@
 .category-menu-mobile {
     overflow-x: scroll;
     overflow-y: hidden;
+    height: 70.16px !important;
+}
+
+.category-menu-desktop{
+    justify-content: center !important;
 }
 
 .wrapper-mobile {
