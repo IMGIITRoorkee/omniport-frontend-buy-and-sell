@@ -37,11 +37,14 @@
 .category-menu-mobile {
     overflow-x: scroll;
     overflow-y: hidden;
-    height: 70.16px !important;
+}
+
+.category-menu-mobile::-webkit-scrollbar {
+    display:none;
 }
 
 .category-menu-desktop{
-    justify-content: center;
+    justify-content: center ;
 }
 
 .wrapper-mobile {
