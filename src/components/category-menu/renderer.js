@@ -210,12 +210,12 @@ export default class CategoryMenu extends React.Component {
       <Grid.Column width={16}>
         <Responsive
           as={React.Fragment}
-          minWidth={Responsive.onlyTablet.maxWidth + 1}
+          minWidth={Responsive.onlyMobile.maxWidth + 1}
         >
           <Menu
             size={'large'}
             color={getTheme()}
-            styleName='category-menu'
+            styleName='category-menu category-menu-desktop'
             borderless
             icon={'labeled'}
           >
@@ -230,7 +230,6 @@ export default class CategoryMenu extends React.Component {
                 onClick={e => this.handleItemClick(e, '', '')}
                 styleName='menu-item all-item'
               >
-                <Icon name='' />
                 <span styleName='menu-span'>All</span>
               </Menu.Item>
             </div>
@@ -325,7 +324,7 @@ export default class CategoryMenu extends React.Component {
 
         <Responsive
           as={React.Fragment}
-          maxWidth={Responsive.onlyTablet.maxWidth}
+          maxWidth={Responsive.onlyMobile.maxWidth}
         >
           <div styleName='wrapper-mobile'>
             <Menu
@@ -336,42 +335,6 @@ export default class CategoryMenu extends React.Component {
               icon={'labeled'}
             >
               <div>
-                <Menu.Item styleName='menu-item all-item'>
-                  <Icon name='' />
-                  <span styleName='menu-span' />
-                </Menu.Item>
-              </div>
-              <div>
-                <Menu.Item styleName='menu-item all-item'>
-                  <Icon name='' />
-                  <span styleName='menu-span' />
-                </Menu.Item>
-              </div>
-              <div>
-                <Menu.Item styleName='menu-item all-item'>
-                  <Icon name='' />
-                  <span styleName='menu-span' />
-                </Menu.Item>
-              </div>
-              <div>
-                <Menu.Item styleName='menu-item all-item'>
-                  <Icon name='' />
-                  <span styleName='menu-span' />
-                </Menu.Item>
-              </div>
-              <div>
-                <Menu.Item styleName='menu-item all-item'>
-                  <Icon name='' />
-                  <span styleName='menu-span' />
-                </Menu.Item>
-              </div>
-              <div>
-                <Menu.Item styleName='menu-item all-item'>
-                  <Icon name='' />
-                  <span styleName='menu-span' />
-                </Menu.Item>
-              </div>
-              <div>
                 <Menu.Item
                   name=''
                   slug=''
@@ -379,8 +342,7 @@ export default class CategoryMenu extends React.Component {
                   onClick={e => this.handleItemClick(e, '', '')}
                   styleName='menu-item all-item'
                 >
-                  <Icon name='' />
-                  <span styleName='menu-span'>All</span>
+                  <span>All</span>
                 </Menu.Item>
               </div>
               <PopupMenu
