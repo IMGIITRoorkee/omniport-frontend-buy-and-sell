@@ -75,9 +75,9 @@ export default class SearchBar extends React.Component {
         results.sale.results.push({
           key: index,
           title: product.name,
-          description: `${getExcerpt(product.details, 48)}`,
+          description: `${product.isRental ? 'For Rent' : 'For Sale'}`,
           image: `${product.pictures.length > 0 ? product.pictures[0] : ''}`,
-          price: `₹${product.cost}`,
+          price: `₹${product.isRental ? product.cost + ' per ' + product.periodicity : product.cost }`,
           id: product.id,
           type: 'buy'
         })
@@ -85,9 +85,9 @@ export default class SearchBar extends React.Component {
         results.request.results.push({
           key: index,
           title: product.name,
-          description: `Requested by ${product.person.person.fullName}`,
+          description: `${product.isRental ? 'For Rent' : 'For Sale'}`,
           image: '',
-          price: `₹${product.cost}`,
+          price: `₹${product.isRental ? product.cost + ' per ' + product.periodicity : product.cost }`,
           id: product.id,
           type: 'request'
         })

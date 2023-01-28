@@ -7,7 +7,8 @@ import {
   Modal,
   Loader,
   Divider,
-  Visibility
+  Visibility,
+  Checkbox
 } from 'semantic-ui-react'
 import { isMobile } from 'react-device-detect'
 import ItemCard from '../sale-item-card/'
@@ -15,11 +16,18 @@ import ItemDetail from '../sale-item-detail/renderer'
 import { sortOptions } from '../../constants'
 import { getTheme } from 'formula_one'
 import './index.css'
+import { setFilter } from '../../reducers/set-filter'
 
 export default class SaleItemList extends React.Component {
   state = {
     bottom: true,
-    sort: 'latest'
+    sort: 'latest',
+    checkbox: {
+      saleCheck: true,
+      rentCheck:true
+    },
+    filter: '',
+    
   }
 
   componentDidMount () {
@@ -27,11 +35,17 @@ export default class SaleItemList extends React.Component {
       getSaleItems,
       setItemType,
       setPageNo,
-      activeSubCategory
+      activeSubCategory,
+      setFilter, 
+      activeFilter
     } = this.props
-    getSaleItems(activeSubCategory, 1, true)
+    const {filter} = this.state
+    {console.log(activeSubCategory + "hello")}
+    // const args = activeSubCategory + '/' + activeFilter
+    getSaleItems(activeSubCategory, activeFilter, 1, true)
     setItemType('sale')
     setPageNo('sale', 1)
+    // setFilter('')
   }
 
   componentDidUpdate (prevProps) {
@@ -74,9 +88,10 @@ export default class SaleItemList extends React.Component {
   }
 
   handleUpdate = () => {
-    const { saleProductCount, page, activeSubCategory } = this.props
+    const { saleProductCount, page, activeSubCategory, activeFilter } = this.props
+    const {filter} = this.state
     if (saleProductCount > page * 10) {
-      this.props.getSaleItems(activeSubCategory, 1 + page)
+      this.props.getSaleItems(activeSubCategory, activeFilter, 1 + page)
       this.props.setPageNo('sale', page + 1)
       this.handleSortChange(null, {value: this.props.sortingOrder})
     } else {
@@ -85,10 +100,63 @@ export default class SaleItemList extends React.Component {
       })
     }
   }
+  
+handleFilter = () => {
+  const {
+    setFilter, 
+    activeFilter, 
+    getSaleItems, 
+    page,
+    activeSubCategory
+  } = this.props
+  
+  if(this.state.checkbox.saleCheck && 
+    !this.state.checkbox.rentCheck
+  ) {
+    
+    setFilter('for_sale')
+    getSaleItems(activeSubCategory, 'for_sale', 1, true)
+
+  }
+  else if(!this.state.checkbox.saleCheck && 
+    this.state.checkbox.rentCheck
+  ) {
+    
+    setFilter('for_rent')
+    getSaleItems(activeSubCategory, 'for_rent', 1, true)
+  }
+  else {
+    
+    setFilter('')
+    getSaleItems(activeSubCategory, '', 1, true)
+  }
+  console.log(this.props.activeFilter)
+  
+  // this.handleAfterFilterChange()
+  
+
+}  
+
+  handleCheckboxChange = (e) => {
+    const { name } = e.target;
+
+    this.setState((prevState) => {
+      return {
+        checkbox: {
+          ...prevState.checkbox,
+          [name]: !prevState.checkbox[name]
+        }
+      };
+    }, () => this.handleFilter());
+    
+    
+  };
 
   render () {
     const { bottom } = this.state
     const { breadcrumb, loading, saleItems } = this.props
+    {console.log(this.state.checkbox.saleCheck + "and" + this.state.checkbox.rentCheck)}
+    {console.log(this.props.activeFilter + "h")}
     return (
       <React.Fragment>
         <Grid.Column width={16} styleName='items-grid'>
@@ -127,6 +195,27 @@ export default class SaleItemList extends React.Component {
                         />
                       </Header.Content>
                     </Header>
+                    <Header as='h5' styleName='filter'>
+                      <Header.Content>
+                        <Checkbox 
+                          id='1'
+                          label='For Sale'
+                          name='saleCheck'
+                          checked={this.state.checkbox.saleCheck}
+                          onChange={this.handleCheckboxChange}
+                        />
+                        <Checkbox 
+                          id='2'
+                          label='For Rent' 
+                          styleName='checkbox'
+                          name='rentCheck'
+                          checked={this.state.checkbox.rentCheck}
+                          onChange={this.handleCheckboxChange}
+                        />
+                        
+                        
+                      </Header.Content>
+                    </Header>
                   </Grid.Column>
                 </Grid>
               </Grid.Column>
@@ -134,6 +223,7 @@ export default class SaleItemList extends React.Component {
             <Grid.Row centered>
               <Grid divided={'vertically'} stackable columns={5}>
                 <Grid.Row stretched>
+                  {/* {console.log(saleItems)} */}
                   {saleItems.map((item, index) => {
                     return (
                       <Grid.Column stretched key={index}>

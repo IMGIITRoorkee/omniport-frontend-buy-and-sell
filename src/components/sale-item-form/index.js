@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import { getPayment,
+         getConstants,
          addSaleItem,
          updateSaleItem,
          setCategory,
@@ -13,6 +14,7 @@ function mapStateToProps (state) {
     categories: state.categories,
     user: state.user,
     paymentModes: state.paymentModes,
+    constants: state.constants,
     appMessages: state.appMessages,
   }
 }
@@ -20,6 +22,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getPayment: () => {
       dispatch(getPayment())
+    },
+    getConstants: () => {
+      dispatch(getConstants())
     },
     addSaleItem: (data, pictures) => {
       dispatch(addSaleItem(data, pictures))

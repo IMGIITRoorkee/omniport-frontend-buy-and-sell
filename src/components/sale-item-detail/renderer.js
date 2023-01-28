@@ -264,10 +264,20 @@ export default class SaleItemDetail extends React.Component {
                     <Table unstackable styleName='item-data'>
                       <Table.Body>
                         <Table.Row>
-                          <Table.Cell styleName='data-col'>Price</Table.Cell>
+                          <Table.Cell styleName='data-col'>
+                            {saleItemDetail.isRental ? 
+                            <>Renting Rate</> :
+                            <>Price</>
+                            }
+                            
+                          </Table.Cell>
                           <Table.Cell styleName='data-col data-values'>
                             <Icon name='rupee sign' size={'small'} />
-                            {saleItemDetail.cost}
+                            {saleItemDetail.isRental ? 
+                            <>{saleItemDetail.cost} per {saleItemDetail.periodicity}</> :
+                            <>{saleItemDetail.cost}</>
+                            }
+                            
                           </Table.Cell>
                         </Table.Row>
                         <Table.Row>
@@ -370,7 +380,10 @@ export default class SaleItemDetail extends React.Component {
                         {saleItemDetail.warrantyDetail ? (
                           <Table.Row>
                             <Table.Cell styleName='data-col'>
-                              Warranty (no. of months left)
+                            {saleItemDetail.isRental ? 
+                            <>Maximum Renting Period</> :
+                            <>Warranty Details</>
+                            }
                             </Table.Cell>
                             <Table.Cell styleName='data-col data-values'>
                               {saleItemDetail.warrantyDetail}

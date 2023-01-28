@@ -128,13 +128,21 @@ export default class RequestItemDetail extends React.Component {
                   ) : (
                     <Table unstackable styleName='item-data'>
                       <Table.Body>
-                        <Table.Row>
+                        <Table.Row> 
                           <Table.Cell styleName='data-col'>
-                            Maximum price
+                            {requestItemDetail.isRental ? 
+                            <>Maximum renting rate</> : 
+                            <>Maximum price</>
+                            }
+                            
                           </Table.Cell>
                           <Table.Cell styleName='data-col data-values'>
                             <Icon name='rupee sign' size={'small'} />
-                            {requestItemDetail.cost}
+                            {requestItemDetail.isRental ? 
+                            <>{requestItemDetail.cost} per {requestItemDetail.periodicity}</> : 
+                            <>{requestItemDetail.cost}</>
+                            }
+                            
                           </Table.Cell>
                         </Table.Row>
                         <Table.Row>

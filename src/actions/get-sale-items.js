@@ -7,7 +7,7 @@ import {
   SET_SALE_LIST_LOADER
 } from '../constants/action-types'
 
-export const getSaleItems = (param, page = 1, replace = false) => {
+export const getSaleItems = (param1, param2, page = 1, replace = false) => {
   return dispatch => {
     dispatch({
       type: SET_SALE_LIST_LOADER,
@@ -21,7 +21,7 @@ export const getSaleItems = (param, page = 1, replace = false) => {
     }
     axios({
       method: 'get',
-      url: saleItemUrl + param,
+      url: saleItemUrl + 'category' + param1 + '/filter' + param2,
       params: {
         page: page
       }

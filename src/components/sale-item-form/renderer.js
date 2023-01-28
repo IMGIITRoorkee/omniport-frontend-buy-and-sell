@@ -37,7 +37,6 @@ class UploadButton extends React.Component {
           htmlFor={`uploadPhoto${this.props.count}`}
         >
           <Icon
-            styleName={this.props.styles.icon}
             styleName='upload-btn'
             name='upload'
           />
@@ -66,14 +65,21 @@ export default class SaleItemForm extends React.Component {
         },
         details: '',
         cost: '',
+        rent: '',
         warrantyDetail: '',
         isPhoneVisible: false,
         paymentModes: [],
+        isRental: false,
+        periodicity: '',
+        securityDeposit: '',
+        maxRentPeriod: '',
         pictures: ['', '', ''],
         picturesUrl: ['', '', ''],
         nameError: false,
         costError: false,
         categoryError: false,
+        depositError: false,
+        rentError: false,
         formError: true
       }
     } else {
@@ -89,6 +95,19 @@ export default class SaleItemForm extends React.Component {
           }
         })
       })
+      let costPrice =''
+      let rentPrice = ''
+      let maxRent = ''
+      let warranty = ''
+      if(item.isRental){
+        rentPrice = item.cost
+        maxRent = item.warrantyDetail
+      }
+      else{
+        costPrice=item.cost
+        warranty = item.warrantyDetail
+      }
+      
       this.state = {
         endDate: item.endDate,
         name: item.name,
@@ -96,14 +115,21 @@ export default class SaleItemForm extends React.Component {
           name: categoryName,
           slug: item.category
         },
-        cost: item.cost,
+        cost: costPrice,
+        rent: rentPrice,
         details: item.details,
-        warrantyDetail: item.warrantyDetail,
+        warrantyDetail: warranty,
         isPhoneVisible: item.isPhoneVisible,
         paymentModes: item.paymentModes,
+        periodicity: item.periodicity,
+        isRental: item.isRental,
+        securityDeposit: item.securityDeposit,
+        maxRentPeriod: maxRent,
         nameError: false,
         costError: false,
         categoryError: false,
+        depositError: false,
+        rentError: false,
         formError: false
       }
     }
@@ -111,6 +137,7 @@ export default class SaleItemForm extends React.Component {
 
   componentDidMount () {
     this.props.getPayment()
+    this.props.getConstants()
     const { item, shareSubmit } = this.props
     if (item) {
       shareSubmit(this.handleSubmit.bind(this))
@@ -136,14 +163,22 @@ export default class SaleItemForm extends React.Component {
           },
           details: '',
           cost: '',
+          rent: '',
           warrantyDetail: '',
           isPhoneVisible: false,
           paymentModes: [],
+          periodicity: '',
+          isRental: false,
+          periodicity: '',
+          securityDeposit: '',
+          maxRentPeriod: '',
           pictures: ['', '', ''],
           picturesUrl: ['', '', ''],
           nameError: false,
           costError: false,
           categoryError: false,
+          depositError: false,
+          rentError: false,
           formError: true
         })
       }
@@ -173,28 +208,67 @@ export default class SaleItemForm extends React.Component {
         ) {
           this.setState({
             costError: true,
-            formError: true
           })
         } else {
-          let err = this.state.nameError || this.state.categoryError
           this.setState({
             costError: false,
-            formError: err
           })
         }
       } else if (name === 'name') {
         if (!isNaN(value) && value.length > 0) {
           this.setState({
             nameError: true,
-            formError: true
           })
         } else {
-          let err = this.state.costError || this.state.categoryError
           this.setState({
             nameError: false,
-            formError: err
           })
         }
+      } else if(name === 'securityDeposit') {
+        if (
+          isNaN(value) ||
+          parseFloat(value) < 0 ||
+          parseFloat(value) > 1000000
+        ) {
+          this.setState({
+            depositError: true,
+          })
+        } else {
+          this.setState({
+            depositError: false,
+          })
+        }
+      } else if(name === 'rent') {
+        if (
+          isNaN(value) ||
+          parseFloat(value) < 0 ||
+          parseFloat(value) > 1000000
+        ) {
+          this.setState({
+            rentError: true,
+          })
+        } else {
+          this.setState({
+            rentError: false,
+          })
+        }
+      }
+      if(this.state.isRental){
+        
+        let err = this.state.nameError || this.state.categoryError || this.depositError ||
+                  this.state.rentError
+        this.setState({
+          costError: false,
+          formError: err
+        })
+      }
+      else{
+        let err = this.state.nameError || this.state.categoryError || this.state.costError
+        this.setState({
+          rentError: false,
+          depositError: false,
+          formError: err
+        })
       }
     }
   }
@@ -217,71 +291,10 @@ export default class SaleItemForm extends React.Component {
     this.setState({ paymentModes: value })
   }
 
-  handleSubmit = e => {
-    const {
-      name,
-      pictures,
-      category,
-      paymentModes,
-      endDate,
-      details,
-      cost,
-      warrantyDetail,
-      isPhoneVisible,
-    } = this.state
-    const { item,
-            setCategory,
-            setSubCategory
-          } = this.props
-    if (category.slug === '') {
-      this.setState({
-        categoryError: true,
-        formError: true
-      })
-      return
-    }
-    if (
-      isNaN(cost) ||
-      cost.length < 1 ||
-      parseFloat(cost) < 0 ||
-      parseFloat(cost) > 1000000
-    ) {
-      this.setState({
-        costError: true,
-        formError: true
-      })
-      return
-    }
-    if (name.length < 3 || !isNaN(name)) {
-      this.setState({
-        nameError: true,
-        formError: true
-      })
-      return
-    }
-    let formData = new FormData()
-    formData.append('end_date', endDate)
-    formData.append('name', name)
-    formData.append('category', category.slug)
-    formData.append('details', details)
-    formData.append('cost', cost)
-    formData.append('warranty_detail', warrantyDetail)
-    formData.append('is_phone_visible', isPhoneVisible)
-    paymentModes.map(mode => {
-      formData.append('payment_modes', mode)
-    })
-    if (item) {
-      this.props.updateSaleItem(formData, item.id)
-      this.props.handleDimmer(e)
-    } else {
-      this.props.addSaleItem(formData, pictures)
-    }
-    if(this.props.scrollDiv){
-      this.props.scrollDiv()
-      }
-    setCategory('')
-    setSubCategory('')
+  handlePeriodicityChange = (event, {value}) => {
+    this.setState({ periodicity: value})
   }
+
 
   handleCategoryChange = (e, { value, name, slug }) => {
     let result = false
@@ -344,21 +357,180 @@ export default class SaleItemForm extends React.Component {
       picturesUrl: newPicturesUrl
     })
   }
+
+  handleSaleTypeChange = (e, { value }) => {
+
+    this.setState({ isRental: value })
+  }
+
+  handlePeriodicity = () => {
+    if (this.state.periodicity === '' || 
+        this.state.periodicity === 'lfs' ){
+          return 'day'
+    }
+    return this.state.periodicity
+
+  }
+  
+  handleSubmit = e => {
+    const {
+      name,
+      rent,
+      pictures,
+      category,
+      paymentModes,
+      endDate,
+      details,
+      cost,
+      warrantyDetail,
+      maxRentPeriod,
+      isPhoneVisible,
+      isRental,
+      periodicity,
+      securityDeposit,
+      
+    } = this.state
+    const { item,
+            setCategory,
+            setSubCategory
+          } = this.props
+    if (category.slug === '') {
+      this.setState({
+        categoryError: true,
+        formError: true
+      })
+      return
+    }
+    
+    if (name.length < 3 || !isNaN(name)) {
+      this.setState({
+        nameError: true,
+        formError: true
+      })
+      return
+    }
+
+    if(isRental){
+      if (
+        isNaN(rent) ||
+        rent.length < 1 ||
+        parseFloat(rent) < 0 ||
+        parseFloat(rent) > 1000000
+      ) {
+        this.setState({
+          rentError: true,
+          formError: true
+        })
+        return
+      }
+      if (
+        isNaN(securityDeposit) ||
+        parseFloat(securityDeposit) < 0 ||
+        parseFloat(securityDeposit) > 1000000
+      ) {
+        this.setState({
+          depositError: true,
+          formError: true,
+        })
+        return
+      }
+      this.setState({
+        costError: false,
+      })
+
+    }
+    else {
+      if (
+        isNaN(cost) ||
+        cost.length < 1 ||
+        parseFloat(cost) < 0 ||
+        parseFloat(cost) > 1000000
+      ) {
+        this.setState({
+          costError: true,
+          formError: true
+        })
+        return
+      }
+      this.setState({
+        rentError:false,
+        depositError: false,
+
+      })
+    }
+    if(this.state.formError){
+      return
+    }
+
+    let formData = new FormData()
+    formData.append('end_date', endDate)
+    formData.append('name', name)
+    formData.append('category', category.slug)
+    formData.append('details', details)
+    
+    formData.append('is_phone_visible', isPhoneVisible)
+    paymentModes.map(mode => {
+      formData.append('payment_modes', mode)
+    })
+    formData.append('is_rental', isRental)
+    
+    if(isRental){
+      formData.append('cost', rent)
+      formData.append('warranty_detail', maxRentPeriod)
+      formData.append('security_deposit', securityDeposit)
+      if(periodicity==='' || periodicity==='lfs'){
+        formData.append('periodicity', 'day')
+      }
+      else{
+        formData.append('periodicity', periodicity)
+      }
+
+    }
+    else{
+      formData.append('cost', cost)
+      formData.append('warranty_detail', warrantyDetail)
+      formData.append('periodicity', 'lfs')
+      formData.append('security_deposit', '0')
+
+
+    }
+    if (item) {
+      this.props.updateSaleItem(formData, item.id)
+      this.props.handleDimmer(e)
+    } else {
+      this.props.addSaleItem(formData, pictures)
+    }
+    if(this.props.scrollDiv){
+      this.props.scrollDiv()
+      }
+    setCategory('')
+    setSubCategory('')
+  }
+
+  
   render () {
     const { user, item, appMessages } = this.props
     const {
       categoryError,
       picturesUrl,
       nameError,
+      depositError,
       pictures,
       cost,
+      rent,
       formError,
+      rentError,
       endDate,
       category,
       warrantyDetail,
       details,
       name,
-      costError
+      costError,
+      isRental,
+      periodicity,
+      securityDeposit,
+      maxRentPeriod,
+
     } = this.state
     const paymentModes = this.props.paymentModes.map((mode, index) => {
       return {
@@ -367,6 +539,18 @@ export default class SaleItemForm extends React.Component {
         text: mode.name
       }
     })
+    const constants = this.props.constants
+    let periods = [];
+    for (var i in constants.periodicity) {
+      periods.push({
+        key: i.toString(),
+        text: constants.periodicity[i].toString(),
+        value: i.toString(),
+      });
+    }
+    periods.pop()
+    
+
 
     const dateCurrent = new Date();
     dateCurrent.setDate(dateCurrent.getDate() + 1);
@@ -402,7 +586,7 @@ export default class SaleItemForm extends React.Component {
             <Grid.Row styleName='heading-row' centered>
               <Grid.Column width={8}>
                 <Header dividing as={'h2'}>
-                  Sell an item
+                  Create Listing
                 </Header>
               </Grid.Column>
             </Grid.Row>
@@ -423,7 +607,7 @@ export default class SaleItemForm extends React.Component {
                 {nameError ? (
                   <Message error content={`Field is empty or invalid name`} />
                 ) : null}
-                <Form.Group widths={'equal'}>
+                <Form.Group styleName='field-group' widths={'equal'}>
                   <Form.Field styleName='field-form' required>
                     <label>Category</label>
                     <Dropdown
@@ -466,35 +650,122 @@ export default class SaleItemForm extends React.Component {
                     value={details}
                   />
                 </Form.Field>
-                <Form.Group widths={'equal'}>
-                  <Form.Field required styleName='field-form'>
-                    <label>Price</label>
-                    <Form.Input
-                      name='cost'
-                      onChange={this.handleChange}
-                      value={cost}
-                      required
-                      placeholder='Price'
+                <Form.Group styleName='field-form' inline>
+                    <label>Listing Type</label>
+                    <Form.Radio
+                      label='Rental'
+                      value={true}
+                      checked={isRental}
+                      onChange={this.handleSaleTypeChange}
                     />
-                    {costError ? (
-                      <Message
-                        error
-                        size='tiny'
-                        compact
-                        content='Price can  between 0 to 10 lakh.'
-                      />
-                    ) : null}
-                  </Form.Field>
-                  <Form.Field styleName='field-form'>
-                    <label>State of warranty</label>
-                    <Form.Input
-                      name='warrantyDetail'
-                      value={warrantyDetail}
-                      onChange={this.handleChange}
-                      placeholder='For eg. 3 months left'
+                    <Form.Radio
+                      label='Sale'
+                      value={false}
+                      checked={!isRental}
+                      onChange={this.handleSaleTypeChange}
                     />
-                  </Form.Field>
                 </Form.Group>
+                {isRental ? 
+                  (
+                    <div>
+                    <Form.Group styleName='field-group' widths={'equal'}>
+                      <Form.Field required styleName='field-form'>
+                        <label>Security Deposit</label>
+                        <Form.Input
+                          name='securityDeposit'
+                          onChange={this.handleChange}
+                          value={securityDeposit}
+                          required
+                          placeholder='Security Deposit'
+                        />
+                        {depositError ? (
+                          <Message
+                            error
+                            size='tiny'
+                            compact
+                            content='Security Deposit can  between 0 to 10 lakh.'
+                          />
+                        ) : null}
+                      </Form.Field>
+                      <Form.Field styleName='field-form'>
+                        <label>Maximum Renting Period</label>
+                        <Form.Input
+                          name='maxRentPeriod'
+                          value={maxRentPeriod}
+                          onChange={this.handleChange}
+                          placeholder='For eg. 3 months'
+                        />
+                      </Form.Field>
+                    </Form.Group>
+                    <Form.Group styleName='field-group'>
+                        <Form.Field required styleName='field-form'>
+                          <label>Renting Charges</label>
+                          <Form.Input
+                          name='rent'
+                          onChange={this.handleChange}
+                          value={rent}
+                          required
+                          placeholder='Renting Charges'
+                          />
+                          {rentError ? (
+                          <Message
+                            error
+                            size='tiny'
+                            compact
+                            content='Renting charges can  between 0 to 10 lakh.'
+                          />
+                        ) : null}
+                        </Form.Field>
+                        <Form.Field styleName='field-form-drop'>
+                          <Dropdown
+                            placeholder='Period'
+                            button
+                            
+                            value={this.handlePeriodicity()}
+                            onChange={this.handlePeriodicityChange}
+                            options={periods}
+                            styleName='drop-width'
+                            
+                          />
+                        </Form.Field>
+                    </Form.Group>
+                    </div>
+                  ) 
+                : 
+                  (
+                    <Form.Group styleName='field-group' widths={'equal'}>
+                      <Form.Field required styleName='field-form'>
+                        <label>Price</label>
+                        <Form.Input
+                          name='cost'
+                          onChange={this.handleChange}
+                          value={cost}
+                          required
+                          placeholder='Price'
+                        />
+                        {costError ? (
+                          <Message
+                            error
+                            size='tiny'
+                            compact
+                            content='Sale price can  between 0 to 10 lakh.'
+                          />
+                        ) : null}
+                      </Form.Field>
+                      <Form.Field styleName='field-form'>
+                        <label>State of warranty</label>
+                        <Form.Input
+                          name='warrantyDetail'
+                          value={warrantyDetail}
+                          onChange={this.handleChange}
+                          placeholder='For eg. 3 months left'
+                        />
+                      </Form.Field>
+                    </Form.Group>
+                  )
+                }
+                
+
                 <Form.Field styleName='field-form' required>
                   <label>Expires On</label>
                   <Responsive {...Responsive.onlyMobile}>

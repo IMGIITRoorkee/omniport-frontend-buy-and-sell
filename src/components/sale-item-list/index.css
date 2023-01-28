@@ -6,6 +6,15 @@
 
 .sort-dropdown {}
 
+
+.filter {
+    margin-top: 0 !important;
+}
+
+.checkbox {
+    margin-left: 2em !important;
+}
+
 .item-img {
     height: 100% !important;
     width: 100% !important;

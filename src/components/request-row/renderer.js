@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Grid, Responsive, Modal, Table } from 'semantic-ui-react'
+import { Grid, Responsive, Modal, Table, Label } from 'semantic-ui-react'
 import { isMobile } from 'react-device-detect'
 import CustomPopup from '../custom-popup'
 import { formatDate } from '../../constants'
@@ -27,11 +27,30 @@ export default class CustomRequestRow extends React.Component {
         trigger={
           <Table.Row styleName='request-item-row'>
             <Table.Cell styleName='first-cell'>{item.name}</Table.Cell>
+            {item.isRental ? 
+            <Table.Cell styleName='first-cell'>
+              <Label  color='red'>
+                RENT
+              </Label>
+            </Table.Cell>
+            :
+            <Table.Cell styleName='first-cell'>
+              <Label  color='blue'>
+                SALE
+              </Label>
+            </Table.Cell>
+            }
+            
             <Responsive
               as={React.Fragment}
               minWidth={Responsive.onlyTablet.maxWidth + 1}
             >
+              {item.isRental ?
+              <Table.Cell>₹{item.cost} per {item.periodicity}</Table.Cell>
+              :
               <Table.Cell>₹{item.cost}</Table.Cell>
+              }
+              
               <Table.Cell>{formatDate(item.endDate)}</Table.Cell>
             </Responsive>
             <Table.Cell width={1} textAlign='right'>
