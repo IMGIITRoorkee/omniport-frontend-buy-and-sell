@@ -64,7 +64,7 @@ export default class SaleItemCard extends React.Component {
               {
                 item.isRental 
                 ? 
-                <Label  color='red'>
+                <Label  color='orange'>
                   RENT
                 </Label>
                 :

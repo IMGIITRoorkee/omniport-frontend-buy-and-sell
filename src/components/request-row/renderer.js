@@ -29,13 +29,13 @@ export default class CustomRequestRow extends React.Component {
             <Table.Cell styleName='first-cell'>{item.name}</Table.Cell>
             {item.isRental ? 
             <Table.Cell styleName='first-cell'>
-              <Label  color='red'>
+              <Label color='orange'>
                 RENT
               </Label>
             </Table.Cell>
             :
             <Table.Cell styleName='first-cell'>
-              <Label  color='blue'>
+              <Label color='blue'>
                 SALE
               </Label>
             </Table.Cell>
