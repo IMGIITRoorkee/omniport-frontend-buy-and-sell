@@ -390,6 +390,21 @@ export default class SaleItemDetail extends React.Component {
                             </Table.Cell>
                           </Table.Row>
                         ) : null}
+                        {saleItemDetail.isRental ? (
+                          <Table.Row>
+                            <Table.Cell styleName='data-col'>
+                            Security Deposit
+                            </Table.Cell>
+                            <Table.Cell styleName='data-col data-values'>
+                              {saleItemDetail.securityDeposit===0 ? <>-</> : 
+                              <>
+                                <Icon name='rupee sign' size={'small'} />
+                                {saleItemDetail.securityDeposit}
+                              </>
+                              }
+                            </Table.Cell>
+                          </Table.Row>
+                        ) : null}
                       </Table.Body>
                     </Table>
                   )}

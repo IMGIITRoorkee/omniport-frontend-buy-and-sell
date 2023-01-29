@@ -62,7 +62,7 @@ export default class SearchBar extends React.Component {
     }
     results = {
       sale: {
-        name: 'Items for sale',
+        name: 'Items listed',
         results: []
       },
       request: {
@@ -183,7 +183,7 @@ export default class SearchBar extends React.Component {
                       <Button
                         fluid
                         color={getTheme()}
-                        content='Sell'
+                        content='Sell / Rent'
                         styleName='form-btn'
                       />
                     </Link>
