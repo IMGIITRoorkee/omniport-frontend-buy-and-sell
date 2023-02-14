@@ -17,11 +17,24 @@ import './index.css'
 
 export default class SearchBar extends React.Component {
   state = {
-    searchFocus: false
+    searchFocus: false ,
+    searchWidth: 15 ,
+    accountIconWidth: 1,
   }
 
   componentWillMount () {
     this.resetComponent()
+    if(window.innerWidth<430){
+      this.setState({
+        searchWidth: 13,
+        accountIconWidth:2,
+      })
+    }else if(window.innerWidth<730){
+      this.setState({
+        searchWidth: 14,
+        accountIconWidth: 1,
+      })
+    }
   }
   componentDidMount () {}
 
@@ -135,6 +148,8 @@ export default class SearchBar extends React.Component {
 
   render () {
     const { isLoading, value, searchFocus } = this.state
+
+
     return (
       <Grid styleName='nav-cont'>
         <Responsive
@@ -211,7 +226,7 @@ export default class SearchBar extends React.Component {
           maxWidth={Responsive.onlyTablet.maxWidth}
         >
           <Grid.Row>
-            <Grid.Column floated='right' styleName='account-btn' width={14}>
+            <Grid.Column floated='left' styleName='account-btn' width={this.state.searchWidth}>
               <Search
                 loading={isLoading}
                 onResultSelect={this.handleResultSelect}
@@ -228,7 +243,7 @@ export default class SearchBar extends React.Component {
                 }`}
               />
             </Grid.Column>
-            <Grid.Column styleName='account-btn' width={1}>
+            <Grid.Column styleName='account-btn' width={this.state.accountIconWidth}>
               <Link to={appUrl + 'my_account/'} styleName='account-btn-link'>
                 <Responsive
                   as={React.Fragment}
