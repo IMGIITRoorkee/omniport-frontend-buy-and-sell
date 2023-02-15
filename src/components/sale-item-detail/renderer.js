@@ -9,18 +9,22 @@ import {
   Icon,
   Table,
   Transition,
-  Popup
+  Popup,
+  Button,
+  Responsive,
+  Label
 } from 'semantic-ui-react'
 import { formatDate, defaultImageUrl, stringifyNumber } from '../../constants'
 import CustomPopup from '../custom-popup'
+import { getTheme } from 'formula_one'
 import './index.css'
 
 export default class SaleItemDetail extends React.Component {
   state = {
     indicator: 0,
-    loading: false
+    loading: false, 
+    copyPhone: false
   }
-
   componentDidMount () {
     if (!this.props.saleItemDetail.name && this.props.match !== undefined) {
       const id = this.props.match.params.id
@@ -35,7 +39,6 @@ export default class SaleItemDetail extends React.Component {
       }
     }
   }
-
   componentWillUnmount () {
     if (this.props.clearSaleItem) {
       this.props.clearSaleItem()
@@ -213,6 +216,16 @@ export default class SaleItemDetail extends React.Component {
                     ) : (
                       <>
                         <div styleName='title'>{saleItemDetail.name}</div>
+                        <div styleName='tag'>
+                          {saleItemDetail.isRental ? 
+                          <Label color='orange'>
+                            RENT
+                          </Label>
+                          : 
+                          <Label color='blue'>
+                            SALE
+                          </Label>}
+                        </div>
                         {!modal && this.isOwner(saleItemDetail.person) ? (
                           <CustomPopup
                             detailView
@@ -267,7 +280,7 @@ export default class SaleItemDetail extends React.Component {
                           <Table.Cell styleName='data-col'>
                             {saleItemDetail.isRental ? 
                             <>Renting Rate</> :
-                            <>Price</>
+                            <>Sale Price</>
                             }
                             
                           </Table.Cell>
@@ -338,35 +351,6 @@ export default class SaleItemDetail extends React.Component {
                             </Popup>
                           </Table.Cell>
                         </Table.Row>
-                        {saleItemDetail.person.person.contactInformation
-                          .emailAddress ? (
-                            <Table.Row>
-                              <Table.Cell styleName='data-col'>
-                              Email address
-                              </Table.Cell>
-                              <Table.Cell styleName='data-col data-values'>
-                                {
-                                  saleItemDetail.person.person.contactInformation
-                                    .emailAddress
-                                }
-                              </Table.Cell>
-                            </Table.Row>
-                          ) : null}
-                        {saleItemDetail.isPhoneVisible &&
-                        saleItemDetail.person.person.contactInformation
-                          .primaryPhoneNumber ? (
-                            <Table.Row>
-                              <Table.Cell styleName='data-col'>
-                              Phone number
-                              </Table.Cell>
-                              <Table.Cell styleName='data-col data-values'>
-                                {
-                                  saleItemDetail.person.person.contactInformation
-                                    .primaryPhoneNumber
-                                }
-                              </Table.Cell>
-                            </Table.Row>
-                          ) : null}
                         {saleItemDetail.paymentModes.length > 0 ? (
                           <Table.Row>
                             <Table.Cell styleName='data-col'>
@@ -405,7 +389,71 @@ export default class SaleItemDetail extends React.Component {
                             </Table.Cell>
                           </Table.Row>
                         ) : null}
-                      </Table.Body>
+                        {saleItemDetail.isPhoneVisible &&
+                        saleItemDetail.person.person.contactInformation
+                          .primaryPhoneNumber ? (
+                            <Table.Row>
+                              <Table.Cell styleName='data-col'>
+                              Phone number
+                              </Table.Cell>
+                              <Table.Cell styleName='data-col data-values'>
+                                {
+                                  saleItemDetail.person.person.contactInformation
+                                    .primaryPhoneNumber
+                                }
+                              </Table.Cell>
+                            </Table.Row>
+                          ) : null}
+                          {saleItemDetail.person.person.contactInformation
+                          .emailAddress ? (
+                            <Table.Row>
+                              <Table.Cell styleName='data-col'>
+                              Email address
+                              </Table.Cell>
+                              <Table.Cell styleName='data-col data-values'>
+                                {
+                                  saleItemDetail.person.person.contactInformation
+                                    .emailAddress
+                                }
+                              </Table.Cell>
+                            </Table.Row>
+                          ) : null}
+                          </Table.Body>
+                          <Table.Footer fullWidth>
+                          <Table.Row>
+                            <Table.HeaderCell colSpan='2' styleName='data-col-btn' >
+                            {saleItemDetail.isPhoneVisible &&
+                            saleItemDetail.person.person.contactInformation
+                            .primaryPhoneNumber ? (
+                            <Responsive
+                              as={React.Fragment}
+                              maxWidth={Responsive.onlyTablet.maxWidth}
+                            >
+                              <div styleName='contact-btn'>
+                                <a href={`tel:${saleItemDetail.person.person.contactInformation
+                                .primaryPhoneNumber}` }
+                                target='_blank'
+                                > 
+                                  <Button color={getTheme()}>
+                                    Call Seller
+                                  </Button>
+                                </a>
+                              </div>
+                            </Responsive>
+                          ) : null}
+                            <a href={`mailto:${saleItemDetail.person.person.contactInformation
+                            .emailAddress}`} 
+                            target='_blank'
+                            >
+                              <Button color={getTheme()}>
+                                Email Seller
+                              </Button>
+                            </a>
+                            </Table.HeaderCell>
+                            
+                          </Table.Row>
+                          </Table.Footer>
+                      
                     </Table>
                   )}
                 </Grid.Row>

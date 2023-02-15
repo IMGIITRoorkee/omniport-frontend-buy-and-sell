@@ -27,6 +27,8 @@
     transition: width 0.4s ease-in !important;
     float: right !important;
     margin-top: 5px !important;
+    /* margin-right: 1em !important; */
+    /* margin-left: 1em !important; */
 }
 
 :global .bns-nav-search-bar-mobile>.input>.search {
@@ -54,6 +56,13 @@
     display: flex !important;
     flex-direction: row !important;
     justify-content: flex-end !important;
+    padding-right: 1.5em !important;
+}
+
+.account-btn-icon {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-end !important;
 }
 
 .account-btn-link {
@@ -62,7 +71,7 @@
     opacity: .75 !important;
     font-size: 75% !important;
     margin-top: .3em !important;
-    padding-right: 1em !important;
+    padding-right: 0.8em !important;
 }
 
 .account-btn-link:hover {

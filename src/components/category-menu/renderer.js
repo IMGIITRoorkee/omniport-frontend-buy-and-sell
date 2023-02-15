@@ -329,7 +329,7 @@ export default class CategoryMenu extends React.Component {
         >
           <div styleName='wrapper-mobile'>
             <Menu
-              size={'large'}
+              size={'small'}
               color={getTheme()}
               styleName='category-menu category-menu-mobile'
               borderless

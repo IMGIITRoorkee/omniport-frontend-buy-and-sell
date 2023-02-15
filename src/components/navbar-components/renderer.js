@@ -74,7 +74,7 @@ export default class SearchBar extends React.Component {
       if (product.paymentModes) {
         results.sale.results.push({
           key: index,
-          title: product.name,
+          title: getExcerpt(product.name, 18, true),
           description: `${product.isRental ? 'For Rent' : 'For Sale'}`,
           image: `${product.pictures.length > 0 ? product.pictures[0] : ''}`,
           price: `₹${product.isRental ? product.cost + ' per ' + product.periodicity : product.cost }`,
@@ -84,7 +84,7 @@ export default class SearchBar extends React.Component {
       } else {
         results.request.results.push({
           key: index,
-          title: product.name,
+          title: getExcerpt(product.name, 18, true),
           description: `${product.isRental ? 'For Rent' : 'For Sale'}`,
           image: '',
           price: `₹${product.isRental ? product.cost + ' per ' + product.periodicity : product.cost }`,
@@ -109,20 +109,20 @@ export default class SearchBar extends React.Component {
       if (product.paymentModes) {
         resultsSale.push({
           key: index,
-          title: product.name,
-          description: `${getExcerpt(product.details, 48)}`,
-          image: `${product.pictures.length > 0 ? product.pictures[0] : ''}`,
-          price: `₹${product.cost}`,
+          title: getExcerpt(product.name, 12, true),
+          description: `${product.isRental ? 'For Rent' : 'For Sale'}`,
+          image: '',
+          price: `₹${product.isRental ? product.cost + ' per ' + product.periodicity : product.cost }`,
           id: product.id,
           type: 'buy'
         })
       } else {
         resultsRequest.push({
           key: index,
-          title: product.name,
-          description: `Requested by ${product.person.person.fullName}`,
+          title: getExcerpt(product.name, 12, true),
+          description: `Requested by ${product.person.person.fullName}` + `${product.isRental ? ' for Rent' : ' for Sale'}`,
           image: '',
-          price: `₹${product.cost}`,
+          price: `₹${product.isRental ? product.cost + ' per ' + product.periodicity : product.cost }`,
           id: product.id,
           type: 'request'
         })
@@ -142,10 +142,10 @@ export default class SearchBar extends React.Component {
           minWidth={Responsive.onlyTablet.maxWidth + 1}
         >
           <Grid.Row centered>
-            <Grid.Column computer={10}>
+            <Grid.Column computer={11}>
               <Grid padded={'horizontally'}>
                 <Grid.Row centered>
-                  <Grid.Column floated='right' computer={12}>
+                  <Grid.Column floated='right' computer={13}>
                     <Search
                       category
                       loading={isLoading}
@@ -165,7 +165,7 @@ export default class SearchBar extends React.Component {
               </Grid>
             </Grid.Column>
 
-            <Grid.Column floated='right' computer={6}>
+            <Grid.Column floated='right' computer={5}>
               <Grid>
                 <Grid.Row>
                   <Grid.Column width={6}>
@@ -183,7 +183,7 @@ export default class SearchBar extends React.Component {
                       <Button
                         fluid
                         color={getTheme()}
-                        content='Sell / Rent'
+                        content='Sell/Rent'
                         styleName='form-btn'
                       />
                     </Link>
@@ -211,7 +211,7 @@ export default class SearchBar extends React.Component {
           maxWidth={Responsive.onlyTablet.maxWidth}
         >
           <Grid.Row>
-            <Grid.Column floated='right' styleName='account-btn' width={14}>
+            <Grid.Column floated='right' styleName='account-btn' width={12}>
               <Search
                 loading={isLoading}
                 onResultSelect={this.handleResultSelect}
@@ -228,7 +228,7 @@ export default class SearchBar extends React.Component {
                 }`}
               />
             </Grid.Column>
-            <Grid.Column styleName='account-btn' width={1}>
+            <Grid.Column styleName='account-btn-icon' width={2}>
               <Link to={appUrl + 'my_account/'} styleName='account-btn-link'>
                 <Responsive
                   as={React.Fragment}

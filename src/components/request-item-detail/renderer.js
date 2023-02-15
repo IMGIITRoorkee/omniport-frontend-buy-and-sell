@@ -8,7 +8,8 @@ import {
   Visibility,
   Icon,
   Table,
-  Popup
+  Popup,
+  Label
 } from 'semantic-ui-react'
 import { formatDate, stringifyNumber } from '../../constants'
 import CustomPopup from '../custom-popup'
@@ -87,6 +88,17 @@ export default class RequestItemDetail extends React.Component {
                   ) : (
                     <Grid.Column width={16} styleName='title-item'>
                       <div styleName='title'>{requestItemDetail.name}</div>
+                      <div styleName='title'>
+                        {requestItemDetail.isRental ? 
+                        <Label color='orange'>
+                          RENT
+                        </Label>
+                        : 
+                        <Label color='blue'>
+                          SALE
+                        </Label>
+                        }
+                      </div>
                       {!modal && this.isOwner(requestItemDetail.person) ? (
                         <CustomPopup
                           detailView

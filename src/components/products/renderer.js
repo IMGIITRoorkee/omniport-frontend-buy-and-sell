@@ -52,7 +52,7 @@ export default class Items extends React.Component {
     if (itemType === 'request') {
       item = 'Items requested'
     } else if (itemType === 'sale') {
-      item = 'Items for sale'
+      item = 'Items listed'
     }
     if (activeCategory === '') {
       items.push(

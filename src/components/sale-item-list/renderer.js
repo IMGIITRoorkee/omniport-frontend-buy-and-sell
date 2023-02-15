@@ -164,7 +164,7 @@ handleFilter = () => {
             <Grid.Row>
               <Grid.Column
                 computer={8}
-                tablet={16}
+                tablet={8}
                 mobile={16}
                 floated={'left'}
               >
@@ -174,7 +174,7 @@ handleFilter = () => {
                 computer={8}
                 textAlign={`${isMobile ? 'left' : 'right'}`}
                 mobile={16}
-                tablet={16}
+                tablet={8}
               >
                 <Grid>
                   <Grid.Column
@@ -221,7 +221,7 @@ handleFilter = () => {
               </Grid.Column>
             </Grid.Row>
             <Grid.Row centered>
-              <Grid divided={'vertically'} stackable columns={5}>
+              <Grid divided={'vertically'} stackable doubling columns={5}>
                 <Grid.Row stretched>
                   {/* {console.log(saleItems)} */}
                   {saleItems.map((item, index) => {

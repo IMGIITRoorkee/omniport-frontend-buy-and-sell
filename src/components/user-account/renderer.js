@@ -266,7 +266,7 @@ export default class UserAccount extends React.Component {
                                 styleName='slide'
                                 onChange={this.toggle}
                                 checked={isPhoneVisible}
-                                slider
+                                toggle
                               />
                           </div>
                           </Grid.Column>

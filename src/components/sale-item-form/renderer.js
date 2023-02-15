@@ -347,7 +347,7 @@ export default class SaleItemForm extends React.Component {
     })
     return item
   }
-  hadleImgClose = (e, key) => {
+  handleImgClose = (e, key) => {
     let newPictures = this.state.pictures
     let newPicturesUrl = this.state.picturesUrl
     newPictures[key] = ''
@@ -843,7 +843,7 @@ export default class SaleItemForm extends React.Component {
                             rounded
                           />
                           <Icon
-                            onClick={e => this.hadleImgClose(e, 0)}
+                            onClick={e => this.handleImgClose(e, 0)}
                             key={0}
                             circular
                             inverted
@@ -869,7 +869,7 @@ export default class SaleItemForm extends React.Component {
                                 rounded
                               />
                               <Icon
-                                onClick={e => this.hadleImgClose(e, 1)}
+                                onClick={e => this.handleImgClose(e, 1)}
                                 key={1}
                                 circular
                                 inverted
@@ -897,7 +897,7 @@ export default class SaleItemForm extends React.Component {
                                 rounded
                               />
                               <Icon
-                                onClick={e => this.hadleImgClose(e, 2)}
+                                onClick={e => this.handleImgClose(e, 2)}
                                 key={2}
                                 circular
                                 inverted

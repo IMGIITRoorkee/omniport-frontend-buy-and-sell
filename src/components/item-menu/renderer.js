@@ -35,7 +35,7 @@ export default class ItemMenu extends React.Component {
             active={itemType === 'request'}
             to={appUrl + 'request/'}
           >
-            <span styleName='type-name'>Requested items</span>
+            <span styleName='type-name'>Items requested</span>
           </Menu.Item>
         </Menu>
       </Grid.Column>
