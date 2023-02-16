@@ -216,15 +216,16 @@ export default class SaleItemDetail extends React.Component {
                     ) : (
                       <>
                         <div styleName='title'>{saleItemDetail.name}</div>
-                        <div styleName='tag'>
+                        <div styleName='title-tag'>
                           {saleItemDetail.isRental ? 
-                          <Label color='orange'>
-                            RENT
-                          </Label>
-                          : 
-                          <Label color='blue'>
-                            SALE
-                          </Label>}
+                            <Label color='orange'>
+                              RENT
+                            </Label>
+                            : 
+                            <Label color='blue'>
+                              SALE
+                            </Label>
+                          }
                         </div>
                         {!modal && this.isOwner(saleItemDetail.person) ? (
                           <CustomPopup

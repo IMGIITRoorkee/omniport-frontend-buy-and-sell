@@ -54,11 +54,7 @@
 .enquire-flex {
     justify-content: flex-end !important;
 }
-
-.title {
-    text-transform: capitalize !important;
-    padding-bottom: .3em !important
-}
+    
 
 .popup-flex {
     display: flex;
@@ -81,6 +77,15 @@
     display: inline !important;
     font-size: 1.5em !important;
     font-weight: 700 !important;
+    padding-bottom: .3em !important;
+}
+
+.title-tag {
+    display: inline !important;
+    margin-left: auto !important;
+    padding-right: 1em !important;
+    padding-bottom: .3em !important;
+    font-size: 1.5em !important;
 }
 
 .title-item {

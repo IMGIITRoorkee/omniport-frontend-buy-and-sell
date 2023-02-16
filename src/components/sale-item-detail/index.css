@@ -85,8 +85,14 @@
     text-overflow: clip !important;
     overflow: hidden !important;
 }
-.tag {
-    padding-left: 1em !important;
+
+.title-tag {
+    display: inline !important;
+    margin-left: auto !important;
+    padding-right: 0.5em !important;
+    padding-bottom: .3em !important;
+    font-size: 1.5em !important;
+
 }
 
 .popup-flex {

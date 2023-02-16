@@ -88,7 +88,7 @@ export default class RequestItemDetail extends React.Component {
                   ) : (
                     <Grid.Column width={16} styleName='title-item'>
                       <div styleName='title'>{requestItemDetail.name}</div>
-                      <div styleName='title'>
+                      <div styleName='title-tag'>
                         {requestItemDetail.isRental ? 
                         <Label color='orange'>
                           RENT
