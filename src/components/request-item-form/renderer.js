@@ -31,14 +31,19 @@ export default class RequestItemForm extends React.Component {
           slug: ''
         },
         cost: '',
+        rent: '',
         isPhoneVisible: false,
+        isRental: false,
+        periodicity: '',
         nameError: false,
         costError: false,
+        rentError: false,
         categoryError: false,
         formError: true
       }
     } else {
       let categoryName = ''
+
       this.props.categories.map(category => {
         if (item.category === category.slug) {
           categoryName = category.name
@@ -50,6 +55,15 @@ export default class RequestItemForm extends React.Component {
           }
         })
       })
+      let costPrice =''
+      let rentPrice = ''
+      if(item.isRental){
+        rentPrice = item.cost
+      }
+      else{
+        costPrice=item.cost
+      }
+
       this.state = {
         endDate: item.endDate,
         name: item.name,
@@ -57,10 +71,14 @@ export default class RequestItemForm extends React.Component {
           name: categoryName,
           slug: item.category
         },
-        cost: item.cost,
+        cost: costPrice,
+        rent: rentPrice,
         isPhoneVisible: item.isPhoneVisible,
+        periodicity: item.periodicity,
+        isRental: item.isRental,
         nameError: false,
         costError: false,
+        rentError: false,
         categoryError: false,
         formError: false,
         id: item.id
@@ -69,6 +87,7 @@ export default class RequestItemForm extends React.Component {
   }
 
   componentDidMount () {
+    this.props.getConstants()
     const { item, shareSubmit } = this.props
     if (item) {
       shareSubmit(this.handleSubmit.bind(this))
@@ -93,9 +112,13 @@ export default class RequestItemForm extends React.Component {
             slug: ''
           },
           cost: '',
+          rent:'',
+          periodicity: '',
           isPhoneVisible: false,
+          isRental: false,
           nameError: false,
           costError: false,
+          rentError: false,
           categoryError: false,
           formError: true
         })
@@ -120,85 +143,56 @@ export default class RequestItemForm extends React.Component {
         ) {
           this.setState({
             costError: true,
-            formError: true
           })
         } else {
-          let err = this.state.nameError || this.state.categoryError
           this.setState({
             costError: false,
-            formError: err
           })
         }
       } else if (name === 'name') {
         if (!isNaN(value) && value.length > 0) {
           this.setState({
             nameError: true,
-            formError: true
           })
         } else {
-          let err = this.state.costError || this.state.categoryError
+          
           this.setState({
             nameError: false,
-            formError: err
+          })
+        }
+      } else if(name === 'rent') {
+        if (
+          isNaN(value) ||
+          parseFloat(value) < 0 ||
+          parseFloat(value) > 1000000
+        ) {
+          this.setState({
+            rentError: true,
+          })
+        } else {
+          this.setState({
+            rentError: false,
           })
         }
       }
+      if(this.state.isRental){
+        
+        let err = this.state.nameError || this.state.categoryError  ||
+                  this.state.rentError
+        this.setState({
+          costError: false,
+          formError: err
+        })
+      }
+      else{
+        let err = this.state.nameError || this.state.categoryError || 
+                  this.state.costError
+        this.setState({
+          rentError: false,
+          formError: err
+        })
+      }
     }
-  }
-
-  handleSubmit = e => {
-    const { endDate, name, category, cost, isPhoneVisible } = this.state
-    const { item, appMessages, setCategory, setSubCategory } = this.props
-    if (category.slug === '') {
-      this.setState({
-        categoryError: true,
-        formError: true
-      })
-      return
-    }
-    if (
-      isNaN(cost) ||
-      cost.length < 1 ||
-      parseFloat(cost) < 0 ||
-      parseFloat(cost) > 1000000
-    ) {
-      this.setState({
-        costError: true,
-        formError: true
-      })
-      return
-    }
-    if (name.length < 3 || !isNaN(name)) {
-      this.setState({
-        nameError: true,
-        formError: true
-      })
-      return
-    }
-    let formData = new FormData()
-    formData.append('end_date', endDate)
-    formData.append('name', name)
-    formData.append('category', category.slug)
-    formData.append('cost', cost)
-    formData.append('is_phone_visible', isPhoneVisible)
-    if (item) {
-      this.props.updateRequestItem(formData, item.id)
-      this.props.handleDimmer(e)
-    } else {
-      this.props.addRequestItem(formData)
-      toast({
-        type: 'success',
-        title: 'Item added succesfully',
-        animation: 'fade up',
-        icon: 'smile outline',
-        time: 4000
-      })
-    }
-    if (this.props.scrollDiv) {
-      this.props.scrollDiv()
-    }
-    setCategory('')
-    setSubCategory('')
   }
 
   handleCategoryChange = (e, { value, name, slug }) => {
@@ -215,6 +209,23 @@ export default class RequestItemForm extends React.Component {
       categoryError: false,
       formError: result
     })
+  }
+
+  handleSaleTypeChange = (e, { value }) => {
+
+    this.setState({ isRental: value })
+  }
+
+  handlePeriodicityChange = (event, {value}) => {
+    this.setState({ periodicity: value})
+  }
+
+  handlePeriodicity = () => {
+    if (this.state.periodicity === '' || 
+        this.state.periodicity === 'lfs' ){
+          return 'day'
+    }
+    return this.state.periodicity
   }
 
   dropdown = () => {
@@ -253,15 +264,140 @@ export default class RequestItemForm extends React.Component {
     return item
   }
 
+  handleSubmit = e => {
+    const { 
+      endDate, 
+      name, 
+      category, 
+      cost, 
+      rent,
+      periodicity,
+      isPhoneVisible ,
+      isRental
+    } = this.state
+    const { 
+      item, 
+      appMessages, 
+      setCategory, 
+      setSubCategory 
+    } = this.props
+    if (category.slug === '') {
+      this.setState({
+        categoryError: true,
+        formError: true
+      })
+      return
+    }
+    
+    if (name.length < 3 || !isNaN(name)) {
+      this.setState({
+        nameError: true,
+        formError: true
+      })
+      return
+    }
+
+    if(isRental){
+      if (
+        isNaN(rent) ||
+        rent.length < 1 ||
+        parseFloat(rent) < 0 ||
+        parseFloat(rent) > 1000000
+      ) {
+        this.setState({
+          rentError: true,
+          formError: true
+        })
+        return
+      }
+
+    }
+    else {
+      if (
+        isNaN(cost) ||
+        cost.length < 1 ||
+        parseFloat(cost) < 0 ||
+        parseFloat(cost) > 1000000
+      ) {
+        this.setState({
+          costError: true,
+          formError: true
+        })
+        return
+      }
+      this.setState({
+        rentError:false,
+
+      })
+    }
+    if(this.state.formError){
+      return
+    }
+
+    let formData = new FormData()
+    formData.append('end_date', endDate)
+    formData.append('name', name)
+    formData.append('category', category.slug)
+    formData.append('is_phone_visible', isPhoneVisible)
+    formData.append('is_rental', isRental)
+    if(isRental){
+      formData.append('cost', rent)
+      if(periodicity==='' || periodicity==='lfs'){
+        formData.append('periodicity', 'day')
+        console.log('day')
+      }
+      else{
+        formData.append('periodicity', periodicity)
+      }
+    }
+    else{
+      formData.append('cost', cost)
+      formData.append('periodicity', 'lfs')
+
+    }
+    if (item) {
+      this.props.updateRequestItem(formData, item.id)
+      this.props.handleDimmer(e)
+    } else {
+      this.props.addRequestItem(formData)
+      
+    }
+    if (this.props.scrollDiv) {
+      this.props.scrollDiv()
+    }
+    setCategory('')
+    setSubCategory('')
+  }
+
+  
+
   render () {
     const { user, item, appMessages } = this.props
     const {
       formError,
       costError,
+      rentError,
       nameError,
       categoryError,
-      endDate
+      endDate, 
+      isRental,
+      rent,
+      periodicity,
+      category,
+      name, 
+      cost,
     } = this.state
+
+    const constants = this.props.constants
+    let periods = [];
+    for (var i in constants.periodicity) {
+      periods.push({
+        key: i.toString(),
+        text: constants.periodicity[i].toString(),
+        value: i.toString(),
+      });
+    }
+    periods.pop()
 
     const dateCurrent = new Date()
     dateCurrent.setDate(dateCurrent.getDate() + 1)
@@ -307,10 +443,9 @@ export default class RequestItemForm extends React.Component {
                 <Form.Field styleName='field-form' required>
                   <label>Item name</label>
                   <Form.Input
-                    autoComplete='off'
                     name='name'
                     onChange={this.handleChange}
-                    value={this.state.name}
+                    value={name}
                     required
                     placeholder='Item name'
                   />
@@ -323,8 +458,8 @@ export default class RequestItemForm extends React.Component {
                   <Dropdown
                     scrolling
                     fluid
-                    value={this.state.category.name}
-                    text={this.state.category.name}
+                    value={category.name}
+                    text={category.name}
                     placeholder={'Select a category'}
                     styleName='category-field'
                   >
@@ -365,24 +500,78 @@ export default class RequestItemForm extends React.Component {
                     />
                   </Responsive>
                 </Form.Field>
-                <Form.Field styleName='field-form' error={costError} required>
-                  <label>Maximum Price</label>
-                  <Form.Input
-                    error={costError}
-                    autoComplete='off'
-                    name='cost'
-                    onChange={this.handleChange}
-                    value={this.state.cost}
-                    required
-                    placeholder='Price'
-                  />
-                </Form.Field>
-                {costError ? (
-                  <Message
-                    error
-                    content='Price can only range between 0 to 1000000.'
-                  />
-                ) : null}
+                <Form.Group styleName='field-form' inline>
+                    <label>Listing Type</label>
+                    <Form.Radio
+                      label='Rental'
+                      value={true}
+                      checked={isRental}
+                      onChange={this.handleSaleTypeChange}
+                    />
+                    <Form.Radio
+                      label='Sale'
+                      value={false}
+                      checked={!isRental}
+                      onChange={this.handleSaleTypeChange}
+                    />
+                </Form.Group>
+                {isRental ?
+                <div>
+                  <Form.Group styleName='field-group'>
+                      <Form.Field required styleName='field-form'>
+                        <label>Renting Charges</label>
+                        <Form.Input
+                        name='rent'
+                        onChange={this.handleChange}
+                        value={rent}
+                        required
+                        placeholder='Renting Charges'
+                        />
+                        {rentError ? (
+                        <Message
+                          error
+                          size='tiny'
+                          compact
+                          content='Renting charges can  between 0 to 10 lakh.'
+                        />
+                      ) : null}
+                      </Form.Field>
+                      <Form.Field styleName='field-form-drop'>
+                        <Dropdown
+                          placeholder='Period'
+                          button
+                          
+                          value={this.handlePeriodicity()}
+                          onChange={this.handlePeriodicityChange}
+                          options={periods}
+                          styleName='drop-width'
+                          
+                        />
+                      </Form.Field>
+                  </Form.Group>
+                </div>
+                :
+                <div>
+                  <Form.Field styleName='field-form' error={costError} required>
+                    <label>Maximum Price</label>
+                    <Form.Input
+                      name='cost'
+                      onChange={this.handleChange}
+                      value={cost}
+                      required
+                      placeholder='Price'
+                    />
+                  
+                    {costError ? (
+                      <Message
+                        error
+                        content='Price can only range between 0 to 1000000.'
+                      />
+                    ) : null}
+                  </Form.Field>
+                </div>
+                }
+                
                 <Form.Field styleName='field-form'>
                   <label>Email-id</label>
                   <Form.Input

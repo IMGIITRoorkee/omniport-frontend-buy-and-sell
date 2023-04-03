@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Component from './renderer'
-import { getCategories, getUser } from '../../actions'
+import { getCategories, getUser, getConstants } from '../../actions'
 
 function mapStateToProps (state) {
   return {}

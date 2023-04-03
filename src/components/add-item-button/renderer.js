@@ -39,7 +39,7 @@ export default class AddButton extends React.Component {
                 to='/buy_and_sell/sell_item/'
                 styleName='add-item-btn sale-btn'
               >
-                <div styleName='item-btn-div'>Add Sale Item</div>
+                <div styleName='item-btn-div'>Create Listing</div>
               </Link>
             </Transition>
             <Transition visible={visible} animation='zoom' duration={400}>
@@ -48,7 +48,7 @@ export default class AddButton extends React.Component {
                 to='/buy_and_sell/request_item/'
                 styleName='add-item-btn request-btn'
               >
-                <div styleName='item-btn-div'>Add Request Item</div>
+                <div styleName='item-btn-div'>Request an Item</div>
               </Link>
             </Transition>
           </Responsive>

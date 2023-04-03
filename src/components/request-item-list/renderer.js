@@ -44,18 +44,19 @@ export default class RequestItemList extends React.Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell width={6}>Item Name</Table.HeaderCell>
+                      <Table.HeaderCell width={2}>Sale/Rent</Table.HeaderCell>
                       <Responsive
                         as={React.Fragment}
                         minWidth={Responsive.onlyTablet.maxWidth + 1}
                       >
-                        <Table.HeaderCell width={6}>
-                          Maximum price
+                        <Table.HeaderCell width={4}>
+                          Maximum price/rate
                         </Table.HeaderCell>
-                        <Table.HeaderCell width={2}>
+                        <Table.HeaderCell width={4}>
                           Expiry date
                         </Table.HeaderCell>
                       </Responsive>
-                      <Table.HeaderCell width={6} />
+                      <Table.HeaderCell width={2} />
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>

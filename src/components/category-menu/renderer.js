@@ -173,12 +173,13 @@ export default class CategoryMenu extends React.Component {
       itemType,
       getSaleItems,
       setPageNo,
-      getRequestItems
+      getRequestItems,
+      activeFilter
     } = this.props
     setCategory(name)
     setSubCategory(slug)
     if (itemType === 'sale') {
-      getSaleItems(`${slug}`, 1, true)
+      getSaleItems(`${slug}`, activeFilter, 1, true)
       setPageNo('sale', 1)
     } else if (itemType === 'request') {
       getRequestItems(`${slug}`, 1, true)
@@ -328,7 +329,7 @@ export default class CategoryMenu extends React.Component {
         >
           <div styleName='wrapper-mobile'>
             <Menu
-              size={'large'}
+              size={'small'}
               color={getTheme()}
               styleName='category-menu category-menu-mobile'
               borderless

@@ -14,13 +14,14 @@ function mapStateToProps (state) {
     activeSubCategory: state.activeSubCategory,
     categories: state.categories,
     itemType: state.itemType,
-    searchFocus: state.searchFocus
+    searchFocus: state.searchFocus,
+    activeFilter: state.activeFilter
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
-    getSaleItems: param => {
-      dispatch(getSaleItems(param))
+    getSaleItems: (param1, param2, page, replace) => {
+      dispatch(getSaleItems(param1, param2, page, replace))
     },
     getRequestItems: param => {
       dispatch(getRequestItems(param))

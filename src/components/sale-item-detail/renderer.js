@@ -9,18 +9,22 @@ import {
   Icon,
   Table,
   Transition,
-  Popup
+  Popup,
+  Button,
+  Responsive,
+  Label
 } from 'semantic-ui-react'
 import { formatDate, defaultImageUrl, stringifyNumber } from '../../constants'
 import CustomPopup from '../custom-popup'
+import { getTheme } from 'formula_one'
 import './index.css'
 
 export default class SaleItemDetail extends React.Component {
   state = {
     indicator: 0,
-    loading: false
+    loading: false, 
+    copyPhone: false
   }
-
   componentDidMount () {
     if (!this.props.saleItemDetail.name && this.props.match !== undefined) {
       const id = this.props.match.params.id
@@ -35,7 +39,6 @@ export default class SaleItemDetail extends React.Component {
       }
     }
   }
-
   componentWillUnmount () {
     if (this.props.clearSaleItem) {
       this.props.clearSaleItem()
@@ -213,6 +216,17 @@ export default class SaleItemDetail extends React.Component {
                     ) : (
                       <>
                         <div styleName='title'>{saleItemDetail.name}</div>
+                        <div styleName='title-tag'>
+                          {saleItemDetail.isRental ? 
+                            <Label color='orange'>
+                              RENT
+                            </Label>
+                            : 
+                            <Label color='blue'>
+                              SALE
+                            </Label>
+                          }
+                        </div>
                         {!modal && this.isOwner(saleItemDetail.person) ? (
                           <CustomPopup
                             detailView
@@ -264,10 +278,20 @@ export default class SaleItemDetail extends React.Component {
                     <Table unstackable styleName='item-data'>
                       <Table.Body>
                         <Table.Row>
-                          <Table.Cell styleName='data-col'>Price</Table.Cell>
+                          <Table.Cell styleName='data-col'>
+                            {saleItemDetail.isRental ? 
+                            <>Renting Rate</> :
+                            <>Sale Price</>
+                            }
+                            
+                          </Table.Cell>
                           <Table.Cell styleName='data-col data-values'>
                             <Icon name='rupee sign' size={'small'} />
-                            {saleItemDetail.cost}
+                            {saleItemDetail.isRental ? 
+                            <>{saleItemDetail.cost} per {saleItemDetail.periodicity}</> :
+                            <>{saleItemDetail.cost}</>
+                            }
+                            
                           </Table.Cell>
                         </Table.Row>
                         <Table.Row>
@@ -328,20 +352,44 @@ export default class SaleItemDetail extends React.Component {
                             </Popup>
                           </Table.Cell>
                         </Table.Row>
-                        {saleItemDetail.person.person.contactInformation
-                          .emailAddress ? (
-                            <Table.Row>
-                              <Table.Cell styleName='data-col'>
-                              Email address
-                              </Table.Cell>
-                              <Table.Cell styleName='data-col data-values'>
-                                {
-                                  saleItemDetail.person.person.contactInformation
-                                    .emailAddress
-                                }
-                              </Table.Cell>
-                            </Table.Row>
-                          ) : null}
+                        {saleItemDetail.paymentModes.length > 0 ? (
+                          <Table.Row>
+                            <Table.Cell styleName='data-col'>
+                              Payment modes accepted
+                            </Table.Cell>
+                            <Table.Cell styleName='data-col data-values'>
+                              {saleItemDetail.paymentModes.join(', ')}
+                            </Table.Cell>
+                          </Table.Row>
+                        ) : null}
+                        {saleItemDetail.warrantyDetail ? (
+                          <Table.Row>
+                            <Table.Cell styleName='data-col'>
+                            {saleItemDetail.isRental ? 
+                            <>Maximum Renting Period</> :
+                            <>Warranty Details</>
+                            }
+                            </Table.Cell>
+                            <Table.Cell styleName='data-col data-values'>
+                              {saleItemDetail.warrantyDetail}
+                            </Table.Cell>
+                          </Table.Row>
+                        ) : null}
+                        {saleItemDetail.isRental ? (
+                          <Table.Row>
+                            <Table.Cell styleName='data-col'>
+                            Security Deposit
+                            </Table.Cell>
+                            <Table.Cell styleName='data-col data-values'>
+                              {saleItemDetail.securityDeposit===0 ? <>-</> : 
+                              <>
+                                <Icon name='rupee sign' size={'small'} />
+                                {saleItemDetail.securityDeposit}
+                              </>
+                              }
+                            </Table.Cell>
+                          </Table.Row>
+                        ) : null}
                         {saleItemDetail.isPhoneVisible &&
                         saleItemDetail.person.person.contactInformation
                           .primaryPhoneNumber ? (
@@ -357,27 +405,56 @@ export default class SaleItemDetail extends React.Component {
                               </Table.Cell>
                             </Table.Row>
                           ) : null}
-                        {saleItemDetail.paymentModes.length > 0 ? (
+                          {saleItemDetail.person.person.contactInformation
+                          .emailAddress ? (
+                            <Table.Row>
+                              <Table.Cell styleName='data-col'>
+                              Email address
+                              </Table.Cell>
+                              <Table.Cell styleName='data-col data-values'>
+                                {
+                                  saleItemDetail.person.person.contactInformation
+                                    .emailAddress
+                                }
+                              </Table.Cell>
+                            </Table.Row>
+                          ) : null}
+                          </Table.Body>
+                          <Table.Footer fullWidth>
                           <Table.Row>
-                            <Table.Cell styleName='data-col'>
-                              Payment modes accepted
-                            </Table.Cell>
-                            <Table.Cell styleName='data-col data-values'>
-                              {saleItemDetail.paymentModes.join(', ')}
-                            </Table.Cell>
+                            <Table.HeaderCell colSpan='2' styleName='data-col-btn' >
+                            {saleItemDetail.isPhoneVisible &&
+                            saleItemDetail.person.person.contactInformation
+                            .primaryPhoneNumber ? (
+                            <Responsive
+                              as={React.Fragment}
+                              maxWidth={Responsive.onlyTablet.maxWidth}
+                            >
+                              <div styleName='contact-btn'>
+                                <a href={`tel:${saleItemDetail.person.person.contactInformation
+                                .primaryPhoneNumber}` }
+                                target='_blank'
+                                > 
+                                  <Button color={getTheme()}>
+                                    Call Seller
+                                  </Button>
+                                </a>
+                              </div>
+                            </Responsive>
+                          ) : null}
+                            <a href={`mailto:${saleItemDetail.person.person.contactInformation
+                            .emailAddress}`} 
+                            target='_blank'
+                            >
+                              <Button color={getTheme()}>
+                                Email Seller
+                              </Button>
+                            </a>
+                            </Table.HeaderCell>
+                            
                           </Table.Row>
-                        ) : null}
-                        {saleItemDetail.warrantyDetail ? (
-                          <Table.Row>
-                            <Table.Cell styleName='data-col'>
-                              Warranty (no. of months left)
-                            </Table.Cell>
-                            <Table.Cell styleName='data-col data-values'>
-                              {saleItemDetail.warrantyDetail}
-                            </Table.Cell>
-                          </Table.Row>
-                        ) : null}
-                      </Table.Body>
+                          </Table.Footer>
+                      
                     </Table>
                   )}
                 </Grid.Row>

@@ -5,7 +5,10 @@ import {
   Icon,
   Visibility,
   Placeholder,
-  Transition
+  Transition,
+  Label,
+  Segment,
+
 } from 'semantic-ui-react'
 import { formatDate, getExcerpt, defaultImageUrl } from '../../constants/'
 import CustomPopup from '../custom-popup'
@@ -57,7 +60,20 @@ export default class SaleItemCard extends React.Component {
                   item.pictures.length ? item.pictures[0] : defaultImageUrl
                 })`
               }}
-            />
+            >
+              {
+                item.isRental 
+                ? 
+                <Label  color='orange'>
+                  RENT
+                </Label>
+                :
+                <Label  color='blue'>
+                  SALE
+                </Label>
+              }
+              
+            </div>
           </Transition>
         )}
         <Card.Content>
@@ -87,8 +103,13 @@ export default class SaleItemCard extends React.Component {
               </Card.Header>
               <Card.Meta>
                 <span styleName='date'>
+                  
                   <Icon name='rupee sign' size={'small'} />
-                  {item.cost}
+                  {item.isRental ? 
+                  <>{item.cost} per {item.periodicity}</> :
+                  <>{item.cost}</>
+                  }
+                  
                 </span>
               </Card.Meta>
               <Card.Description styleName='card-description'>

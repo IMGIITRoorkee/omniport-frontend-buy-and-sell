@@ -8,7 +8,8 @@ import {
   Visibility,
   Icon,
   Table,
-  Popup
+  Popup,
+  Label
 } from 'semantic-ui-react'
 import { formatDate, stringifyNumber } from '../../constants'
 import CustomPopup from '../custom-popup'
@@ -87,6 +88,17 @@ export default class RequestItemDetail extends React.Component {
                   ) : (
                     <Grid.Column width={16} styleName='title-item'>
                       <div styleName='title'>{requestItemDetail.name}</div>
+                      <div styleName='title-tag'>
+                        {requestItemDetail.isRental ? 
+                        <Label color='orange'>
+                          RENT
+                        </Label>
+                        : 
+                        <Label color='blue'>
+                          SALE
+                        </Label>
+                        }
+                      </div>
                       {!modal && this.isOwner(requestItemDetail.person) ? (
                         <CustomPopup
                           detailView
@@ -128,13 +140,21 @@ export default class RequestItemDetail extends React.Component {
                   ) : (
                     <Table unstackable styleName='item-data'>
                       <Table.Body>
-                        <Table.Row>
+                        <Table.Row> 
                           <Table.Cell styleName='data-col'>
-                            Maximum price
+                            {requestItemDetail.isRental ? 
+                            <>Maximum renting rate</> : 
+                            <>Maximum price</>
+                            }
+                            
                           </Table.Cell>
                           <Table.Cell styleName='data-col data-values'>
                             <Icon name='rupee sign' size={'small'} />
-                            {requestItemDetail.cost}
+                            {requestItemDetail.isRental ? 
+                            <>{requestItemDetail.cost} per {requestItemDetail.periodicity}</> : 
+                            <>{requestItemDetail.cost}</>
+                            }
+                            
                           </Table.Cell>
                         </Table.Row>
                         <Table.Row>

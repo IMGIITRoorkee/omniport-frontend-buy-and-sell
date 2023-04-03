@@ -11,6 +11,26 @@
     margin-bottom: 1.5em !important;
 }
 
+.field-group {
+    margin-bottom: 0 !important;
+}
+
+.field-form-drop {
+    margin-bottom: 1.5em !important;
+    margin-top: 1.7em !important;
+    vertical-align: bottom !important;
+    padding-left: 0 !important;
+}
+
+.drop-width {
+    width: 7em !important;
+    text-align: center !important;
+    padding-top: 0.78571429em !important;
+    padding-bottom: 0.78571429em !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;   
+}
+
 .category-field {
     border: 1px solid rgba(34, 36, 38, .15) !important;
     box-shadow: 0 0 0 0 rgba(34, 36, 38, .35) inset !important;

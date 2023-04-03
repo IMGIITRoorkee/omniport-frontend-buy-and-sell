@@ -1,4 +1,5 @@
 import { GET_CATEGORIES } from '../constants/action-types'
+
 const Categories = (state = [], action) => {
   switch (action.type) {
     case GET_CATEGORIES:

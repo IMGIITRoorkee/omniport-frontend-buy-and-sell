@@ -4,6 +4,7 @@ import {
   sortSaleItems,
   setItemType,
   setPageNo,
+  setFilter,
   setSortingOrder,
 } from '../../actions'
 import Component from './renderer'
@@ -15,13 +16,14 @@ function mapStateToProps (state) {
     saleProductCount: state.saleProductCount,
     page: state.pageNo.sale,
     loading: state.loaders.saleList,
-    sortingOrder: state.sortingOrder
+    sortingOrder: state.sortingOrder,
+    activeFilter: state.activeFilter
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
-    getSaleItems: (param, page, replace) => {
-      dispatch(getSaleItems(param, page, replace))
+    getSaleItems: (param1, param2, page, replace) => {
+      dispatch(getSaleItems(param1, param2, page, replace))
     },
     sortItems: items => {
       dispatch(sortSaleItems(items))
@@ -31,6 +33,9 @@ const mapDispatchToProps = dispatch => {
     },
     setPageNo: (type, no) => {
       dispatch(setPageNo(type, no))
+    },
+    setFilter: param => {
+      dispatch(setFilter(param))
     },
     setSortingOrder: (order) => {
       dispatch(setSortingOrder(order))

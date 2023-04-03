@@ -96,6 +96,7 @@
 .slide {
     padding-top: .4em !important;
     margin-left: .5em !important;
+    vertical-align: text-bottom !important;
 }
 
 .no-items {

@@ -56,6 +56,17 @@
     border: none !important;
 }
 
+.data-col-btn {
+    border: none !important;
+    text-align: right !important;
+    padding-right: 0 !important;
+}
+
+.contact-btn {
+    display: inline;
+    padding-right: 0.5em !important;
+}
+
 .data-values {
     font-weight: 700 !important;
     text-align: right !important;
@@ -73,6 +84,15 @@
     padding-bottom: .3em !important;
     text-overflow: clip !important;
     overflow: hidden !important;
+}
+
+.title-tag {
+    display: inline !important;
+    margin-left: auto !important;
+    padding-right: 0.5em !important;
+    padding-bottom: .3em !important;
+    font-size: 1.5em !important;
+
 }
 
 .popup-flex {

@@ -18,10 +18,11 @@ export default class Items extends React.Component {
     }
   }
   handleItemClick = (e, { slug, name }) => {
+
     this.props.setCategory(name)
     this.props.setSubCategory(slug)
     if (this.props.itemType === 'sale') {
-      this.props.getSaleItems(`${slug}`, 1, true)
+      this.props.getSaleItems(`${slug}`, this.props.activeFilter, 1, true)
       this.props.setPageNo('sale', 1)
     } else if (this.props.itemType === 'request') {
       this.props.getRequestItems(`${slug}`, 1, true)
@@ -51,7 +52,7 @@ export default class Items extends React.Component {
     if (itemType === 'request') {
       item = 'Items requested'
     } else if (itemType === 'sale') {
-      item = 'Items for sale'
+      item = 'Items listed'
     }
     if (activeCategory === '') {
       items.push(

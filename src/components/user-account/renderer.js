@@ -195,7 +195,7 @@ export default class UserAccount extends React.Component {
                                 styleName='slide'
                                 onChange={this.toggle}
                                 checked={isPhoneVisible}
-                                slider
+                                toggle
                               />
                             </Header>
                           </Grid.Column>
@@ -266,7 +266,7 @@ export default class UserAccount extends React.Component {
                                 styleName='slide'
                                 onChange={this.toggle}
                                 checked={isPhoneVisible}
-                                slider
+                                toggle
                               />
                           </div>
                           </Grid.Column>
@@ -372,18 +372,21 @@ export default class UserAccount extends React.Component {
                               <Table.HeaderCell width={6}>
                                 Item Name
                               </Table.HeaderCell>
+                              <Table.HeaderCell width={2}>
+                                Sale/Rent
+                              </Table.HeaderCell>
                               <Responsive
                                 as={React.Fragment}
                                 minWidth={Responsive.onlyTablet.maxWidth + 1}
                               >
-                              <Table.HeaderCell width={6}>
+                              <Table.HeaderCell width={4}>
                                 Maximum price
                               </Table.HeaderCell>
-                              <Table.HeaderCell width={3}>
+                              <Table.HeaderCell width={4}>
                                 Expiry date
                               </Table.HeaderCell>
                               </Responsive>
-                              <Table.HeaderCell width={1} />
+                              <Table.HeaderCell width={2} />
                             </Table.Row>
                           </Table.Header>
                           <Table.Body>
